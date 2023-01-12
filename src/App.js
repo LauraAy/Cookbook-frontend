@@ -3,9 +3,9 @@ import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import AddRecipe from "./components/add-recipe.component";
-import Recipe from "./components/recipe.component";
-import RecipesList from "./components/recipes-list.component";
+import AddRecipe from "./components/add-recipe.component.js";
+import Recipe from "./components/recipe.component.js";
+import RecipesList from "./components/recipes-list.component.js";
 
 class App extends Component {
     render() {
@@ -13,7 +13,7 @@ class App extends Component {
             <div>
                 <nav className="navbar navbar-expand navbar-dark bg-dark">
                     <a href="/recipes" className="navbar-brand">
-                        Aydelotte
+                      Custom Cookbook 
                     </a>
                 <div className="navbar-nav mr-auto">
                     <li className="nav-item">

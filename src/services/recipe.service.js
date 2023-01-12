@@ -6,28 +6,28 @@ class RecipeDataService {
     }
 
     get(id) {
-        return http.get('/recipes/${id}');
-    }
+        return http.get(`/recipes/${id}`);
+      }
 
     create(data) {
         return http.post("/recipes", data);
     }
 
     update(id, data) {
-        return http.put('/recipes/${id}', data);
-    }
+        return http.put(`/tutorials/${id}`, data);
+      }
 
-    delete(id) {
-        return http.delete('/recipes/${id}');
-    }
+      delete(id) {
+        return http.delete(`/tutorials/${id}`);
+      }
 
     deleteAll() {
         return http.delete('/recipes');
     }
 
-    findBytitle(title) {
-        return http.get('/recipes?title=${title}');
-    }
+    findByTitle(title) {
+        return http.get(`/tutorials?title=${title}`);
+      }
 }
 
 export default new RecipeDataService();

@@ -21,8 +21,14 @@ export default class AddRecipe extends Component {
 
     onChangeTitle(e) {
         this.setState({
-            description: e.target.value
+            title: e.target.value
         });
+    }
+
+    onChangeDescription(e) {
+      this.setState({
+        description: e.target.value
+      });
     }
 
     saveRecipe() {
@@ -30,6 +36,7 @@ export default class AddRecipe extends Component {
             title: this.state.title,
             description: this.state.description
         };
+
     RecipeDataService.create(data)
         .then(response => {
             this.setState({
@@ -82,7 +89,7 @@ export default class AddRecipe extends Component {
                     name="title"
                   />
                 </div>
-    
+
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
                   <input
