@@ -1,27 +1,27 @@
 import React, { Component } from "react";
-import RecipeDataService from "../services/recipe.service";
+import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 
-export default class RecipesList extends Component {
+export default class recipesList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveRecipes = this.retrieveRecipes.bind(this);
+    this.retrieverecipes = this.retrieverecipes.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveRecipe = this.setActiveRecipe.bind(this);
-    this.removeAllRecipes = this.removeAllRecipes.bind(this);
+    this.setActiverecipe = this.setActiverecipe.bind(this);
+    this.removeAllrecipes = this.removeAllrecipes.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {
       recipes: [],
-      currentRecipe: null,
+      currentrecipe: null,
       currentIndex: -1,
       searchTitle: ""
     };
   }
 
   componentDidMount() {
-    this.retrieveRecipes();
+    this.retrieverecipes();
   }
 
   onChangeSearchTitle(e) {
@@ -32,8 +32,8 @@ export default class RecipesList extends Component {
     });
   }
 
-  retrieveRecipes() {
-    RecipeDataService.getAll()
+  retrieverecipes() {
+    recipeDataService.getAll()
       .then(response => {
         this.setState({
           recipes: response.data
@@ -46,22 +46,22 @@ export default class RecipesList extends Component {
   }
 
   refreshList() {
-    this.retrieveRecipes();
+    this.retrieverecipes();
     this.setState({
-      currentRecipe: null,
+      currentrecipe: null,
       currentIndex: -1
     });
   }
 
-  setActiveRecipe(recipe, index) {
+  setActiverecipe(recipe, index) {
     this.setState({
-      currentRecipe: recipe,
+      currentrecipe: recipe,
       currentIndex: index
     });
   }
 
-  removeAllRecipes() {
-    RecipeDataService.deleteAll()
+  removeAllrecipes() {
+    recipeDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -73,11 +73,11 @@ export default class RecipesList extends Component {
 
   searchTitle() {
     this.setState({
-      currentRecipe: null,
+      currentrecipe: null,
       currentIndex: -1
     });
 
-    RecipeDataService.findByTitle(this.state.searchTitle)
+    recipeDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
           recipes: response.data
@@ -90,7 +90,7 @@ export default class RecipesList extends Component {
   }
 
   render() {
-    const { searchTitle, recipes, currentRecipe, currentIndex } = this.state;
+    const { searchTitle, recipes, currentrecipe, currentIndex } = this.state;
 
     return (
       <div className="list row">
@@ -115,7 +115,7 @@ export default class RecipesList extends Component {
           </div>
         </div>
         <div className="col-md-6">
-          <h4>Recipes List</h4>
+          <h4>recipes List</h4>
 
           <ul className="list-group">
             {recipes &&
@@ -125,7 +125,7 @@ export default class RecipesList extends Component {
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveRecipe(recipe, index)}
+                  onClick={() => this.setActiverecipe(recipe, index)}
                   key={index}
                 >
                   {recipe.title}
@@ -135,36 +135,36 @@ export default class RecipesList extends Component {
 
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllRecipes}
+            onClick={this.removeAllrecipes}
           >
             Remove All
           </button>
         </div>
         <div className="col-md-6">
-          {currentRecipe ? (
+          {currentrecipe ? (
             <div>
-              <h4>Recipe</h4>
+              <h4>recipe</h4>
               <div>
                 <label>
                   <strong>Title:</strong>
                 </label>{" "}
-                {currentRecipe.title}
+                {currentrecipe.title}
               </div>
               <div>
                 <label>
                   <strong>Description:</strong>
                 </label>{" "}
-                {currentRecipe.description}
+                {currentrecipe.description}
               </div>
               <div>
                 <label>
                   <strong>Status:</strong>
                 </label>{" "}
-                {currentRecipe.published ? "Published" : "Pending"}
+                {currentrecipe.published ? "Published" : "Pending"}
               </div>
 
               <Link
-                to={"/recipes/" + currentRecipe.id}
+                to={"/recipes/" + currentrecipe.id}
                 className="badge badge-warning"
               >
                 Edit
@@ -173,7 +173,7 @@ export default class RecipesList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a Recipe...</p>
+              <p>Please click on a recipe...</p>
             </div>
           )}
         </div>

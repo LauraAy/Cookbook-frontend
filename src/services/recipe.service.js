@@ -1,33 +1,33 @@
 import http from "../http-common";
 
-class RecipeDataService {
-    getAll() {
-        return http.get("/recipes");
-    }
+class recipeDataService {
+  getAll() {
+    return http.get("/recipes");
+  }
 
-    get(id) {
-        return http.get(`/recipes/${id}`);
-      }
+  get(id) {
+    return http.get(`/recipes/${id}`);
+  }
 
-    create(data) {
-        return http.post("/recipes", data);
-    }
+  create(data) {
+    return http.post("/recipes", data);
+  }
 
-    update(id, data) {
-        return http.put(`/tutorials/${id}`, data);
-      }
+  update(id, data) {
+    return http.put(`/recipes/${id}`, data);
+  }
 
-      delete(id) {
-        return http.delete(`/tutorials/${id}`);
-      }
+  delete(id) {
+    return http.delete(`/recipes/${id}`);
+  }
 
-    deleteAll() {
-        return http.delete('/recipes');
-    }
+  deleteAll() {
+    return http.delete(`/recipes`);
+  }
 
-    findByTitle(title) {
-        return http.get(`/tutorials?title=${title}`);
-      }
+  findByTitle(title) {
+    return http.get(`/recipes?title=${title}`);
+  }
 }
 
-export default new RecipeDataService();
+export default new recipeDataService();
