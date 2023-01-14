@@ -115,7 +115,7 @@ export default class recipesList extends Component {
           </div>
         </div>
         <div className="col-md-6">
-          <h4>recipes List</h4>
+          <h4>Recipes List</h4>
 
           <ul className="list-group">
             {recipes &&
@@ -140,10 +140,11 @@ export default class recipesList extends Component {
             Remove All
           </button>
         </div>
+
         <div className="col-md-6">
           {currentrecipe ? (
             <div>
-              <h4>recipe</h4>
+              <h4>Recipe</h4>
               <div>
                 <label>
                   <strong>Title:</strong>
@@ -155,6 +156,30 @@ export default class recipesList extends Component {
                   <strong>Description:</strong>
                 </label>{" "}
                 {currentrecipe.description}
+              </div>
+              <div>
+                <label>
+                  <strong>Recipe Type:</strong>
+                </label>{" "}
+                {currentrecipe.recipeType}
+              </div>
+              <div>
+                <label>
+                  <strong>ServingSize:</strong>
+                </label>{" "}
+                {currentrecipe.servingSize}
+              </div>
+              <div>
+                <label>
+                  <strong>Ingredients:</strong>
+                </label>{" "}
+                {currentrecipe.ingredients}
+              </div>
+              <div>
+                <label>
+                  <strong>Directions:</strong>
+                </label>{" "}
+                {currentrecipe.directions}
               </div>
               <div>
                 <label>

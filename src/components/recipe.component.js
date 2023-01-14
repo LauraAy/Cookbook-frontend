@@ -7,6 +7,14 @@ class Recipe extends Component {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.onChangeRecipeType = this.onChangeRecipeType.bind(this);
+    this.onChangeServingSize = this.onChangeServingSize.bind(this);
+    this.onChangeIngredients = this.onChangeIngredients.bind(this);
+    this.onChangeDirections = this.onChangeDirections.bind(this);
+    this.onChangeRecipeType = this.onChangeRecipeType.bind(this);
+    this.onChangeServingSize = this.onChangeServingSize.bind(this);
+    this.onChangeIngredients = this.onChangeIngredients.bind(this);
+    this.onChangeDirections = this.onChangeDirections.bind(this);
     this.getRecipe = this.getRecipe.bind(this);
     this.updatePublished = this.updatePublished.bind(this);
     this.updateRecipe = this.updateRecipe.bind(this);
@@ -17,6 +25,10 @@ class Recipe extends Component {
         id: null,
         title: "",
         description: "",
+        recipeType: "",
+        servingSize: null,
+        ingredients: "",
+        directions: "",
         published: false
       },
       message: ""
@@ -47,6 +59,50 @@ class Recipe extends Component {
       currentRecipe: {
         ...prevState.currentRecipe,
         description: description
+      }
+    }));
+  }
+
+  onChangeRecipeType(e) {
+    const recipeType = e.target.value;
+    
+    this.setState(prevState => ({
+      currentRecipe: {
+        ...prevState.currentRecipe,
+        recipeType: recipeType
+      }
+    }));
+  }
+
+  onChangeServingSize(e) {
+    const servingSize = e.target.value;
+    
+    this.setState(prevState => ({
+      currentRecipe: {
+        ...prevState.currentRecipe,
+        servingSize: servingSize
+      }
+    }));
+  }
+
+  onChangeIngredients(e) {
+    const ingredients = e.target.value;
+    
+    this.setState(prevState => ({
+      currentRecipe: {
+        ...prevState.currentRecipe,
+        ingredients: ingredients
+      }
+    }));
+  }
+
+  onChangeDirections(e) {
+    const directions = e.target.value;
+    
+    this.setState(prevState => ({
+      currentRecipe: {
+        ...prevState.currentRecipe,
+        directions: directions
       }
     }));
   }
@@ -143,7 +199,46 @@ class Recipe extends Component {
                   onChange={this.onChangeDescription}
                 />
               </div>
-
+              <div className="form-group">
+                <label htmlFor="recipeType">Recipe Type</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="recipeType"
+                  value={currentRecipe.recipeType}
+                  onChange={this.onChangeRecipeType}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="servingSize">Serving Size</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="servingSize"
+                  value={currentRecipe.servingSize}
+                  onChange={this.onChangeServingSize}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="ingredients">Ingredients</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="ingredients"
+                  value={currentRecipe.ingredients}
+                  onChange={this.onChangeIngredients}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="directions">Directions</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="directions"
+                  value={currentRecipe.directions}
+                  onChange={this.onChangeDirections}
+                />
+              </div>
               <div className="form-group">
                 <label>
                   <strong>Status:</strong>
