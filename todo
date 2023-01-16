@@ -1,0 +1,6 @@
+-add buttons to edit recipe or go back to main recipe list
+-add location and creator tables
+-add user table and login capability
+-fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 
+
+

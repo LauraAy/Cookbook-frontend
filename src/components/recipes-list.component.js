@@ -192,7 +192,13 @@ export default class recipesList extends Component {
                 to={"/recipes/" + currentrecipe.id}
                 className="badge badge-warning"
               >
-                Edit
+                View Full Recipe
+              </Link>
+              <Link
+                to={"/recipes/edit/" + currentrecipe.id}
+                className="badge badge-warning"
+              >
+                edit
               </Link>
             </div>
           ) : (
