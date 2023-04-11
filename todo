@@ -1,6 +1,14 @@
+-add get recipes to user service 
+-create page for user to view their recipes
+-buttons for adding region and creator
+-component to add creator to recipe
+-component to add region to recipe
+
 -add buttons to edit recipe or go back to main recipe list
--add location and creator tables
--add user table and login capability
 -fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 
+
+X-add location and creator tables
+X-add user table and login capability
+
 
 

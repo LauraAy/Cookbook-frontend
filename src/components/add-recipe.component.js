@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import RecipeDataService from "../services/recipe.service.js";
+import AuthService from "../services/auth.service.js";
 
 export default class AddRecipe extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ export default class AddRecipe extends Component {
         this.onChangeServingSize = this.onChangeServingSize.bind(this);
         this.onChangeIngredients = this.onChangeIngredients.bind(this);
         this.onChangeDirections = this.onChangeDirections.bind(this);
+        this.addUserId  = this.addUserId.bind(this);
         this.saveRecipe = this.saveRecipe.bind(this);
         this.newRecipe = this.newRecipe.bind(this);
 
@@ -22,9 +24,27 @@ export default class AddRecipe extends Component {
             ingredients: "",
             directions: "",
             published: false,
-
-            submitted: false
+            userId: null,
+            submitted: false,
+            currentUser: { username: "" }
         };
+    }
+
+    addUserId() {
+      const currentUser = AuthService.getCurrentUser();
+
+      this.setState({
+        userId: currentUser.id
+      });
+    
+      console.log(currentUser.id)
+    }
+
+    componentDidMount() {
+      this.addUserId()
+      // const currentUser = AuthService.getCurrentUser();
+      // this.setState({ currentUser: currentUser})
+
     }
 
     onChangeTitle(e) {
@@ -32,7 +52,7 @@ export default class AddRecipe extends Component {
             title: e.target.value
         });
     }
-
+ 
     onChangeDescription(e) {
       this.setState({
         description: e.target.value
@@ -64,15 +84,19 @@ export default class AddRecipe extends Component {
     }
 
     saveRecipe() {
-        var data ={
+
+    //  this.addUserId ()
+      
+      var data ={
             title: this.state.title,
             description: this.state.description,
             recipeType: this.state.recipeType,
             servingSize: this.state.servingSize,
             ingredients: this.state.ingredients,
-            directions: this.state.directions
+            directions: this.state.directions,
+            userId: this.state.userId
         };
-
+   
     RecipeDataService.create(data)
         .then(response => {
             this.setState({
@@ -84,7 +108,7 @@ export default class AddRecipe extends Component {
                 ingredients: response.data.ingredients,
                 directions: response.data.directions,
                 published: response.data.published,
-                 
+                userId: response.data.userId,
                 submitted: true
             });
             console.log(response.data);
@@ -103,14 +127,20 @@ export default class AddRecipe extends Component {
             servingSize: null,
             ingredients: "",
             directions: "",
-            published: false,
-
-            submitted: false
+            published: false, 
+            submitted: false,
         });
     }
 
+
     render() {
+      const { currentUser } = this.state;
         return (
+          <div>
+            <p>
+          <strong>User:</strong>{" "}
+          {currentUser.username}
+        </p>
           <div className="submit-form">
             {this.state.submitted ? (
               <div>
@@ -133,7 +163,6 @@ export default class AddRecipe extends Component {
                     name="title"
                   />
                 </div>
-
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
                   <input
@@ -199,11 +228,25 @@ export default class AddRecipe extends Component {
                   />
                 </div>
 
+                {/* <div className="form-group">
+                  <label htmlFor="userId">UserId</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="userId"
+                    required
+                    value={this.state.currentUser.id}
+                    onChange={this.onChangeUserId}
+                    name="userId"
+                  />
+                </div> */}
+
                 <button onClick={this.saveRecipe} className="btn btn-success">
                   Submit
                 </button>
               </div>
             )}
+          </div>
           </div>
         );
       }
