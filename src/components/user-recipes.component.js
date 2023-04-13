@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import recipeDataService from "../services/recipe.service";
+import UserService from "../services/user.service";
 import { Link } from "react-router-dom";
+import AuthService from "../services/auth.service.js";
 
-export default class recipesList extends Component {
+export default class userRecipes extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieverecipes = this.retrieverecipes.bind(this);
+    this.retrieveUserRecipes = this.retrieverecipes.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.setActiverecipe = this.setActiverecipe.bind(this);
     this.removeAllrecipes = this.removeAllrecipes.bind(this);
@@ -17,11 +18,13 @@ export default class recipesList extends Component {
       currentrecipe: null,
       currentIndex: -1,
       searchTitle: "",
+      currentUser: { username: ""}
     };
   }
 
   componentDidMount() {
-    this.retrieverecipes();
+    const currentUser = AuthService.getCurrentUser();
+    this.retrieveUserRecipes(currentUser.id);
   }
 
   onChangeSearchTitle(e) {
@@ -32,8 +35,8 @@ export default class recipesList extends Component {
     });
   }
 
-  retrieverecipes() {
-    recipeDataService.getAll()
+  retrieveUserRecipes(id) {
+    UserService.getUserRecipes(id)
       .then(response => {
         this.setState({
           recipes: response.data
@@ -60,16 +63,16 @@ export default class recipesList extends Component {
     });
   }
 
-  removeAllrecipes() {
-    recipeDataService.deleteAll()
-      .then(response => {
-        console.log(response.data);
-        this.refreshList();
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
+//   removeAllrecipes() {
+//     recipeDataService.deleteAll()
+//       .then(response => {
+//         console.log(response.data);
+//         this.refreshList();
+//       })
+//       .catch(e => {
+//         console.log(e);
+//       });
+//   }
 
   searchTitle() {
     this.setState({
@@ -77,16 +80,16 @@ export default class recipesList extends Component {
       currentIndex: -1
     });
 
-    recipeDataService.findByTitle(this.state.searchTitle)
-      .then(response => {
-        this.setState({
-          recipes: response.data
-        });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+//     recipeDataService.findByTitle(this.state.searchTitle)
+//       .then(response => {
+//         this.setState({
+//           recipes: response.data
+//         });
+//         console.log(response.data);
+//       })
+//       .catch(e => {
+//         console.log(e);
+//       });
   }
 
   render() {
@@ -184,9 +187,9 @@ export default class recipesList extends Component {
               </div>
               <div>
                 <label>
-                  <strong>Contributed by:</strong>
+                  <strong>Status:</strong>
                 </label>{" "}
-               ?
+                {currentrecipe.published ? "Published" : "Pending"}
               </div>
 
               <Link

@@ -28,6 +28,8 @@ class recipeDataService {
   findByTitle(title) {
     return http.get(`/recipes?title=${title}`);
   }
+
+ 
 }
 
 export default new recipeDataService();

@@ -42,8 +42,8 @@ export default class AddRecipe extends Component {
 
     componentDidMount() {
       this.addUserId()
-      // const currentUser = AuthService.getCurrentUser();
-      // this.setState({ currentUser: currentUser})
+      const currentUser = AuthService.getCurrentUser();
+      this.setState({ currentUser: currentUser})
 
     }
 
