@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 
-export default class recipesList extends Component {
+export default class RecipesList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);

@@ -17,8 +17,7 @@ import AddRecipe from "./components/add-recipe.component.js";
 import RecipeEdit from "./components/recipe-edit.component.js";
 import RecipesList from "./components/recipes-list.component.js";
 import Recipe from "./components/recipe.component.js";
-
-import userRecipes from "./components/user-recipes.component.js"
+import UserRecipes from "./components/user-recipes.component.js";
 
 class App extends Component {
     constructor(props) {
@@ -145,10 +144,11 @@ class App extends Component {
                 <Route path="/admin" element={<BoardAdmin />} />
 
                 <Route path="/recipes" element={<RecipesList/>} />
+                <Route path="/user/recipes/:id" element={<UserRecipes/>} /> 
                 <Route path="/add" element={<AddRecipe/>} />
                 <Route path="/recipes/:id" element={<Recipe/>} />
                 <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
-                <Route path="/users/recipes/:id" element={<UserRecipes/>} />
+
             </Routes>
          </div>
     </div>

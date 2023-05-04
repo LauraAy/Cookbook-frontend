@@ -1,4 +1,4 @@
--add get recipes to user service 
+x add get recipes to user service 
 -create page for user to view their recipes
 -buttons for adding region and creator
 -component to add creator to recipe
