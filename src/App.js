@@ -144,7 +144,7 @@ class App extends Component {
                 <Route path="/admin" element={<BoardAdmin />} />
 
                 <Route path="/recipes" element={<RecipesList/>} />
-                <Route path="/user/recipes/:id" element={<UserRecipes/>} /> 
+                <Route path="/user/recipes" element={<UserRecipes/>} /> 
                 <Route path="/add" element={<AddRecipe/>} />
                 <Route path="/recipes/:id" element={<Recipe/>} />
                 <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />

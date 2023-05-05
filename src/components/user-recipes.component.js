@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import UserService from "../services/user.service.js"
+import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
-import userEvent from "@testing-library/user-event";
-
-
-export default class UserRecipes extends Component {
+import UserService from "../services/user.service.js"
+export default class RecipesList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
@@ -16,33 +14,33 @@ export default class UserRecipes extends Component {
     this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {
-      UserRecipes: [],
+      userRecipes: [],
       currentrecipe: null,
       currentIndex: -1,
       searchTitle: "",
     };
   }
-  componentDidMount() {
 
+  componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-   this.retrieveUserRecipes(currentUser.id);
+
+    this.retrieveUserRecipes(currentUser.id);
   }
 
-//   onChangeSearchTitle(e) {
-//     const searchTitle = e.target.value;
+  onChangeSearchTitle(e) {
+    const searchTitle = e.target.value;
 
-//     this.setState({
-//       searchTitle: searchTitle
-//     });
-//   }
+    this.setState({
+      searchTitle: searchTitle
+    });
+  }
 
   retrieveUserRecipes(id) {
     const currentUser = AuthService.getCurrentUser();
-
     UserService.getUserRecipes(id)
       .then(response => {
         this.setState({
-          userRecipes: response.data
+          recipes: response.data
         });
         console.log(response.data);
       })
@@ -67,16 +65,16 @@ export default class UserRecipes extends Component {
     });
   }
 
-//   removeAllrecipes() {
-//     recipeDataService.deleteAll()
-//       .then(response => {
-//         console.log(response.data);
-//         this.refreshList();
-//       })
-//       .catch(e => {
-//         console.log(e);
-//       });
-//   }
+  removeAllrecipes() {
+    recipeDataService.deleteAll()
+      .then(response => {
+        console.log(response.data);
+        this.refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
 
   searchTitle() {
     this.setState({
@@ -84,23 +82,25 @@ export default class UserRecipes extends Component {
       currentIndex: -1
     });
 
-//     recipeDataService.findByTitle(this.state.searchTitle)
-//       .then(response => {
-//         this.setState({
-//           recipes: response.data
-//         });
-//         console.log(response.data);
-//       })
-//       .catch(e => {
-//         console.log(e);
-//       });
+    recipeDataService.findByTitle(this.state.searchTitle)
+      .then(response => {
+        this.setState({
+          recipes: response.data
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   render() {
     const { searchTitle, recipes, currentrecipe, currentIndex } = this.state;
 
     return (
+      <div>
         <h1>Ciao</h1>
-    )
+      </div>
+    );
   }
 }
