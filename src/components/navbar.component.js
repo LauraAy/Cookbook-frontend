@@ -1,23 +1,10 @@
 import React, { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "../App.css";
 
-import AuthService from "./services/auth.service";
+import AuthService from "../services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
-import Profile from "./components/profile.component";
-import BoardUser from "./components/board-user.component";
-import BoardModerator from "./components/board-moderator.component";
-import BoardAdmin from "./components/board-admin.component";
-
-import AddRecipe from "./components/add-recipe.component.js";
-import RecipeEdit from "./components/recipe-edit.component.js";
-import RecipesList from "./components/recipes-list.component.js";
-import Recipe from "./components/recipe.component.js";
-import UserRecipes from "./components/user-recipes.component.js";
 
 class Navbar extends Component {
     constructor(props) {
@@ -61,50 +48,25 @@ class Navbar extends Component {
                     <Link to ={"/"} className="navbar-brand">
                       Custom Cookbook 
                     </Link>
-                    <div className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <Link to={"/home"} className="nav-link">
-                            Home
+                   
+
+                {currentUser ? (
+                    <div className="navbar-nav ml-auto">
+                         <li className="nav-item">
+                            <Link to={"/user/recipes"} className="nav-link">
+                            My Recipes
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link to={"/recipes"} className="nav-link">
-                            Recipes
+                            All Recipes
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link to={"/add"} className="nav-link">
-                            Add
+                            Add Recipes
                             </Link>
                         </li>
-
-                    {showModeratorBoard && (
-                        <li className="nav-item">
-                            <Link to={"/mod"} className="nav-link">
-                            Moderator Board
-                            </Link>
-                        </li>
-                    )}
-
-                    {showAdminBoard && (
-                        <li className="nav-item">
-                            <Link to={"/admin"} className="nav-link">
-                            Admin Board
-                            </Link>
-                        </li>
-                    )}
-
-                    {currentUser && (
-                        <li className="nav-item">
-                            <Link to={"/user"} className="nav-link">
-                            User
-                            </Link>
-                        </li>
-                    )}
-                </div>
-
-                {currentUser ? (
-                    <div className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <Link to={"/profile"} className="nav-link">
                                 {currentUser.username}
@@ -138,4 +100,4 @@ class Navbar extends Component {
   }    
 }
 
-export default withRouter(Navbar);
+export default (Navbar);
