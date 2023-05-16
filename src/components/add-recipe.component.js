@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import RecipeDataService from "../services/recipe.service.js";
+import RegionDataService from "../services/region.service.js"
 import AuthService from "../services/auth.service.js";
 
 export default class AddRecipe extends Component {
@@ -11,9 +12,12 @@ export default class AddRecipe extends Component {
         this.onChangeServingSize = this.onChangeServingSize.bind(this);
         this.onChangeIngredients = this.onChangeIngredients.bind(this);
         this.onChangeDirections = this.onChangeDirections.bind(this);
+        this.onChangeRegionName = this.onChangeRegionName.bind(this);
         this.addUserId  = this.addUserId.bind(this);
         this.saveRecipe = this.saveRecipe.bind(this);
+        this.saveRegion = this.saveRegion.bind(this);
         this.newRecipe = this.newRecipe.bind(this);
+       
 
         this.state = {
             id: null,
@@ -26,7 +30,9 @@ export default class AddRecipe extends Component {
             published: false,
             userId: null,
             submitted: false,
-            currentUser: { username: "" }
+            currentUser: { username: "" },
+            regionName: ""
+
         };
     }
 
@@ -83,9 +89,13 @@ export default class AddRecipe extends Component {
       });
     }
 
-    saveRecipe() {
+    onChangeRegionName(e) {
+      this.setState({
+        regionName: e.target.value
+      });
+    }
 
-    //  this.addUserId ()
+    saveRecipe() {
       
       var data ={
             title: this.state.title,
@@ -116,6 +126,22 @@ export default class AddRecipe extends Component {
         .catch(e => {
             console.log(e);
         });
+    }
+
+    saveRegion() {
+      var data ={
+       regionName: this.state.regionName
+    };
+
+    RegionDataService.create(data)
+      .then(response => {
+        this.setState({
+          id: response.data.id,
+          regionName: response.data.regionName
+        });
+        console.log(response.data);
+      
+      })
     }
 
     newRecipe() {
@@ -228,19 +254,25 @@ export default class AddRecipe extends Component {
                   />
                 </div>
 
-                {/* <div className="form-group">
-                  <label htmlFor="userId">UserId</label>
+                <h4>Add a Region</h4>
+
+                <div className="form-group">
+                  <label htmlFor="regionName">Region Name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="userId"
+                    id="regionName"
                     required
-                    value={this.state.currentUser.id}
-                    onChange={this.onChangeUserId}
-                    name="userId"
+                    value={this.state.regionName}
+                    onChange={this.onChangeRegionName}
+                    name="regionName"
                   />
-                </div> */}
-
+                </div>
+                <button onClick={this.saveRegion} className="btn btn-success">
+                  Add Region
+                </button>
+                <br></br>
+                <br></br>
                 <button onClick={this.saveRecipe} className="btn btn-success">
                   Submit
                 </button>
