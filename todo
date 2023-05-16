@@ -1,5 +1,6 @@
 x add get recipes to user service 
--create page for user to view their recipes
+xcreate page for user to view their recipes
+-add contributed by to allRecipes and userRecipes pages
 -buttons for adding region and creator
 -component to add creator to recipe
 -component to add region to recipe
