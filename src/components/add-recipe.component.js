@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import RecipeDataService from "../services/recipe.service.js";
 import RegionDataService from "../services/region.service.js"
+import CreatorDataService from "../services/creator.service"
 import AuthService from "../services/auth.service.js";
 
 export default class AddRecipe extends Component {
@@ -13,9 +14,13 @@ export default class AddRecipe extends Component {
         this.onChangeIngredients = this.onChangeIngredients.bind(this);
         this.onChangeDirections = this.onChangeDirections.bind(this);
         this.onChangeRegionName = this.onChangeRegionName.bind(this);
+        this.onChangeCreatorName = this.onChangeCreatorName.bind(this);
+        this.onChangeAbout = this.onChangeAbout.bind(this);
+        this.onChangeLink = this.onChangeLink.bind(this);
         this.addUserId  = this.addUserId.bind(this);
         this.saveRecipe = this.saveRecipe.bind(this);
         this.saveRegion = this.saveRegion.bind(this);
+        this.saveCreator = this.saveCreator.bind(this);
         this.newRecipe = this.newRecipe.bind(this);
        
 
@@ -31,7 +36,10 @@ export default class AddRecipe extends Component {
             userId: null,
             submitted: false,
             currentUser: { username: "" },
-            regionName: ""
+            regionName: "",
+            creatorName: "",
+            about: "",
+            link: ""
 
         };
     }
@@ -95,6 +103,24 @@ export default class AddRecipe extends Component {
       });
     }
 
+    onChangeCreatorName(e) {
+      this.setState({
+        creatorName: e.target.value
+      });
+    }
+
+    onChangeAbout(e) {
+      this.setState({
+        about: e.target.value
+      });
+    }
+
+    onChangeLink(e) {
+      this.setState({
+        link: e.target.value
+      });
+    }
+
     saveRecipe() {
       
       var data ={
@@ -138,6 +164,26 @@ export default class AddRecipe extends Component {
         this.setState({
           id: response.data.id,
           regionName: response.data.regionName
+        });
+        console.log(response.data);
+      
+      })
+    }
+
+    saveCreator() {
+      var data ={
+       creatorName: this.state.creatorName,
+       about: this.state.about,
+       link: this.state.link
+    };
+
+    CreatorDataService.create(data)
+      .then(response => {
+        this.setState({
+          id: response.data.id,
+          creatorName: response.data.creatorName,
+          about: response.data.about,
+          link: response.data.link
         });
         console.log(response.data);
       
@@ -270,6 +316,53 @@ export default class AddRecipe extends Component {
                 </div>
                 <button onClick={this.saveRegion} className="btn btn-success">
                   Add Region
+                </button>
+                <br></br>
+                <br></br>
+               
+               <h4>Add a Recipe Creator</h4>
+
+                <div className="form-group">
+                  <label htmlFor="creatorName">Recipe Creator Name</label>
+                  <input
+                  type="text"
+                  className="form-control"
+                  id="creatorName"
+                  required
+                  value={this.state.creatorName}
+                  onChange={this.onChangeCreatorName}
+                  name="creatorName"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="about">About Recipe Creator</label>
+                  <input
+                  type="text"
+                  className="form-control"
+                  id="about"
+                  required
+                  value={this.state.about}
+                  onChange={this.onChangeAbout}
+                  name="about"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="linnk">Recipe Creator Link</label>
+                  <input
+                  type="text"
+                  className="form-control"
+                  id="link"
+                  required
+                  value={this.state.link}
+                  onChange={this.onChangeLink}
+                  name="link"
+                  />
+                </div>
+
+                <button onClick={this.saveCreator} className="btn btn-success">
+                  Add Creator
                 </button>
                 <br></br>
                 <br></br>
