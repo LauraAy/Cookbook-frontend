@@ -22,8 +22,8 @@ export default class AddRecipe extends Component {
         this.saveRegion = this.saveRegion.bind(this);
         this.saveCreator = this.saveCreator.bind(this);
         this.newRecipe = this.newRecipe.bind(this);
+        this.getRegion = this.getRegion.bind(this);
        
-
         this.state = {
             id: null,
             title: "",
@@ -34,6 +34,8 @@ export default class AddRecipe extends Component {
             directions: "",
             published: false,
             userId: null,
+            regionId: null,
+            creatorId: null,
             submitted: false,
             currentUser: { username: "" },
             regionName: "",
@@ -130,7 +132,10 @@ export default class AddRecipe extends Component {
             servingSize: this.state.servingSize,
             ingredients: this.state.ingredients,
             directions: this.state.directions,
-            userId: this.state.userId
+            userId: this.state.userId,
+            regionId: this.state.regionId,
+            creatorId: this.state.creatorId
+
         };
    
     RecipeDataService.create(data)
@@ -145,12 +150,28 @@ export default class AddRecipe extends Component {
                 directions: response.data.directions,
                 published: response.data.published,
                 userId: response.data.userId,
+                regionId: response.data.regionId,
+                creatorId: response.data.creatorId,
                 submitted: true
             });
             console.log(response.data);
+            console.log(this.state.id)
         })
         .catch(e => {
-            console.log(e);
+            console.log(e.response);
+        });
+    }
+
+    getRegion(id) {
+      RegionDataService.get(id)
+        .then(response => {
+          this.setState({
+            regionId: response.data.id
+          });
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
         });
     }
 
@@ -162,14 +183,21 @@ export default class AddRecipe extends Component {
     RegionDataService.create(data)
       .then(response => {
         this.setState({
-          id: response.data.id,
-          regionName: response.data.regionName
+          regionName: response.data.regionName, 
         });
+
+        
+
         console.log(response.data);
+        console.log(response.data.id);
+        console.log(this.state.regionId);
+        console.log (this.state.regionName);
+       
       
       })
-    }
 
+    }
+      
     saveCreator() {
       var data ={
        creatorName: this.state.creatorName,
@@ -180,7 +208,7 @@ export default class AddRecipe extends Component {
     CreatorDataService.create(data)
       .then(response => {
         this.setState({
-          id: response.data.id,
+          creatorId: response.data.id,
           creatorName: response.data.creatorName,
           about: response.data.about,
           link: response.data.link
@@ -193,6 +221,8 @@ export default class AddRecipe extends Component {
     newRecipe() {
         this.setState({
             id: null,
+            regionId: null,
+            creatorId: null,
             title: "",
             description: "",
             recipeType: "",
