@@ -134,7 +134,6 @@ export default class AddRecipe extends Component {
             directions: this.state.directions,
             userId: this.state.userId,
             regionId: this.state.regionId,
-            creatorId: this.state.creatorId
 
         };
    
@@ -162,40 +161,23 @@ export default class AddRecipe extends Component {
         });
     }
 
-    getRegion(id) {
-      RegionDataService.get(id)
-        .then(response => {
-          this.setState({
-            regionId: response.data.id
-          });
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
-
     saveRegion() {
-      var data ={
+      var data ={  
+       regionId: this.state.regionId, 
        regionName: this.state.regionName
     };
-
+    
     RegionDataService.create(data)
       .then(response => {
         this.setState({
+          regionId: response.data.id,
           regionName: response.data.regionName, 
         });
-
-        
-
         console.log(response.data);
         console.log(response.data.id);
         console.log(this.state.regionId);
         console.log (this.state.regionName);
-       
-      
       })
-
     }
       
     saveCreator() {
