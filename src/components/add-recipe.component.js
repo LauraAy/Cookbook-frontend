@@ -22,7 +22,6 @@ export default class AddRecipe extends Component {
         this.saveRegion = this.saveRegion.bind(this);
         this.saveCreator = this.saveCreator.bind(this);
         this.newRecipe = this.newRecipe.bind(this);
-        this.getRegion = this.getRegion.bind(this);
        
         this.state = {
             id: null,
@@ -39,9 +38,10 @@ export default class AddRecipe extends Component {
             submitted: false,
             currentUser: { username: "" },
             regionName: "",
-            creatorName: "",
+            creatorName: "", 
             about: "",
-            link: ""
+            link: "",
+            regions: []
 
         };
     }
@@ -133,7 +133,7 @@ export default class AddRecipe extends Component {
             ingredients: this.state.ingredients,
             directions: this.state.directions,
             userId: this.state.userId,
-            regionId: this.state.regionId,
+            regionId: this.state.region.regionId,
 
         };
    
@@ -172,6 +172,7 @@ export default class AddRecipe extends Component {
         this.setState({
           regionId: response.data.id,
           regionName: response.data.regionName, 
+          region: response.data
         });
         console.log(response.data);
         console.log(response.data.id);

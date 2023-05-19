@@ -63,7 +63,7 @@ class RecipeEdit extends Component {
       }
     }));
   }
-
+ 
   onChangeRecipeType(e) {
     const recipeType = e.target.value;
     
