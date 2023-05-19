@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import recipeDataService from "../services/RecipeService";
+import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 
 export default class RecipesList extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import RecipeDataService from "../services/RecipeService.js";
+import RecipeDataService from "../services/recipe.service.js";
 import { withRouter } from '../common/with-router';
 
 

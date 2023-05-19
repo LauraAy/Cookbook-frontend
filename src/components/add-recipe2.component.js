@@ -1,46 +1,89 @@
 import React, { useState } from "react";
-import RecipeDataService from "../services/RecipeService";
+import RecipeDataService from "../services/recipe.service";
+import RegionDataService from "../services/region.service";
+import AuthService from "../services/auth.service.js";
 
-const AddRecipe = () => {
+const AddRecipe = () => { 
+  const currentUser = AuthService.getCurrentUser();
+
   const initialRecipeState = {
     id: null,
     title: "",
-    description: ""
+    description: "",
+    userId: null
   };
+
+  const initialRegionState = {
+    regionId: null,
+    regionName: ""
+  };
+
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
-
+  const [userId, setUserId] = useState(currentUser.id);
+  const [region, setRegion] = useState(initialRegionState);
+  
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setRecipe({ ...Recipe, [name]: value });
+    setRecipe({ ...recipe, [name]: value });
+    setRegion({...region, [name]: value})
   };
-
+  
   const saveRecipe = () => {
     var data = {
       title: recipe.title,
-      description: recipe.description
+      description: recipe.description,
+      userId: userId,
+      regionId: region.regionId
     };
 
     RecipeDataService.create(data)
+    .then(response => {
+      setRecipe({
+        id: response.data.id,
+        title: response.data.title,
+        description: response.data.description
+      });
+      setSubmitted(true);
+      console.log(response.data);
+      console.log(recipe.id)
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+
+    const saveRegion = () => {
+      var data = {
+        regionId: region.regionId,
+        regionName: region.regionName
+      };
+
+    RegionDataService.create(data)
       .then(response => {
-        setRecipe({
-          id: response.data.id,
-          title: response.data.title,
-          description: response.data.description,
-          published: response.data.published
+        setRegion({
+          regionId: response.data.id,
+          regionName: response.data.regionName
         });
-        setSubmitted(true);
         console.log(response.data);
+        console.log(region.regionId)
       })
       .catch(e => {
         console.log(e);
       });
   };
 
+
   const newRecipe = () => {
     setRecipe(initialRecipeState);
     setSubmitted(false);
   };
+
+  const regionIdTest = () => {
+    console.log(region.regionid)
+    console.log(region.regionName)
+  }
+
 
   return (
     <div className="submit-form">
@@ -79,12 +122,46 @@ const AddRecipe = () => {
             />
           </div>
 
-          <button onClick={saveRecipe} className="btn btn-success">
+          <h4>Add a Region</h4>
+          <div className="form-group">
+            <label htmlFor="regionName">Region Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="regionName"
+              required
+              value={region.regionName}
+              onChange={handleInputChange}
+              name="regionName"
+            />
+          </div>
+
+          <button onClick={saveRegion} className="btn btn-success">
             Submit
+          </button>
+          <button onClick={regionIdTest} className="btn">
+            TestRegionId
+          </button>
+          <br></br>
+          <br></br>
+          <button onClick={saveRecipe} className="btn btn-success">
+           Submit
           </button>
         </div>
       )}
+      {/* <ul className="list-group">
+    {region.map((region, index) => (
+    <li
+      key={index}
+    >
+      {region.regionName}
+    </li>
+  ))}
+</ul> */}
     </div>
+
+
+         
   );
 };
 

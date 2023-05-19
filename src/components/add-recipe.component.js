@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RecipeDataService from "../services/RecipeService.js";
-import RegionDataService from "../services/region.service.js"
-import CreatorDataService from "../services/creator.service"
+import RegionDataService from "../services/region.service.js";
+import CreatorDataService from "../services/creator.service.js";
 import AuthService from "../services/auth.service.js";
 
 export default class AddRecipe extends Component {
@@ -126,6 +126,7 @@ export default class AddRecipe extends Component {
     saveRecipe() {
       
       var data ={
+            id: this.state.id,
             title: this.state.title,
             description: this.state.description,
             recipeType: this.state.recipeType,

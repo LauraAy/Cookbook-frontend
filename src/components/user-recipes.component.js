@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import recipeDataService from "../services/RecipeService";
+import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service.js"
