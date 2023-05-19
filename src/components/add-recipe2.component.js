@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RecipeDataService from "../services/recipe.service.js";
+import RecipeDataService from "../services/RecipeService";
 
 const AddRecipe = () => {
   const initialRecipeState = {
@@ -21,9 +21,9 @@ const AddRecipe = () => {
       description: recipe.description
     };
 
-    TutorialDataService.create(data)
+    RecipeDataService.create(data)
       .then(response => {
-        setTutorial({
+        setRecipe({
           id: response.data.id,
           title: response.data.title,
           description: response.data.description,
@@ -37,8 +37,8 @@ const AddRecipe = () => {
       });
   };
 
-  const newTutorial = () => {
-    setTutorial(initialTutorialState);
+  const newRecipe = () => {
+    setRecipe(initialRecipeState);
     setSubmitted(false);
   };
 
@@ -47,7 +47,7 @@ const AddRecipe = () => {
       {submitted ? (
         <div>
           <h4>You submitted successfully!</h4>
-          <button className="btn btn-success" onClick={newTutorial}>
+          <button className="btn btn-success" onClick={newRecipe}>
             Add
           </button>
         </div>
@@ -60,7 +60,7 @@ const AddRecipe = () => {
               className="form-control"
               id="title"
               required
-              value={tutorial.title}
+              value={recipe.title}
               onChange={handleInputChange}
               name="title"
             />
@@ -73,13 +73,13 @@ const AddRecipe = () => {
               className="form-control"
               id="description"
               required
-              value={tutorial.description}
+              value={recipe.description}
               onChange={handleInputChange}
               name="description"
             />
           </div>
 
-          <button onClick={saveTutorial} className="btn btn-success">
+          <button onClick={saveRecipe} className="btn btn-success">
             Submit
           </button>
         </div>
@@ -88,4 +88,4 @@ const AddRecipe = () => {
   );
 };
 
-export default AddTutorial;
+export default AddRecipe;

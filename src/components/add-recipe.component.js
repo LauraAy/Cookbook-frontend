@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import RecipeDataService from "../services/recipe.service.js";
+import RecipeDataService from "../services/RecipeService.js";
 import RegionDataService from "../services/region.service.js"
 import CreatorDataService from "../services/creator.service"
 import AuthService from "../services/auth.service.js";
