@@ -42,7 +42,9 @@ const AddRecipe = () => {
       setRecipe({
         id: response.data.id,
         title: response.data.title,
-        description: response.data.description
+        description: response.data.description,
+        userId: response.data.userId,
+        regionId: response.data.regionId
       });
       setSubmitted(true);
       console.log(response.data);
@@ -90,6 +92,10 @@ const AddRecipe = () => {
       {submitted ? (
         <div>
           <h4>You submitted successfully!</h4>
+            <div>
+            {recipe.id}
+            {recipe.title}
+            </div>
           <button className="btn btn-success" onClick={newRecipe}>
             Add
           </button>

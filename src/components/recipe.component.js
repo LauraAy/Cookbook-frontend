@@ -90,7 +90,7 @@ return (
     </div>
 
     <Link
-      to={"/recipes/edit" + currentRecipe.id}
+      to={"/recipes/edit/" + currentRecipe.id}
       className="badge badge-warning"
     >
       Edit
