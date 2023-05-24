@@ -58,7 +58,7 @@ const RecipeEdit = props => {
     RecipeDataService.update(currentRecipe.id, currentRecipe)
       .then(response => {
         console.log(response.data);
-        setMessage("The tutorial was updated successfully!");
+        setMessage("The recipe was updated successfully!");
       })
       .catch(e => {
         console.log(e);

@@ -82,9 +82,28 @@ const AddRecipe = () => {
   };
 
   const regionIdTest = () => {
-    console.log(region.regionid)
+    console.log(region.regionId)
     console.log(region.regionName)
   }
+
+  const addRegion = regionId => {
+    var data = {
+      id: recipe.id,
+      title: recipe.title,
+      description: recipe.description,
+      regionId: region.regionId
+    };
+
+    RecipeDataService.update(recipe.id, data)
+      .then(response => {
+        setRecipe({ ...recipe, regionId });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
 
 
   return (
@@ -96,6 +115,30 @@ const AddRecipe = () => {
             {recipe.id}
             {recipe.title}
             </div>
+            <h4>Add a Region</h4>
+          <div className="form-group">
+            <label htmlFor="regionName">Region Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="regionName"
+              required
+              value={region.regionName}
+              onChange={handleInputChange}
+              name="regionName"
+            />
+          </div>
+
+          <button onClick={saveRegion} className="btn btn-success">
+            Submit
+          </button>
+          <br></br>
+          <br></br>
+          <button onClick={addRegion} className="btn">
+            TestRegion
+          </button>
+          <br></br>
+          <br></br>
           <button className="btn btn-success" onClick={newRecipe}>
             Add
           </button>
@@ -128,28 +171,7 @@ const AddRecipe = () => {
             />
           </div>
 
-          <h4>Add a Region</h4>
-          <div className="form-group">
-            <label htmlFor="regionName">Region Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="regionName"
-              required
-              value={region.regionName}
-              onChange={handleInputChange}
-              name="regionName"
-            />
-          </div>
-
-          <button onClick={saveRegion} className="btn btn-success">
-            Submit
-          </button>
-          <button onClick={regionIdTest} className="btn">
-            TestRegionId
-          </button>
-          <br></br>
-          <br></br>
+         
           <button onClick={saveRecipe} className="btn btn-success">
            Submit
           </button>
