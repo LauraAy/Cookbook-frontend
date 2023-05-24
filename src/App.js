@@ -13,7 +13,7 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import AddRecipe from "./components/add-recipe2.component.js";
+import AddRecipe from "./components/add-recipe.component.js";
 import RecipeEdit from "./components/recipe-edit.component.js";
 import RecipesList from "./components/recipes-list.component.js";
 import Recipe from "./components/recipe.component.js";
