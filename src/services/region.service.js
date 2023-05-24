@@ -1,30 +1,36 @@
 import http from "../http-common";
 
-class regionDataService {
-  getAll() {
-    return http.get("/regions");
-  }
+const getAll = () => {
+  return http.get("/regions");
+};
 
-  get(id) {
-    return http.get(`/regions/${id}`);
-  }
+const get = id => {
+  return http.get(`/regions/${id}`);
+};
 
-  create(data) {
-    return http.post("/regions", data);
-  }
+const create = data => {
+  return http.post("/regions", data);
+};
 
-  update(id, data) {
-    return http.put(`/regions/${id}`, data);
-  }
+const update = (id, data) => {
+  return http.put(`/regiions/${id}`, data);
+};
 
-  delete(id) {
-    return http.delete(`/regions/${id}`);
-  }
+const remove = id => {
+  return http.delete(`/regions/${id}`);
+};
 
-  deleteAll() {
-    return http.delete(`/regions`);
-  }
- 
-}
+const removeAll = () => {
+  return http.delete(`/regions`);
+};
 
-export default new regionDataService();
+const RegionService = {
+  getAll,
+  get,
+  create,
+  update,
+  remove,
+  removeAll,
+};
+
+export default RegionService;
