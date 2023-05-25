@@ -104,7 +104,61 @@ const RecipeEdit = props => {
               onChange={handleInputChange}
             />
           </div>
-
+          <div className="form-group">
+            <label htmlFor="recipeType">Recipe Type</label>
+            <input
+              type="text"
+              className="form-control"
+              id="recipeType"
+              name="recipeType"
+              value={currentRecipe.recipeType}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="servingSize">ServingSize</label>
+            <input
+              type="text"
+              className="form-control"
+              id="servingSize"
+              name="servingSize"
+              value={currentRecipe.servingSize}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="ingredients">Ingredients</label>
+            <input
+              type="text"
+              className="form-control"
+              id="ingredients"
+              name="ingredients"
+              value={currentRecipe.ingredients}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="directions">Directions</label>
+            <input
+              type="text"
+              className="form-control"
+              id="directions"
+              name="directions"
+              value={currentRecipe.directions}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="source">Source</label>
+            <input
+              type="text"
+              className="form-control"
+              id="source"
+              name="source"
+              value={currentRecipe.source}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="form-group">
             <label>
               <strong>Status:</strong>

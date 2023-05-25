@@ -10,12 +10,22 @@ const AddRecipe = () => {
     id: null,
     title: "",
     description: "",
+    recipeType: "",
+    servingSize: null,
+    ingredients: "",
+    directions: "",
+    source: "",
     userId: null
   };
 
   const initialRegionState = {
     regionId: null,
-    regionName: ""
+    regionName: "", 
+    city: "",
+    state: "",
+    country: "",
+    lat: null,
+    lng: null
   };
 
   const [recipe, setRecipe] = useState(initialRecipeState);
@@ -33,6 +43,11 @@ const AddRecipe = () => {
     var data = {
       title: recipe.title,
       description: recipe.description,
+      recipeType: recipe.recipeType,
+      servingSize: recipe.servingSize,
+      ingredients: recipe.ingredients,
+      directions: recipe.directions,
+      source: recipe.source,
       userId: userId,
       regionId: region.regionId
     };
@@ -43,6 +58,11 @@ const AddRecipe = () => {
         id: response.data.id,
         title: response.data.title,
         description: response.data.description,
+        recipeType: response.data.recipeType,
+        servingSize: response.data.servingSize,
+        ingredients: response.data.ingredients,
+        directions: response.data.directions,
+        source: response.data.source,
         userId: response.data.userId,
         regionId: response.data.regionId
       });
@@ -65,7 +85,12 @@ const AddRecipe = () => {
       .then(response => {
         setRegion({
           regionId: response.data.id,
-          regionName: response.data.regionName
+          regionName: response.data.regionName,
+          city: response.data.city,
+          state: response.data.state,
+          country: response.data.country,
+          lat: response.data.lat,
+          lng: response.data.lng
         });
         console.log(response.data);
         console.log(region.regionId)
@@ -124,6 +149,31 @@ const AddRecipe = () => {
               name="regionName"
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="lat">Latitude</label>
+            <input
+              type="text"
+              className="form-control"
+              id="lat"
+              required
+              value={region.lat}
+              onChange={handleInputChange}
+              name="lat"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="lng">Longitude</label>
+            <input
+              type="text"
+              className="form-control"
+              id="lng"
+              required
+              value={region.lng}
+              onChange={handleInputChange}
+              name="lng"
+            />
+          </div>
+       
 
           <button onClick={saveRegion} className="btn btn-success">
             Submit
@@ -165,8 +215,67 @@ const AddRecipe = () => {
               onChange={handleInputChange}
               name="description"
             />
+          </div> 
+          <div className="form-group">
+            <label htmlFor="recipeType">Recipe Type</label>
+            <input
+              type="text"
+              className="form-control"
+              id="recipeType"
+              required
+              value={recipe.recipeType}
+              onChange={handleInputChange}
+              name="recipeType"
+            />
           </div>
-
+          <div className="form-group">
+            <label htmlFor="servingSize">Serving Size</label>
+            <input
+              type="text"
+              className="form-control"
+              id="servingSize"
+              required
+              value={recipe.servingSize}
+              onChange={handleInputChange}
+              name="servingSize"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="ingredients">Ingredients</label>
+            <input
+              type="text"
+              className="form-control"
+              id="ingredients"
+              required
+              value={recipe.ingredients}
+              onChange={handleInputChange}
+              name="ingredients"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="directions">Directions</label>
+            <input
+              type="text"
+              className="form-control"
+              id="directions"
+              required
+              value={recipe.directions}
+              onChange={handleInputChange}
+              name="directions"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="source">Source</label>
+            <input
+              type="text"
+              className="form-control"
+              id="source"
+              required
+              value={recipe.source}
+              onChange={handleInputChange}
+              name="source"
+            />
+          </div>
          
           <button onClick={saveRecipe} className="btn btn-success">
            Submit
