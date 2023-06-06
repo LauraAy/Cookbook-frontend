@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import AuthService from "../services/auth.service.js";
@@ -15,28 +15,28 @@ const AddRecipe = () => {
     ingredients: "",
     directions: "",
     source: "",
-    userId: null
+    userId: undefined
   };
 
-  const initialRegionState = {
-    regionId: null,
-    regionName: "", 
-    city: "",
-    state: "",
-    country: "",
-    lat: null,
-    lng: null
-  };
+  // const initialRegionState = {
+  //   regionId: null,
+  //   country: ""
+  // };
 
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
-  const [region, setRegion] = useState(initialRegionState);
+  const [regions, setRegions] = useState([]);
+  const [currentRegion, setCurrentRegion] = useState (null)
+  const [currentIndex, setCurrentIndex] = useState(-1);
+
+  useEffect(() => {
+    retrieveRegions();
+  }, []);
   
   const handleInputChange = event => {
     const { name, value } = event.target;
     setRecipe({ ...recipe, [name]: value });
-    setRegion({...region, [name]: value})
   };
   
   const saveRecipe = () => {
@@ -49,7 +49,6 @@ const AddRecipe = () => {
       directions: recipe.directions,
       source: recipe.source,
       userId: userId,
-      regionId: region.regionId
     };
 
     RecipeDataService.create(data)
@@ -64,7 +63,7 @@ const AddRecipe = () => {
         directions: response.data.directions,
         source: response.data.source,
         userId: response.data.userId,
-        regionId: response.data.regionId
+        
       });
       setSubmitted(true);
       console.log(response.data);
@@ -75,36 +74,55 @@ const AddRecipe = () => {
     });
 };
 
-    const saveRegion = () => {
-      var data = {
-        regionId: region.regionId,
-        regionName: region.regionName
-      };
+const retrieveRegions = () => {
+  RegionDataService.getAll()
+  .then(response => {
+    setRegions(response.data);
+    console.log(response.data);
+  })
+  .catch(e => {
+    console.log(e);
+  });
+};
 
-    RegionDataService.create(data)
-      .then(response => {
-        setRegion({
-          regionId: response.data.id,
-          regionName: response.data.regionName,
-          city: response.data.city,
-          state: response.data.state,
-          country: response.data.country,
-          lat: response.data.lat,
-          lng: response.data.lng
-        });
-        console.log(response.data);
-        console.log(region.regionId)
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
+
+const refreshDropdown = () => {
+  retrieveRegions();
+  setCurrentRegion(null);
+  setCurrentIndex(-1);
+};
+
+const setActiveRegion = (region, index) => {
+  setCurrentRegion(region);
+  setCurrentIndex(index);
+};
+
+  //   const saveRegion = () => {
+  //     var data = {
+  //       regionId: region.regionId,
+  //       country: region.country
+  //     };
+
+  //   RegionDataService.create(data)
+  //     .then(response => {
+  //       setRegion({
+  //         regionId: response.data.id,
+  //         country: response.data.country
+  //       });
+  //       console.log(response.data);
+  //       console.log(region.regionId)
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+  // };
+
   const addRegion = regionId => {
     var data = {
       id: recipe.id,
       title: recipe.title,
       description: recipe.description,
-      regionId: region.regionId
+      regionId: currentRegion.currentRegionId
     };
 
     RecipeDataService.update(recipe.id, data)
@@ -115,12 +133,12 @@ const AddRecipe = () => {
       .catch(e => {
         console.log(e);
       });
+      // setRegion(initialRegionState);
   };
 
 
   const newRecipe = () => {
     setRecipe(initialRecipeState);
-    setRegion(initialRegionState);
     setSubmitted(false);
   };
 
@@ -134,52 +152,43 @@ const AddRecipe = () => {
           <h4>You submitted successfully!</h4>
             <div>
             {recipe.id}
+            <br></br>
             {recipe.title}
             </div>
             <h4>Add a Region</h4>
           <div className="form-group">
-            <label htmlFor="regionName">Region Name</label>
+            <label htmlFor="country">Country</label>
             <input
               type="text"
               className="form-control"
-              id="regionName"
+              id="country"
               required
-              value={region.regionName}
+              value={regions.country}
               onChange={handleInputChange}
-              name="regionName"
+              name="country"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="lat">Latitude</label>
-            <input
-              type="text"
-              className="form-control"
-              id="lat"
-              required
-              value={region.lat}
-              onChange={handleInputChange}
-              name="lat"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="lng">Longitude</label>
-            <input
-              type="text"
-              className="form-control"
-              id="lng"
-              required
-              value={region.lng}
-              onChange={handleInputChange}
-              name="lng"
-            />
-          </div>
-       
+          <ul className="list-group">
+          {regions &&
+          regions.map((region, index) => (
+            <li
+              className={
+                "list-group-item " + (index === currentIndex ? "active" : "")
+                }
+              onClick={() => setActiveRegion(region, index)}
+              key={index}
+            >
+              {region.country}
+  
+            </li>
+          ))}
+        </ul>
+        
 
-          <button onClick={saveRegion} className="btn btn-success">
+          {/* <button onClick={saveRegion} className="btn btn-success">
             Submit
-          </button>
-          <br></br>
-          <br></br>
+          </button> */}
+          
           <button onClick={addRegion} className="btn">
             Add Region
           </button>

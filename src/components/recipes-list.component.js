@@ -77,7 +77,7 @@ return (
             <button
               className="btn btn-outline-secondary"
               type="button"
-              OnClick={findByTitle}
+              onClick={findByTitle}
             >
               Search
             </button>
