@@ -1,6 +1,11 @@
 x add get recipes to user service 
-xcreate page for user to view their recipes
+xcreate page for user to view their 
+xupload countries and state csv into database
+
+
 -update recipecomponent to use functional components
+-create dropdown to select country and apply to recipe
+
 -add contributed by to allRecipes and userRecipes pages
 -buttons for adding region and creator
 -component to add creator to recipe
