@@ -146,6 +146,7 @@ const setActiveRegion = (region, index) => {
 
 
   return (
+
     <div className="submit-form">
       {submitted ? (
         <div>
@@ -155,19 +156,64 @@ const setActiveRegion = (region, index) => {
             <br></br>
             {recipe.title}
             </div>
-            <h4>Add a Region</h4>
-          <div className="form-group">
-            <label htmlFor="country">Country</label>
-            <input
-              type="text"
-              className="form-control"
-              id="country"
-              required
-              value={regions.country}
-              onChange={handleInputChange}
-              name="country"
-            />
+            <div className="col-md-6">
+
+        <div>
+        {currentRegion ? (
+          <div>
+            <h4>Region</h4>
+            <div>
+              <label>
+                <strong>Region</strong>
+              </label>{" "}
+              {currentRegion.regionName}
+            </div>
+            <div>
+              <label>
+                <strong>Country</strong>
+              </label>{" "}
+              {currentRegion.country}
+            </div>
+           <div>
+              <label>
+                <strong>Latitude:</strong>
+              </label>{" "}
+              {currentRegion.lat}
+            </div>
+            <div>
+              <label>
+                <strong>Longitude:</strong>
+              </label>{" "}
+              {currentRegion.long}
+            </div> 
           </div>
+          ) : (
+          <div>
+            <br />
+              <p>Please select a region from the dropdown.</p>
+          </div>
+          )}
+        </div>
+      </div>
+
+      <select class="custom-select">
+        <option selected>Open this select menu</option>
+        {regions.map((region, index) => 
+        <option 
+        value={region.id}  
+        className={
+          "list-group-item" + (index === currentIndex ? "active" : "")
+          }
+        onClick={() => setActiveRegion(region, index)}
+        key={index} >
+          {region.country}
+        
+        </option>)}
+       
+      </select>
+
+   
+   
           <ul className="list-group">
           {regions &&
           regions.map((region, index) => (
@@ -198,6 +244,16 @@ const setActiveRegion = (region, index) => {
             Add
           </button>
         </div>
+  
+
+
+
+
+
+
+
+
+
       ) : (
         <div>
           <div className="form-group">
@@ -295,5 +351,6 @@ const setActiveRegion = (region, index) => {
     </div>    
   );
 };
+
 
 export default AddRecipe;

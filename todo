@@ -1,22 +1,19 @@
-x add get recipes to user service 
-xcreate page for user to view their 
-xupload countries and state csv into database
-
-
--update recipecomponent to use functional components
 -create dropdown to select country and apply to recipe
-
+-figure out how to put country id to all states 
+-update recipecomponent to use functional components
 -add contributed by to allRecipes and userRecipes pages
 -buttons for adding region and creator
 -component to add creator to recipe
--component to add region to recipe
 -create pre-login home page
-
 -add buttons to edit recipe or go back to main recipe list
 -fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 
 
 X-add location and creator tables
 X-add user table and login capability
+x add get recipes to user service 
+xcreate page for user to view their 
+xupload countries and state csv into database
+xcomponent to add region to recipe
 
 
 
