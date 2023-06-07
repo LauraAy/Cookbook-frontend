@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Form from 'react-bootstrap/Form';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import AuthService from "../services/auth.service.js";
@@ -95,6 +96,7 @@ const refreshDropdown = () => {
 const setActiveRegion = (region, index) => {
   setCurrentRegion(region);
   setCurrentIndex(index);
+  console.log("I tried.")
 };
 
   //   const saveRegion = () => {
@@ -195,25 +197,27 @@ const setActiveRegion = (region, index) => {
           )}
         </div>
       </div>
+    
+     
+    <Form.Select aria-label="Default select example" >
+      <option>Open this select menu</option>
+      {regions &&
+     regions.map((region, index) => (
+      <option
+      onChange={() => setActiveRegion(region, index)}
+         className={
+           "list-group-item " + (index === currentIndex ? "active" : "")
+           }
 
-      <select class="custom-select">
-        <option selected>Open this select menu</option>
-        {regions.map((region, index) => 
-        <option 
-        value={region.id}  
-        className={
-          "list-group-item" + (index === currentIndex ? "active" : "")
-          }
-        onClick={() => setActiveRegion(region, index)}
-        key={index} >
-          {region.country}
-        
-        </option>)}
-       
-      </select>
+         key={index}
+       >
+         {region.country}
+      </option>
+    
+    ))}
+    </Form.Select>
+    
 
-   
-   
           <ul className="list-group">
           {regions &&
           regions.map((region, index) => (
@@ -225,7 +229,6 @@ const setActiveRegion = (region, index) => {
               key={index}
             >
               {region.country}
-  
             </li>
           ))}
         </ul>
