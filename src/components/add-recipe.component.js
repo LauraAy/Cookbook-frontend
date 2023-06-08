@@ -99,6 +99,8 @@ const setActiveRegion = (region, index) => {
   console.log("I tried.")
 };
 
+
+
   //   const saveRegion = () => {
   //     var data = {
   //       regionId: region.regionId,
@@ -144,6 +146,15 @@ const setActiveRegion = (region, index) => {
     setSubmitted(false);
   };
 
+  const handleChange = (e) => {
+    const regionId = e.target.value;
+    // const currentRegion  = useSelector((state) => state.loadRegions.find(
+    //   (region) => region.id === regionId),
+    // );
+    // setCurrentRegion(currentRegion);
+    console.log(e.target.value);
+    console.log("I tried.");
+  }
 
 
 
@@ -199,17 +210,16 @@ const setActiveRegion = (region, index) => {
       </div>
     
      
-    <Form.Select aria-label="Default select example" >
+    <Form.Select aria-label="Default select example"  onChange={handleChange}>
       <option>Open this select menu</option>
       {regions &&
      regions.map((region, index) => (
       <option
-      onChange={() => setActiveRegion(region, index)}
-         className={
-           "list-group-item " + (index === currentIndex ? "active" : "")
-           }
-
-         key={index}
+      className={
+        "list-group-item " + (index === currentIndex ? "active" : "")
+        }
+      value={region.id}
+      key={index}
        >
          {region.country}
       </option>
@@ -217,7 +227,11 @@ const setActiveRegion = (region, index) => {
     ))}
     </Form.Select>
     
-
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
           <ul className="list-group">
           {regions &&
           regions.map((region, index) => (
