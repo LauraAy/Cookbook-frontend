@@ -93,40 +93,16 @@ const refreshDropdown = () => {
   setCurrentIndex(-1);
 };
 
-const setActiveRegion = (region, index) => {
-  setCurrentRegion(region);
-  setCurrentIndex(index);
-  console.log("I tried.")
-};
-
-
-
-  //   const saveRegion = () => {
-  //     var data = {
-  //       regionId: region.regionId,
-  //       country: region.country
-  //     };
-
-  //   RegionDataService.create(data)
-  //     .then(response => {
-  //       setRegion({
-  //         regionId: response.data.id,
-  //         country: response.data.country
-  //       });
-  //       console.log(response.data);
-  //       console.log(region.regionId)
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //     });
-  // };
+// const setActiveRegion = (region, index) => {
+//   setCurrentRegion(region);
+//   setCurrentIndex(index);
+//   console.log("I tried.")
+// };
 
   const addRegion = regionId => {
     var data = {
       id: recipe.id,
-      title: recipe.title,
-      description: recipe.description,
-      regionId: currentRegion.currentRegionId
+      regionId: currentRegion.id
     };
 
     RecipeDataService.update(recipe.id, data)
@@ -148,13 +124,38 @@ const setActiveRegion = (region, index) => {
 
   const handleChange = (e) => {
     const regionId = e.target.value;
-    // const currentRegion  = useSelector((state) => state.loadRegions.find(
-    //   (region) => region.id === regionId),
-    // );
-    // setCurrentRegion(currentRegion);
+    RegionDataService.get(regionId)
+    .then(response => {
+      setCurrentRegion(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
     console.log(e.target.value);
     console.log("I tried.");
   }
+
+
+  //   const saveRegion = () => {
+  //     var data = {
+  //       regionId: region.regionId,
+  //       country: region.country
+  //     };
+
+  //   RegionDataService.create(data)
+  //     .then(response => {
+  //       setRegion({
+  //         regionId: response.data.id,
+  //         country: response.data.country
+  //       });
+  //       console.log(response.data);
+  //       console.log(region.regionId)
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+  // };
 
 
 
@@ -232,20 +233,7 @@ const setActiveRegion = (region, index) => {
     <br></br>
     <br></br>
     <br></br>
-          <ul className="list-group">
-          {regions &&
-          regions.map((region, index) => (
-            <li
-              className={
-                "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-              onClick={() => setActiveRegion(region, index)}
-              key={index}
-            >
-              {region.country}
-            </li>
-          ))}
-        </ul>
+   
         
 
           {/* <button onClick={saveRegion} className="btn btn-success">
