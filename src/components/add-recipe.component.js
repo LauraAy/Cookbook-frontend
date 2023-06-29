@@ -99,15 +99,10 @@ const refreshDropdown = () => {
 //   console.log("I tried.")
 // };
 
-  const addRegion = regionId => {
-    var data = {
-      id: recipe.id,
-      regionId: currentRegion.id
-    };
-
-    RecipeDataService.update(recipe.id, data)
+  const addRegion = (recipe, currentRegion) => {
+   
+    RecipeDataService.addRecipeRegion()
       .then(response => {
-        setRecipe({ ...recipe, regionId });
         console.log(response.data);
       })
       .catch(e => {
