@@ -8,6 +8,10 @@ const get = id => {
   return http.get(`/recipes/${id}`);
 };
 
+const getWithRegions = id => {
+return http.get('recipes/regions/${id}');
+}
+
 const create = data => {
   return http.post("/recipes", data);
 };
@@ -35,6 +39,7 @@ const findByTitle = title => {
 const RecipeService = {
   getAll,
   get,
+  getWithRegions,
   create,
   update,
   remove,

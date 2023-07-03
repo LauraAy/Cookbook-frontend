@@ -93,11 +93,44 @@ const refreshDropdown = () => {
   setCurrentIndex(-1);
 };
 
-const setActiveRegion = (region, index) => {
-  setCurrentRegion(region);
-  setCurrentIndex(index);
-  console.log("I tried.")
-};
+// const setActiveRegion = (region, index) => {
+//   setCurrentRegion(region);
+//   setCurrentIndex(index);
+//   console.log("I tried.")
+// };
+
+  const addRegion = (recipe, currentRegion) => {
+   
+    RecipeDataService.addRecipeRegion()
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+      // setRegion(initialRegionState);
+  };
+
+
+  const newRecipe = () => {
+    setRecipe(initialRecipeState);
+    setSubmitted(false);
+  };
+
+  const handleChange = (e) => {
+    const regionId = e.target.value;
+    RegionDataService.get(regionId)
+    .then(response => {
+      setCurrentRegion(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+    console.log(e.target.value);
+    console.log("I tried.");
+  }
+
 
   //   const saveRegion = () => {
   //     var data = {
@@ -118,32 +151,6 @@ const setActiveRegion = (region, index) => {
   //       console.log(e);
   //     });
   // };
-
-  const addRegion = regionId => {
-    var data = {
-      id: recipe.id,
-      title: recipe.title,
-      description: recipe.description,
-      regionId: currentRegion.currentRegionId
-    };
-
-    RecipeDataService.update(recipe.id, data)
-      .then(response => {
-        setRecipe({ ...recipe, regionId });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-      // setRegion(initialRegionState);
-  };
-
-
-  const newRecipe = () => {
-    setRecipe(initialRecipeState);
-    setSubmitted(false);
-  };
-
 
 
 
@@ -199,17 +206,16 @@ const setActiveRegion = (region, index) => {
       </div>
     
      
-    <Form.Select aria-label="Default select example" >
+    <Form.Select aria-label="Default select example"  onChange={handleChange}>
       <option>Open this select menu</option>
       {regions &&
      regions.map((region, index) => (
       <option
-      onChange={() => setActiveRegion(region, index)}
-         className={
-           "list-group-item " + (index === currentIndex ? "active" : "")
-           }
-
-         key={index}
+      className={
+        "list-group-item " + (index === currentIndex ? "active" : "")
+        }
+      value={region.id}
+      key={index}
        >
          {region.country}
       </option>
@@ -217,21 +223,12 @@ const setActiveRegion = (region, index) => {
     ))}
     </Form.Select>
     
-
-          <ul className="list-group">
-          {regions &&
-          regions.map((region, index) => (
-            <li
-              className={
-                "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-              onClick={() => setActiveRegion(region, index)}
-              key={index}
-            >
-              {region.country}
-            </li>
-          ))}
-        </ul>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+   
         
 
           {/* <button onClick={saveRegion} className="btn btn-success">
