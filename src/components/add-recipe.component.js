@@ -244,7 +244,7 @@ const setActiveRegion = (region, index) => {
           <br></br>
           <br></br>
           <button className="btn btn-success" onClick={newRecipe}>
-            Add
+            Add another recipe
           </button>
         </div>
   
