@@ -15,9 +15,9 @@ import BoardAdmin from "./components/board-admin.component";
 
 import AddRecipe from "./components/add-recipe.component.js";
 import RecipeEdit from "./components/recipe-edit.component.js";
-import RecipesList from "./components/recipes-list.component.js";
+import AllRecipes from "./components/allRecipes.component.js";
 import Recipe from "./components/recipe.component.js";
-import UserRecipes from "./components/user-recipes.component.js";
+import UserRecipes from "./components/userRecipes.component.js";
 import Navbar from "./components/navbar.component";
 
 
@@ -73,7 +73,7 @@ class App extends Component {
                 <Route path="/mod" element={<BoardModerator />} />
                 <Route path="/admin" element={<BoardAdmin />} />
 
-                <Route path="/recipes" element={<RecipesList/>} />
+                <Route path="/recipes" element={<AllRecipes/>} />
                 <Route path="/user/recipes" element={<UserRecipes/>} /> 
                 <Route path="/add" element={<AddRecipe/>} />
                 <Route path="/recipes/:id" element={<Recipe/>} />

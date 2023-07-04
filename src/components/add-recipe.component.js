@@ -19,11 +19,6 @@ const AddRecipe = () => {
     userId: undefined
   };
 
-  // const initialRegionState = {
-  //   regionId: null,
-  //   country: ""
-  // };
-
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
@@ -152,112 +147,14 @@ const setActiveRegion = (region, index) => {
     <div className="submit-form">
       {submitted ? (
         <div>
-          <h4>You submitted successfully!</h4>
+          <h4>Recipe Created!</h4>
             <div>
             {recipe.id}
             <br></br>
             {recipe.title}
             </div>
-            <div className="col-md-6">
-
-        <div>
-        {currentRegion ? (
-          <div>
-            <h4>Region</h4>
-            <div>
-              <label>
-                <strong>Region</strong>
-              </label>{" "}
-              {currentRegion.regionName}
-            </div>
-            <div>
-              <label>
-                <strong>Country</strong>
-              </label>{" "}
-              {currentRegion.country}
-            </div>
-           <div>
-              <label>
-                <strong>Latitude:</strong>
-              </label>{" "}
-              {currentRegion.lat}
-            </div>
-            <div>
-              <label>
-                <strong>Longitude:</strong>
-              </label>{" "}
-              {currentRegion.long}
-            </div> 
           </div>
-          ) : (
-          <div>
-            <br />
-              <p>Please select a region from the dropdown.</p>
-          </div>
-          )}
-        </div>
-      </div>
-    
-     
-    <Form.Select aria-label="Default select example" >
-      <option>Open this select menu</option>
-      {regions &&
-     regions.map((region, index) => (
-      <option
-      onChange={() => setActiveRegion(region, index)}
-         className={
-           "list-group-item " + (index === currentIndex ? "active" : "")
-           }
-
-         key={index}
-       >
-         {region.country}
-      </option>
-    
-    ))}
-    </Form.Select>
-    
-
-          <ul className="list-group">
-          {regions &&
-          regions.map((region, index) => (
-            <li
-              className={
-                "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-              onClick={() => setActiveRegion(region, index)}
-              key={index}
-            >
-              {region.country}
-            </li>
-          ))}
-        </ul>
-        
-
-          {/* <button onClick={saveRegion} className="btn btn-success">
-            Submit
-          </button> */}
-          
-          <button onClick={addRegion} className="btn">
-            Add Region
-          </button>
-          <br></br>
-          <br></br>
-          <button className="btn btn-success" onClick={newRecipe}>
-            Add another recipe
-          </button>
-        </div>
-  
-
-
-
-
-
-
-
-
-
-      ) : (
+        ):(
         <div>
           <div className="form-group">
             <label htmlFor="title">Title</label>
