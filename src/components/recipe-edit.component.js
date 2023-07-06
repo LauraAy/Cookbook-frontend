@@ -6,7 +6,7 @@ const RecipeEdit = props => {
   const { id }= useParams();
   let navigate = useNavigate();
 
-  const initialRecipeState = {
+  const initialRecipeState = { 
     id: null,
     title: "",
     description: "",
@@ -15,7 +15,7 @@ const RecipeEdit = props => {
   const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
   const [message, setMessage] = useState("");
 
-  const Recipe= id => {
+  const Recipe = id => {
     RecipeDataService.get(id)
       .then(response => {
         setCurrentRecipe(response.data);
@@ -26,10 +26,6 @@ const RecipeEdit = props => {
       });
   };
 
-  useEffect(() => {
-    if (id)
-      Recipe(id);
-  }, [id]);
 
   const handleInputChange = event => {
     const { name, value } = event.target;

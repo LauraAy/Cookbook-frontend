@@ -17,6 +17,7 @@ import AddRecipe from "./components/add-recipe.component.js";
 import RecipeEdit from "./components/recipe-edit.component.js";
 import AllRecipes from "./components/allRecipes.component.js";
 import Recipe from "./components/recipe.component.js";
+import AddRegion from "./components/add-region.component.js"
 import UserRecipes from "./components/userRecipes.component.js";
 import Navbar from "./components/navbar.component";
 
@@ -75,7 +76,8 @@ class App extends Component {
 
                 <Route path="/recipes" element={<AllRecipes/>} />
                 <Route path="/user/recipes" element={<UserRecipes/>} /> 
-                <Route path="/add" element={<AddRecipe/>} />
+                <Route path="/recipes/add" element={<AddRecipe/>} />
+                <Route path="/regions/add/:id" element = {<AddRegion/>} />
                 <Route path="/recipes/:id" element={<Recipe/>} />
                 <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
 

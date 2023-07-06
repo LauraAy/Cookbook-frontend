@@ -2,18 +2,40 @@ import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
+import { useParams, useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service.js";
 
 const AddRegion = () => { 
+const { id } = useParams()
 
+const initialRecipeState = {
+    id: null,
+    title: "",
+    description: "",
+    recipeType: "",
+    servingSize: null,
+    ingredients: "",
+    directions: "",
+    source: "",
+    userId: undefined
+};
+
+const initialRegionState = {
+    id:null
+}
+
+const [recipe, setRecipe] = useState(initialRecipeState);
 const [regions, setRegions] = useState([]);
-const [currentRegion, setCurrentRegion] = useState (null)
-const [currentRecipe, setCurrentRecipe] = useState (null)
+const [currentRegion, setCurrentRegion] = useState (initialRegionState)
+const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
+const [currentIndex, setCurrentIndex] = useState(-1);
 
 
 useEffect(() => {
     retrieveRegions();
+    retrieveRecipe(id);
   }, []);
+
 
   const retrieveRegions = () => {
     RegionDataService.getAll()
@@ -26,17 +48,26 @@ useEffect(() => {
     });
   };
 
+  const retrieveRecipe = id => {
+    RecipeDataService.get(id)
+      .then(response => {
+        setCurrentRecipe(response.data);
+        console.log(response.data);
+        console.log(currentRecipe.id);
+      })
+      .catch(e => {
+       
+      });
+  };
+
 const addRegion = regionId => {
     var data = {
-      id: recipe.id,
-      title: recipe.title,
-      description: recipe.description,
-      regionId: currentRegion.currentRegionId
+      regionId: currentRegion.id
     };
 
-    RecipeDataService.update(recipe.id, data)
+    RecipeDataService.update(currentRecipe.id, data)
       .then(response => {
-        setRecipe({ ...recipe, regionId });
+        setCurrentRecipe({ ...currentRecipe, regionId });
         console.log(response.data);
       })
       .catch(e => {
@@ -64,7 +95,7 @@ const addRegion = regionId => {
 
 return (
 <div>
-{currentRegion ? (
+{currentRegion ? ( 
     <div>
         <h4>Region</h4>
         <div>
@@ -91,7 +122,47 @@ return (
             </label>{" "}
             {currentRegion.long}
         </div> 
-    </div>
+    <br></br>
+    <br></br>
+    <div>
+    <p>Please select a region from the dropdown.</p>   
+    <Form.Select aria-label="Default select example" >
+        <option>Open this select menu</option>
+        {regions &&
+        regions.map((region, index) => (
+        <option
+            onClick={() => setActiveRegion(region, index)}
+            className={
+            "list-group-item " + (index === currentIndex ? "active" : "")
+            }
+            key={index}
+        >
+        {region.country}
+        </option>
+
+        ))}
+    </Form.Select>
+
+
+    <ul className="list-group">
+        {regions &&
+        regions.map((region, index) => (
+        <li
+        className={
+        "list-group-item " + (index === currentIndex ? "active" : "")
+        }
+        onClick={() => setActiveRegion(region, index)}
+        key={index}
+        >
+            {region.country}
+        </li>
+        ))}
+    </ul>
+    <button onClick={addRegion} class="btn btn-success">
+        Add Region
+    </button>
+</div>
+</div>
 ) : (
     <div>
         <p>Please select a region from the dropdown.</p>   
@@ -100,7 +171,7 @@ return (
             {regions &&
             regions.map((region, index) => (
             <option
-                onChange={() => setActiveRegion(region, index)}
+                onClick={() => setActiveRegion(region, index)}
                 className={
                 "list-group-item " + (index === currentIndex ? "active" : "")
                 }
@@ -127,17 +198,12 @@ return (
             </li>
             ))}
         </ul>
-        <button onClick={addRegion} className="btn">
+        <button onClick={addRegion} class="btn btn-success">
             Add Region
-        </button>
-        <br></br>
-        <br></br>
-        <button className="btn btn-success" onClick={newRecipe}>
-            Add another recipe
         </button>
     </div>
     )} 
 </div>
 )}
 
-export default addRegion;
+export default AddRegion;
