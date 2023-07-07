@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
+import RegionRecipeDataService from "../services/regionRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service.js";
 
@@ -20,22 +21,37 @@ const initialRecipeState = {
     userId: undefined
 };
 
-const initialRegionState = {
-    id:null
+const initialRegionRecipeState = {
+    regionId: null,
+    recipeId: null
 }
 
-const [recipe, setRecipe] = useState(initialRecipeState);
+const initialCurrentRegionState = {
+    id: null, 
+    country: "",
+    lat: null,
+    lng: null,
+    alpha2Code: "",
+    alpah3Code: "",
+    countryCode: "",
+    regionName: "",
+    subRegion: "",
+    intermediateRegion: ""
+
+}
+
 const [regions, setRegions] = useState([]);
-const [currentRegion, setCurrentRegion] = useState (initialRegionState)
 const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
-const [currentIndex, setCurrentIndex] = useState(-1);
+const [regionId, setRegionId] = useState()
+const [currentRegion, setCurrentRegion] = useState ()
+const [regionRecipe, setRegionRecipe] = useState(initialRegionRecipeState);
+const [currentIndex, setCurrentIndex] = useState(0);
 
 
 useEffect(() => {
     retrieveRegions();
     retrieveRecipe(id);
   }, []);
-
 
   const retrieveRegions = () => {
     RegionDataService.getAll()
@@ -60,14 +76,30 @@ useEffect(() => {
       });
   };
 
+  const retrieveRegion = id => {
+    RegionDataService.get(id)
+      .then(response => {
+        setCurrentRegion(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+       
+      });
+  };
+
+
 const addRegion = regionId => {
     var data = {
-      regionId: currentRegion.id
+      regionId: currentRegion.id,
+      recipeId: currentRegion.id
     };
 
-    RecipeDataService.update(currentRecipe.id, data)
+    RegionRecipeDataService.create(data)
       .then(response => {
-        setCurrentRecipe({ ...currentRecipe, regionId });
+        setRegionRecipe({
+            regionId: response.data.regionId,
+            recipeId: response.data.regionid
+        })
         console.log(response.data);
       })
       .catch(e => {
@@ -76,11 +108,11 @@ const addRegion = regionId => {
       // setRegion(initialRegionState);
   };
 
-  const refreshDropdown = () => {
-    retrieveRegions();
-    setCurrentRegion(null);
-    setCurrentIndex(-1);
-  };
+//   const refreshDropdown = () => {
+//     retrieveRegions();
+//     setCurrentRegion(null);
+//     setCurrentIndex(-1);
+//   };
   
   const setActiveRegion = (region, index) => {
     setCurrentRegion(region);
@@ -88,7 +120,18 @@ const addRegion = regionId => {
     console.log("I tried.")
   };
 
- // const initialRegionState = {
+  const getRegion = (id) => {
+
+  }
+
+  const handleRegionChange = (e, index) => {
+    setRegionId(e.target.value);
+    setCurrentIndex(index);
+    retrieveRegion(regionId)
+    console.log(regionId)
+  }
+
+ // const initialRegionState = 
   //   regionId: null,
   //   country: ""
   // };
@@ -125,25 +168,32 @@ return (
     <br></br>
     <br></br>
     <div>
-    <p>Please select a region from the dropdown.</p>   
-    <Form.Select aria-label="Default select example" >
-        <option>Open this select menu</option>
-        {regions &&
-        regions.map((region, index) => (
+    <p>Please select a region from the dropdown.</p> 
+
+<Form>
+    <select class="form-control" onChange={handleRegionChange} >
+        <option>Select a Region</option>
+       
+
+        {regions.map((region, index) => 
         <option
-            onClick={() => setActiveRegion(region, index)}
-            className={
-            "list-group-item " + (index === currentIndex ? "active" : "")
-            }
+            value= {region.id}
+            // onSelect={() => setActiveRegion(region, index)}
+            // className={
+            // "list-group-item " + (index === currentIndex ? "active" : "")
+            // }
             key={index}
         >
         {region.country}
         </option>
-
-        ))}
-    </Form.Select>
-
-
+        )}
+    </select>
+    </Form>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
     <ul className="list-group">
         {regions &&
         regions.map((region, index) => (
