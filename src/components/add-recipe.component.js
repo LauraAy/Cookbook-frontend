@@ -25,10 +25,6 @@ const AddRecipe = () => {
   const [regions, setRegions] = useState([]);
   const [currentRegion, setCurrentRegion] = useState (null)
   const [currentIndex, setCurrentIndex] = useState(-1);
-
-  useEffect(() => {
-    retrieveRegions();
-  }, []);
   
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -70,79 +66,12 @@ const AddRecipe = () => {
     });
 };
 
-const retrieveRegions = () => {
-  RegionDataService.getAll()
-  .then(response => {
-    setRegions(response.data);
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
-
-
-const refreshDropdown = () => {
-  retrieveRegions();
-  setCurrentRegion(null);
-  setCurrentIndex(-1);
-};
-
-const setActiveRegion = (region, index) => {
-  setCurrentRegion(region);
-  setCurrentIndex(index);
-  console.log("I tried.")
-};
-
-  //   const saveRegion = () => {
-  //     var data = {
-  //       regionId: region.regionId,
-  //       country: region.country
-  //     };
-
-  //   RegionDataService.create(data)
-  //     .then(response => {
-  //       setRegion({
-  //         regionId: response.data.id,
-  //         country: response.data.country
-  //       });
-  //       console.log(response.data);
-  //       console.log(region.regionId)
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //     });
-  // };
-
-  const addRegion = regionId => {
-    var data = {
-      id: recipe.id,
-      title: recipe.title,
-      description: recipe.description,
-      regionId: currentRegion.currentRegionId
-    };
-
-    RecipeDataService.update(recipe.id, data)
-      .then(response => {
-        setRecipe({ ...recipe, regionId });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-      // setRegion(initialRegionState);
-  };
-
-
-  const newRecipe = () => {
+const newRecipe = () => {
     setRecipe(initialRecipeState);
     setSubmitted(false);
-  };
+    };
 
-
-
-
-  return (
+return (
 
     <div className="submit-form">
       {submitted ? (
