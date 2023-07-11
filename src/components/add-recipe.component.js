@@ -69,7 +69,21 @@ const AddRecipe = () => {
 const newRecipe = () => {
     setRecipe(initialRecipeState);
     setSubmitted(false);
-    };
+  };
+
+  const handleChange = (e) => {
+    const regionId = e.target.value;
+    RegionDataService.get(regionId)
+    .then(response => {
+      setCurrentRegion(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+    console.log(e.target.value);
+    console.log("I tried.");
+  }
 
 return (
 

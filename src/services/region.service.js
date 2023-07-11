@@ -24,13 +24,14 @@ const removeAll = () => {
   return http.delete(`/regions`);
 };
 
+
 const RegionService = {
   getAll,
   get,
   create,
   update,
   remove,
-  removeAll,
+  removeAll
 };
 
 export default RegionService;
