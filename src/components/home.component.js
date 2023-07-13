@@ -1,41 +1,33 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 
 import UserService from "../services/user.service";
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
+const HomeComponent = () => {
+  // const [content, setContent] = useState("");
 
-    this.state = {
-      content: ""
-    };
-  }
+  // useEffect(() => {
+  //   UserService.getPublicContent().then(
+  //     (response) => {
+  //       setContent(response.data);
+  //     },
+  //     (error) => {
+  //       const _content =
+  //         (error.response && error.response.data) ||
+  //         error.message ||
+  //         error.toString();
 
-  componentDidMount() {
-    UserService.getPublicContent().then(
-      response => {
-        this.setState({
-          content: response.data
-        });
-      },
-      error => {
-        this.setState({
-          content:
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString()
-        });
-      }
-    );
-  }
+  //       setContent(_content);
+  //     }
+  //   );
+  // }, []);
 
-  render() {
-    return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-        </header>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="container">
+      <header className="jumbotron">
+        <h3>Welcome to Your World Cookbook</h3>
+      </header>
+    </div>
+  );
+};
+
+export default HomeComponent;

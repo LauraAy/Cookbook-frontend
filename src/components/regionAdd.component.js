@@ -6,7 +6,7 @@ import RegionRecipeDataService from "../services/regionRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service.js";
 
-const RegionAdd = () => { 
+const RegionAddComponent = () => { 
 const { id } = useParams()
 
 const initialRecipeState = {
@@ -208,4 +208,4 @@ return (
 </div>
 )}
 
-export default RegionAdd;
+export default RegionAddComponent;

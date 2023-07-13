@@ -3,8 +3,9 @@ import Form from 'react-bootstrap/Form';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import AuthService from "../services/auth.service.js";
+import { Link } from "react-router-dom";
 
-const RecipeAdd = () => { 
+const RecipeAddComponent = () => { 
   const currentUser = AuthService.getCurrentUser();
 
   const initialRecipeState = {
@@ -96,6 +97,13 @@ return (
             <br></br>
             {recipe.title}
             </div>
+            <Link
+              to={"/recipes/" + recipe.id}
+            >
+            <button>View Recipe</button>
+            </Link>
+              <button onClick={newRecipe}>Add Another Recipe</button>
+          
           </div>
         ):(
         <div>
@@ -196,4 +204,4 @@ return (
 };
 
 
-export default RecipeAdd;
+export default RecipeAddComponent;
