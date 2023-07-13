@@ -8,7 +8,7 @@ import AuthService from "./services/auth.service";
 // import Navbar from "./components/navbar.component";
 
 import Home from "./components/home.component";
-import Login from "./pages/login.page";
+import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
