@@ -28,7 +28,6 @@ const retrieveRecipes = () => {
   });
 };
 
-
 const refreshList = () => {
   retrieveRecipes();
   setCurrentRecipe(null);
