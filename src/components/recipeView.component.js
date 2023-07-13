@@ -3,7 +3,7 @@ import RecipeDataService from "../services/recipe.service.js";
 import { withRouter } from '../common/with-router';
 import {Link} from "react-router-dom";
 
-class Recipe extends Component {
+class RecipeView extends Component {
     constructor(props) {
     super(props); 
     this.getRecipe = this.getRecipe.bind(this);
@@ -99,4 +99,4 @@ return (
 )}
 }
 
-export default withRouter(Recipe);
+export default withRouter(RecipeView);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 
-const RecipesList = ()=> {
+const RecipesAll = ()=> {
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -182,4 +182,4 @@ return (
     );
   }
 
-  export default RecipesList;
+  export default RecipesAll;

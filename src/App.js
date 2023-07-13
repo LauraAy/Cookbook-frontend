@@ -13,11 +13,11 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import AddRecipe from "./components/add-recipe.component.js";
-import RecipeEdit from "./components/recipe-edit.component.js";
-import AllRecipes from "./components/allRecipes.component.js";
-import Recipe from "./components/recipe.component.js";
-import AddRegion from "./components/add-region.component.js"
+import RecipeAdd from "./components/recipeAdd.component.js";
+import RecipeEdit from "./components/recipeEdit.component.js";
+import RecipesAll from "./components/recipesAll.component.js";
+import RecipeView from "./components/recipeView.component.js";
+import RegionAdd from "./components/regionAdd.component.js"
 import UserRecipes from "./components/userRecipes.component.js";
 import Navbar from "./components/navbar.component";
 
@@ -74,11 +74,11 @@ class App extends Component {
                 <Route path="/mod" element={<BoardModerator />} />
                 <Route path="/admin" element={<BoardAdmin />} />
 
-                <Route path="/recipes" element={<AllRecipes/>} />
+                <Route path="/recipes" element={<RecipesAll/>} />
                 <Route path="/user/recipes" element={<UserRecipes/>} /> 
-                <Route path="/recipes/add" element={<AddRecipe/>} />
-                <Route path="/regions/add/:id" element = {<AddRegion/>} />
-                <Route path="/recipes/:id" element={<Recipe/>} />
+                <Route path="/recipes/add" element={<RecipeAdd/>} />
+                <Route path="/regions/add/:id" element = {<RegionAdd/>} />
+                <Route path="/recipes/:id" element={<RecipeView/>} />
                 <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
 
             </Routes>

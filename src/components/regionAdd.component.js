@@ -6,7 +6,7 @@ import RegionRecipeDataService from "../services/regionRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service.js";
 
-const AddRegion = () => { 
+const RegionAdd = () => { 
 const { id } = useParams()
 
 const initialRecipeState = {
@@ -91,7 +91,7 @@ useEffect(() => {
 const saveRegionRecipe = () => {
     var data = {
       regionId: currentRegion.id,
-      recipeId: currentRegion.id
+      recipeId: currentRecipe.id
     };
 
     RegionRecipeDataService.create(data)
@@ -208,4 +208,4 @@ return (
 </div>
 )}
 
-export default AddRegion;
+export default RegionAdd;

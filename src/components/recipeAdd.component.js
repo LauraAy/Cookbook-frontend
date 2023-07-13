@@ -4,7 +4,7 @@ import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import AuthService from "../services/auth.service.js";
 
-const AddRecipe = () => { 
+const RecipeAdd = () => { 
   const currentUser = AuthService.getCurrentUser();
 
   const initialRecipeState = {
@@ -196,4 +196,4 @@ return (
 };
 
 
-export default AddRecipe;
+export default RecipeAdd;
