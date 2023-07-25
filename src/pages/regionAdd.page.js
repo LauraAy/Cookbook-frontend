@@ -8,4 +8,4 @@ const RegionAddPage = () => {
     </div>
     )}
     
-    export default RecipeAddPage
+    export default RegionAddPage

@@ -7,21 +7,23 @@ import AuthService from "./services/auth.service";
 
 // import Navbar from "./components/navbar.component";
 
-import Home from "./components/home.component";
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Profile from "./components/profile.component";
+import Home from "./pages/home.page.js";
+import Login from "./pages/login.page.js";
+import Register from "./pages/register.page.js";
+import Profile from "./pages/profile.page.js";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
 import RecipeAdd from "./pages/recipeAdd.page.js";
-import RecipeEdit from "./components/recipeEdit.component.js";
-import RecipeView from "./components/recipeView.component.js";
-import RecipesAll from "./components/recipesAll.component.js";
-import UserRecipes from "./components/userRecipes.component.js";
+import RecipeEdit from "./pages/recipeEdit.page.js";
+import RecipeView from "./pages/recipeView.page.js";
+import RecipesAll from "./pages/recipesAll.page.js";
+import UserRecipes from "./pages/userRecipes.page.js";
 
-import RegionAdd from "./components/regionAdd.component.js";
+import RegionAdd from "./pages/regionAdd.page.js";
+
+import CreatorAdd from "./pages/creatorAdd.Page.js";
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
