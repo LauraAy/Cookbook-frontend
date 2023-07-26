@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import RecipeDataService from "../services/recipe.service";
+import DeleteConfirmation from "../components/deleteConfirmation.component.js"
 
 const RecipeEdit = props => {
   const { id }= useParams();
   let navigate = useNavigate();
-
-  const initialRecipeState = { 
+  const initialRecipeState = {
     id: null,
     title: "",
     description: "",
-    published: false
+    recipeType: "",
+    servingSize: null,
+    ingredients: "",
+    directions: "",
+    source: "",
+    userId: undefined
   };
   const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
   const [message, setMessage] = useState("");
+  const [type, setType] = useState(null);
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
 
-  const Recipe = id => {
+  //get recipe
+  const getRecipe = id => {
     RecipeDataService.get(id)
       .then(response => {
         setCurrentRecipe(response.data);
@@ -26,42 +35,49 @@ const RecipeEdit = props => {
       });
   };
 
+  useEffect(() => {
+    if(id)
+    getRecipe(id);
+  }, [id]);
 
+
+  //set form input to currentRecipe
   const handleInputChange = event => {
     const { name, value } = event.target;
     setCurrentRecipe({ ...currentRecipe, [name]: value });
   };
+ 
 
-  const updatePublished = status => {
-    var data = {
-      id: currentRecipe.id,
-      title: currentRecipe.title,
-      description: currentRecipe.description,
-      published: status
-    };
-
-    RecipeDataService.update(currentRecipe.id, data)
-      .then(response => {
-        setCurrentRecipe({ ...currentRecipe, published: status });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
+  //update recipe
   const updateRecipe = () => {
     RecipeDataService.update(currentRecipe.id, currentRecipe)
       .then(response => {
         console.log(response.data);
-        setMessage("The recipe was updated successfully!");
+        navigate("/recipes/" + currentRecipe.id)
       })
       .catch(e => {
         console.log(e);
       });
   };
 
-  const deleteRecipe = () => {
+  //Display delete confirmation modal based on type
+  const showDeleteModal = (type) => {
+    setType(type);
+
+    if (type === "recipe") {
+      setDeleteMessage('Are you sure you want to delete the recipe?');
+    }
+
+    setDisplayConfirmationModal(true);
+  };
+
+  //Hide delete confirmation modal
+  const hideConfirmationModal = () => {
+    setDisplayConfirmationModal(false);
+  };
+
+  //Delete Recipe
+  const submitDelete = () => {
     RecipeDataService.remove(currentRecipe.id)
       .then(response => {
         console.log(response.data);
@@ -163,7 +179,7 @@ const RecipeEdit = props => {
           </div>
         </form>
 
-        {currentRecipe.published ? (
+        {/* {currentRecipe.published ? (
           <button
             className="badge badge-primary mr-2"
             onClick={() => updatePublished(false)}
@@ -177,11 +193,7 @@ const RecipeEdit = props => {
           >
             Publish
           </button>
-        )}
-
-        <button className="badge badge-danger mr-2" onClick={deleteRecipe}>
-          Delete
-        </button>
+        )} */}
 
         <button
           type="submit"
@@ -190,7 +202,12 @@ const RecipeEdit = props => {
         >
           Update
         </button>
-        <p>{message}</p>
+
+        <button className="badge badge-danger mr-2" onClick={() => showDeleteModal("recipe")} >
+          Delete
+        </button>
+    
+        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
       </div>
     ) : (
       <div>

@@ -160,18 +160,21 @@ return (
               </label>{" "}
                ?
             </div>
-
             <Link
               to={"/recipes/" + currentRecipe.id}
-              className="badge badge-warning"
             >
+              <button>
               View Full Recipe
+              </button>
             </Link>
             <Link
+           
               to={"/recipes/edit/" + currentRecipe.id}
               className="badge badge-warning"
             >
+              <button>
               Edit
+              </button>
             </Link>
           </div>
           ) : (
