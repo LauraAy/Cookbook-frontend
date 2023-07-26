@@ -8,9 +8,9 @@ const RecipeViewPage = () => {
     return (
     <div>
         <RecipeView />
-        <RegionView />
+        {/* <RegionView />
         <CreatorView />
-        <PairingView />
+        <PairingView /> */}
     </div>
     )}
     

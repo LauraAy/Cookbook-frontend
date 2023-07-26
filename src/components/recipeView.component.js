@@ -1,47 +1,39 @@
-import React, { Component } from "react";
-import RecipeDataService from "../services/recipe.service.js";
-import { withRouter } from '../common/with-router';
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import RecipeDataService from "../services/recipe.service";
 
-class RecipeView extends Component {
-    constructor(props) {
-    super(props); 
-    this.getRecipe = this.getRecipe.bind(this);
-
-    this.state = {
-        currentRecipe: {
-          id: null,
-          title: "",
-          description: "",
-          recipeType: "",
-          servingSize: null,
-          ingredients: "",
-          directions: "",
-          published: false
-        },
-        message: ""
-      };
-    }
+const RecipeViewComponent = props => {
+  const { id } = useParams();
+  const initialRecipeState = {
+      id: null,
+      title: "",
+      description: "",
+      recipeType: "",
+      servingSize: null,
+      ingredients: "",
+      directions: "",
+      source: "",
+      userId: undefined
+    };
   
-    componentDidMount() {
-      this.getRecipe(this.props.router.params.id);
-    }
-    getRecipe(id) {
-        RecipeDataService.get(id)
-          .then(response => {
-            this.setState({
-              currentRecipe: response.data
-            });
-            console.log(response.data);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      }
-    
+  const [currentRecipe, setCurrentRecipe] = useState (initialRecipeState);
 
-  render() {
-    const { currentRecipe } = this.state;
+
+const getRecipe = id => {
+  RecipeDataService.get(id)
+  .then(response => {
+    setCurrentRecipe(response.data);
+    console.log(response.data);
+  })
+  .catch(e => {
+    console.log(e);
+  });
+};
+
+useEffect(() => {
+  if(id)
+  getRecipe(id);
+}, [id]);
   
 return (
   <div>
@@ -97,6 +89,6 @@ return (
     </Link>
   </div>
 )}
-}
 
-export default withRouter(RecipeView);
+
+export default RecipeViewComponent
