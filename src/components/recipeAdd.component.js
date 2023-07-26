@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
+import React, { useState } from "react";
 import RecipeDataService from "../services/recipe.service";
-import RegionDataService from "../services/region.service";
 import AuthService from "../services/auth.service.js";
 import { Link } from "react-router-dom";
 
@@ -23,9 +21,6 @@ const RecipeAddComponent = () => {
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
-  const [regions, setRegions] = useState([]);
-  const [currentRegion, setCurrentRegion] = useState (null)
-  const [currentIndex, setCurrentIndex] = useState(-1);
   
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -60,7 +55,6 @@ const RecipeAddComponent = () => {
       });
       setSubmitted(true);
       console.log(response.data);
-      console.log(recipe.id)
     })
     .catch(e => {
       console.log(e);
@@ -72,19 +66,6 @@ const newRecipe = () => {
     setSubmitted(false);
   };
 
-  const handleChange = (e) => {
-    const regionId = e.target.value;
-    RegionDataService.get(regionId)
-    .then(response => {
-      setCurrentRegion(response.data);
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-    console.log(e.target.value);
-    console.log("I tried.");
-  }
 
 return (
 
@@ -102,8 +83,7 @@ return (
             >
             <button>View Recipe</button>
             </Link>
-              <button onClick={newRecipe}>Add Another Recipe</button>
-          
+            <button onClick={newRecipe}>Add Another Recipe</button>
           </div>
         ):(
         <div>

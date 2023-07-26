@@ -23,7 +23,7 @@ import UserRecipes from "./pages/userRecipes.page.js";
 
 import RegionAdd from "./pages/regionAdd.page.js";
 
-import CreatorAdd from "./pages/creatorAdd.Page.js";
+import CreatorAdd from "./pages/creatorAdd.page.js";
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
