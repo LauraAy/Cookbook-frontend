@@ -4,6 +4,7 @@ import RegionRecipeDataService from "../services/regionRecipe.service";
 
 const RegionViewComponent = params => {
   const { id } = useParams();
+  let navigate = useNavigate(); 
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ region, setRegion] = useState ([])
 
@@ -25,6 +26,10 @@ const getRecipeRegions = id => {
     getRecipeRegions(id);
   }, [id]);
 
+const goAddRegion = () => {
+  navigate("/regions/add/" + id)
+}
+
 return (
 <>
   <div>
@@ -36,12 +41,16 @@ return (
                 <h1> {region.country} </h1>
               </div>
            ))}
-          </div>
+        <h4>Add another region. </h4>
+        <button onClick={goAddRegion}>Add a Region</button>
+    </div>
         
     
-    ):(   
+    ):(  
+      <div> 
         <h2>Add a Region now!</h2>
-        
+        <button onClick={goAddRegion}>Add a Region</button>
+      </div>
     )}
   </div>
 </>
