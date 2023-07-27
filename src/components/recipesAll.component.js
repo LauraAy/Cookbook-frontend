@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
 
-const RecipesList = ()=> {
+const RecipesAll = ()=> {
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -27,7 +27,6 @@ const retrieveRecipes = () => {
     console.log(e);
   });
 };
-
 
 const refreshList = () => {
   retrieveRecipes();
@@ -160,15 +159,19 @@ return (
 
             <Link
               to={"/recipes/" + currentRecipe.id}
-              className="badge badge-warning"
             >
+              <button>
               View Full Recipe
+              </button>
             </Link>
             <Link
+           
               to={"/recipes/edit/" + currentRecipe.id}
               className="badge badge-warning"
             >
+              <button>
               Edit
+              </button>
             </Link>
           </div>
           ) : (
@@ -182,4 +185,4 @@ return (
     );
   }
 
-  export default RecipesList;
+  export default RecipesAll;

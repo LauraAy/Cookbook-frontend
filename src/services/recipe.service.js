@@ -20,10 +20,6 @@ const update = (id, data) => {
   return http.put(`/recipes/${id}`, data);
 };
 
-// const addRegion = (id, regionData) => {
-//   return http.put(/'recipes/addregion/$id', regionData);
-// };
-
 const remove = id => {
   return http.delete(`/recipes/${id}`);
 };
@@ -36,6 +32,9 @@ const findByTitle = title => {
   return http.get(`/recipes?title=${title}`);
 };
 
+const getUserRecipes = (id) => {
+  return http.get(`/users/recipes/${id}`);
+}
 const RecipeService = {
   getAll,
   get,
@@ -45,7 +44,7 @@ const RecipeService = {
   remove,
   removeAll,
   findByTitle,
-  // addRegion
+  getUserRecipes
 };
 
 export default RecipeService;

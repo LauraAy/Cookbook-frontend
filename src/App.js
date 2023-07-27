@@ -1,90 +1,120 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
-import Profile from "./components/profile.component";
+// import Navbar from "./components/navbar.component";
+
+import Home from "./pages/home.page.js";
+import Login from "./pages/login.page.js";
+import Register from "./pages/register.page.js";
+import Profile from "./pages/profile.page.js";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import AddRecipe from "./components/add-recipe.component.js";
-import RecipeEdit from "./components/recipe-edit.component.js";
-import RecipesList from "./components/recipes-list.component.js";
-import Recipe from "./components/recipe.component.js";
-import UserRecipes from "./components/user-recipes.component.js";
-import Navbar from "./components/navbar.component";
+import RecipeAdd from "./pages/recipeAdd.page.js";
+import RecipeEdit from "./pages/recipeEdit.page.js";
+import RecipeView from "./pages/recipeView.page.js";
+import RecipesAll from "./pages/recipesAll.page.js";
+import UserRecipes from "./pages/userRecipes.page.js";
 
+import RegionAdd from "./pages/regionAdd.page.js";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.logOut = this.logOut.bind(this);
-    
-        this.state = {
-          showModeratorBoard: false,
-          showAdminBoard: false,
-          currentUser: undefined,
-        };
-      }
-    
-      componentDidMount() {
-        const user = AuthService.getCurrentUser();
-    
-        if (user) {
-          this.setState({
-            currentUser: user,
-            showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-            showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-          });
-        }
-      }
-    
-      logOut() {
-        AuthService.logout();
-        this.setState({
-          showModeratorBoard: false,
-          showAdminBoard: false,
-          currentUser: undefined,
-        });
-      }
+import CreatorAdd from "./pages/creatorAdd.page.js";
 
-    render() {
-        const { currentUser, showModeratorBoard, showAdminBoard } = this.state; 
-        
-        return (
-        <>
-         <div>
-           {<Navbar/>}
-          </div> 
+const App = () => {
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
-        <div className="container mt-3">
-            <Routes>
-                <Route path="/" element={<Home/>} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/user" element={<BoardUser />} />
-                <Route path="/mod" element={<BoardModerator />} />
-                <Route path="/admin" element={<BoardAdmin />} />
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
 
-                <Route path="/recipes" element={<RecipesList/>} />
-                <Route path="/user/recipes" element={<UserRecipes/>} /> 
-                <Route path="/add" element={<AddRecipe/>} />
-                <Route path="/recipes/:id" element={<Recipe/>} />
-                <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
-
-            </Routes>
-         </div>
-    
-    </>
-        );
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-}
+  }, []);
+
+  const logOut = () => {
+    AuthService.logout();
+  };
+
+  return (
+    <>
+      <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <Link to ={"/"} className="navbar-brand">
+          Your World Cookbook 
+        </Link>
+        {currentUser ? (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/user/recipes"} className="nav-link">
+                Your Recipes
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/recipes"} className="nav-link">
+                All Recipes
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/recipes/add"} className="nav-link">
+                Add Recipes
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/profile"} className="nav-link">
+                {currentUser.username}
+              </Link>
+            </li>
+            <li className="nav-item">
+              <a href="/login" className="nav-link" onClick={logOut}>
+                LogOut
+              </a>
+            </li>
+          </div>
+        ) : (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                Login
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+          </div>
+        )}
+      </nav>
+      
+      <div className="container mt-3">
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/user" element={<BoardUser />} />
+          <Route path="/mod" element={<BoardModerator />} />
+          <Route path="/admin" element={<BoardAdmin />} />
+
+          <Route path="/recipes" element={<RecipesAll/>} />
+          <Route path="/user/recipes" element={<UserRecipes/>} /> 
+          <Route path="/recipes/add" element={<RecipeAdd/>} />
+          <Route path="/regions/add/:id" element = {<RegionAdd/>} />
+          <Route path="/recipes/:id" element={<RecipeView/>} />
+          <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
+        </Routes>
+      </div>
+    </>
+    );
+  }
 
 export default App;

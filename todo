@@ -1,9 +1,8 @@
--add backend functions to remove region, creator, or pairing from recipe
+
 -write front end to add regionRecipe
 -create pages to view recipes by region and vice versa 
 
 -create dropdown to select country and apply to recipe 
--update recipecomponent to use functional components
 -add contributed by to allRecipes and userRecipes pages
 -buttons for adding region and creator
 -component to add creator to recipe
@@ -21,6 +20,8 @@ xcomponent to add region to recipe
 xfinish setting up regionRecipe routes and controller
 xwrite recipeRegions function and route
 xadd model for pairings
+Xadd backend functions to remove region, creator, or pairing from recipe
+xupdate recipecomponent to use functional components
 
 
 
