@@ -4,10 +4,10 @@ import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
-import AuthService from "../services/auth.service.js";
 
 const RegionAddComponent = () => { 
-const { id } = useParams()
+const { id } = useParams();
+let navigate = useNavigate();
 
 const initialRecipeState = {
     id: null,
@@ -45,7 +45,7 @@ const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
 const [regionId, setRegionId] = useState()
 const [currentRegion, setCurrentRegion] = useState ()
 const [regionRecipe, setRegionRecipe] = useState(initialRegionRecipeState);
-const [currentIndex, setCurrentIndex] = useState(0);
+const [submitted, setSubmitted] = useState(false)
 
 
 useEffect(() => {
@@ -87,7 +87,6 @@ useEffect(() => {
       });
   };
 
-
 const saveRegionRecipe = () => {
     var data = {
       regionId: currentRegion.id,
@@ -100,6 +99,7 @@ const saveRegionRecipe = () => {
             regionId: response.data.regionId,
             recipeId: response.data.regionid
         })
+        setSubmitted(true);
         console.log(response.data);
       })
       .catch(e => {
@@ -107,13 +107,6 @@ const saveRegionRecipe = () => {
       });
 
   };
-  
-  const setActiveRegion = (region, index) => {
-    setCurrentRegion(region);
-    setCurrentIndex(index);
-    console.log("I tried.")
-  };
-
 
   const handleRegionChange = async (event) => {
     setRegionId(event.target.value);
@@ -124,88 +117,88 @@ const saveRegionRecipe = () => {
     retrieveRegion(regionId)
   }, [regionId])
 
-return (
-<div>
-{currentRegion ? ( 
+  const returnRecipe = () => {
+    navigate("/recipes/" + id)
+    setSubmitted(false)
+  }
+
+  return (
     <div>
-        <h4>Region</h4>
+    {currentRegion ? ( 
         <div>
-            <label>
-                <strong>Region</strong>
-            </label>{" "}
-            {currentRegion.regionName}
-        </div>
-        <div>
-            <label>
-                <strong>Country</strong>
-            </label>{" "}
-            {currentRegion.country}
-        </div>
-        <div>
-            <label>
-                <strong>Latitude:</strong>
-            </label>{" "}
-            {currentRegion.lat}
-        </div>
-        <div>
-            <label>
-                <strong>Longitude:</strong>
-            </label>{" "}
-            {currentRegion.long}
-        </div> 
-    <br></br>
-    <br></br>
-  <div>
-
-  <p>Please select a region from the dropdown.</p> 
-  <Form>
-    <select class="form-control" onChange={handleRegionChange} >
-        <option>Select a Region</option>
-       
-
-        {regions.map((region, index) => 
-        <option
-            value= {region.id}
-            key={index}
-        >
-        {region.country}
-        </option>
-        )}
-    </select>
-  </Form>
-  <br></br>
-  <br></br>
-  <button onClick={saveRegionRecipe} class="btn btn-success">
-      Add Region
-  </button>
-</div>
-</div>
-) : (
-<div>
-<p>Please select a region from the dropdown.</p> 
-  <Form>
-    <select class="form-control" onChange={handleRegionChange} >
-        <option>Select a Region</option>
-       
-
-        {regions.map((region, index) => 
-        <option
-            value= {region.id}
-            key={index}
-        >
-        {region.country}
-        </option>
-        )}
-    </select>
-  </Form>
-  <br></br>
-  <br></br>
-  <button onClick={saveRegionRecipe} class="btn btn-success">
-      Add Region
-  </button>
-</div>
+            <h4>Region</h4>
+            <div>
+                <label>
+                    <strong>Region</strong>
+                </label>{" "}
+                {currentRegion.regionName}
+            </div>
+            <div>
+                <label>
+                    <strong>Country</strong>
+                </label>{" "}
+                {currentRegion.country}
+            </div>
+            <div>
+                <label>
+                    <strong>Latitude:</strong>
+                </label>{" "}
+                {currentRegion.lat}
+            </div>
+            <div>
+                <label>
+                    <strong>Longitude:</strong>
+                </label>{" "}
+                {currentRegion.long}
+            </div> 
+        <br></br>
+        <br></br>
+      <div>
+    
+      <p>Please select a region from the dropdown.</p> 
+      <Form>
+        <select class="form-control" onChange={handleRegionChange} >
+            <option>Select a Region</option>
+           
+    
+            {regions.map((region, index) => 
+            <option
+                value= {region.id}
+                key={index}
+            >
+            {region.country}
+            </option>
+            )}
+        </select>
+      </Form>
+      <br></br>
+      <br></br>
+      <button onClick={saveRegionRecipe} class="btn btn-success">
+          Add Region
+      </button>
+    </div>
+    </div>
+    ) : (
+    <div>
+    <p>Please select a region from the dropdown.</p> 
+      <Form>
+        <select class="form-control" onChange={handleRegionChange} >
+            <option>Select a Region</option>
+           
+    
+            {regions.map((region, index) => 
+            <option
+                value= {region.id}
+                key={index}
+            >
+            {region.country}
+            </option>
+            )}
+        </select>
+      </Form>
+    </div>
     )} 
-</div>
-)}
+    </div>
+    )}
 
 export default RegionAddComponent;
