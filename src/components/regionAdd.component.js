@@ -122,83 +122,86 @@ const saveRegionRecipe = () => {
     setSubmitted(false)
   }
 
-  return (
+return (
+<div>
+  { submitted ? (
     <div>
-    {currentRegion ? ( 
+      <h1>Yes Submitted</h1>
+    </div>
+    ):(
+    <div>
+      {currentRegion? (
         <div>
-            <h4>Region</h4>
-            <div>
-                <label>
-                    <strong>Region</strong>
-                </label>{" "}
-                {currentRegion.regionName}
-            </div>
-            <div>
-                <label>
-                    <strong>Country</strong>
-                </label>{" "}
-                {currentRegion.country}
-            </div>
-            <div>
-                <label>
-                    <strong>Latitude:</strong>
-                </label>{" "}
-                {currentRegion.lat}
-            </div>
-            <div>
-                <label>
-                    <strong>Longitude:</strong>
-                </label>{" "}
-                {currentRegion.long}
-            </div> 
-        <br></br>
-        <br></br>
-      <div>
-    
-      <p>Please select a region from the dropdown.</p> 
-      <Form>
-        <select class="form-control" onChange={handleRegionChange} >
-            <option>Select a Region</option>
-           
-    
-            {regions.map((region, index) => 
-            <option
-                value= {region.id}
-                key={index}
-            >
-            {region.country}
-            </option>
-            )}
-        </select>
-      </Form>
-      <br></br>
-      <br></br>
-      <button onClick={saveRegionRecipe} class="btn btn-success">
-          Add Region
-      </button>
+          <h4>Region</h4>
+          <div>
+            <label>
+              <strong>Region</strong>
+            </label>{" "}
+            {currentRegion.regionName}
+          </div>
+          <div>
+            <label>
+              <strong>Country</strong>
+            </label>{" "}
+            {currentRegion.country}
+          </div>
+          <div>
+            <label>
+              <strong>Latitude:</strong>
+            </label>{" "}
+            {currentRegion.lat}
+          </div>
+          <div>
+            <label>
+              <strong>Longitude:</strong>
+            </label>{" "}
+            {currentRegion.long}
+          </div> 
+          <br></br>
+          <br></br>
+          <div>
+            <p>Please select a region from the dropdown.</p> 
+            <Form>
+              <select class="form-control" onChange={handleRegionChange} >
+                <option>Select a Region</option>
+                {regions.map((region, index) => 
+                  <option
+                    value= {region.id}
+                    key={index}
+                  >
+                    {region.country}
+                  </option>
+                )}
+              </select>
+            </Form>
+            <br></br>
+            <br></br>
+            <button onClick={saveRegionRecipe} class="btn btn-success">
+              Add Region
+            </button>
+          </div>
+        </div>
+        ): (
+        <div>
+          <p>Please select a region from the dropdown.</p> 
+          <Form>
+            <select class="form-control" onChange={handleRegionChange} >
+              <option>Select a Region</option>
+              {regions.map((region, index) => 
+                <option
+                  value= {region.id}
+                  key={index}
+                >
+                  {region.country}
+                </option>
+              )}
+            </select>
+          </Form>
+        </div>
+      )} 
     </div>
-    </div>
-    ) : (
-    <div>
-    <p>Please select a region from the dropdown.</p> 
-      <Form>
-        <select class="form-control" onChange={handleRegionChange} >
-            <option>Select a Region</option>
-           
-    
-            {regions.map((region, index) => 
-            <option
-                value= {region.id}
-                key={index}
-            >
-            {region.country}
-            </option>
-            )}
-        </select>
-      </Form>
-    </div>
-    )} 
-    </div>
-    )}
-
+  )}
+</div>
+)}
+   
 export default RegionAddComponent;
