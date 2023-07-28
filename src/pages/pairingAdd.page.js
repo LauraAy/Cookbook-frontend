@@ -1,6 +1,6 @@
 import PairingAdd from "../components/pairingAdd.component.js";
 
-const RecipeAddPage = () => {
+const PairingAddPage = () => {
 
     return (
     <div>

@@ -24,6 +24,10 @@ import UserRecipes from "./pages/userRecipes.page.js";
 import RegionAdd from "./pages/regionAdd.page.js";
 
 import CreatorAdd from "./pages/creatorAdd.page.js";
+import CreatorEdit from "./pages/creatorEdit.page.js";
+
+import PairingAdd from "./pages/pairingAdd.page.js";
+import PairingEdit from "./pages/pairingEdit.page.js"
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -105,12 +109,20 @@ const App = () => {
           <Route path="/mod" element={<BoardModerator />} />
           <Route path="/admin" element={<BoardAdmin />} />
 
+          <Route path="/recipes/:id" element={<RecipeView/>} />
           <Route path="/recipes" element={<RecipesAll/>} />
           <Route path="/user/recipes" element={<UserRecipes/>} /> 
           <Route path="/recipes/add" element={<RecipeAdd/>} />
-          <Route path="/regions/add/:id" element = {<RegionAdd/>} />
-          <Route path="/recipes/:id" element={<RecipeView/>} />
           <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
+          
+          <Route path="/regions/add/:id" element = {<RegionAdd/>} />
+          
+          <Route path="/creators/add/:id" element = {<CreatorAdd/>} />
+          <Route path="/creators/edit/:id" element={<CreatorEdit/>} />
+          
+          <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
+          <Route path="/pairings/edit/:id" element={<PairingEdit/>} />
+         
         </Routes>
       </div>
     </>

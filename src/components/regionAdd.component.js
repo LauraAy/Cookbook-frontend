@@ -122,11 +122,26 @@ const saveRegionRecipe = () => {
     setSubmitted(false)
   }
 
+  const addAnotherRegion = () => {
+    setCurrentRegion(false);
+    setSubmitted(false);
+  }
+
+  const addCreator = () => {
+    navigate("/")
+  }
+
 return (
 <div>
   { submitted ? (
     <div>
-      <h1>Yes Submitted</h1>
+     <h4>You've added {currentRegion.country} to {currentRecipe.title}!</h4> 
+     <br></br>
+     <br></br>
+     <button onClick={returnRecipe}>View Recipe Page</button>
+     <br></br>
+     <br></br>
+     <button onClick={addAnotherRegion}>Add Another Region</button><button>Add a Recipe Creator</button><button>Add a Recipe Pairing</button>
     </div>
     ):(
     <div>
