@@ -33,14 +33,63 @@ const goAddRegion = () => {
 return (
 <>
   <div>
-    {  region.length ? (
-           <div >
-           
-           {region.map((region, index) => (
-              <div key={index}>
-                <h1> {region.country} </h1>
+    {region.length ? (
+      <div >
+        {region.map((region, index) => (
+          <div key={index}>
+            <h2> {region.country} </h2>
+            {region.regionName ? (
+              <div>
+                <label>
+                  <strong>Region Name:</strong>
+                </label>{" "}
+                {region.regionName}
               </div>
-           ))}
+            ):(<div></div>)}
+            {region.subRegion ? (
+              <div>
+                <label>
+                  <strong>Sub Region:</strong>
+                </label>{" "}
+                {region.subRegion}
+              </div>
+            ):(<div></div>)}
+            {region.intermediateRegion ? (
+              <div>
+                <label>
+                  <strong>Intermediate Region:</strong>
+                </label>{" "}
+                {region.intermediateRegion}
+              </div>
+            ):(<div></div>)}
+             {region.countryCode ? (
+              <div>
+                <label>
+                  <strong>Country Code:</strong>
+                </label>{" "}
+                {region.countryCode}
+              </div>
+            ):(<div></div>)}
+             {region.lat ? (
+              <div>
+                <label>
+                  <strong>Latitude:</strong>
+                </label>{" "}
+                {region.lat}
+              </div>
+            ):(<div></div>)}
+             {region.lng ? (
+              <div>
+                <label>
+                  <strong>Longitude:</strong>
+                </label>{" "}
+                {region.lng}
+              </div>
+            ):(<div></div>)}
+            <br></br>
+            <br></br>
+          </div>
+        ))}
         <h4>Add another region. </h4>
         <button onClick={goAddRegion}>Add a Region</button>
     </div>
