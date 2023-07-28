@@ -6,53 +6,61 @@ import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
 
 const CreatorAddComponent = () => { 
+const { id } = useParams();
+let navigate = useNavigate();
 
-  const initialRecipeState = {
+  const initialCreatorState = {
     id: null,
-    title: "",
-    description: "",
-    recipeType: "",
-    servingSize: null,
-    ingredients: "",
-    directions: "",
-    source: "",
-    userId: undefined
+    creatorName: "",
+    about: "",
+    link: ""
   };
 
-  const [recipe, setRecipe] = useState(initialRecipeState);
+  const initialCreatorRecipeState = {
+    creatorId: null,
+    recipeId: null
+}
+
+  const [creator, setCreator] = useState(initialCreatorState);
+  const [currentRecipe, setCurrentRecipe] =useState ([]);
+  const [creatorRecipe, setCreatorRecipe] = useState (initialCreatorRecipeState);
   const [submitted, setSubmitted] = useState(false);
-  const [userId, setUserId] = useState(currentUser.id);
+  const [added, setAdded] = useState(false);
   
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setRecipe({ ...recipe, [name]: value });
+    setCreator({ ...creator, [name]: value });
   };
   
-  const saveRecipe = () => {
+  useEffect(() => {
+    retrieveRecipe(id);
+  }, []);
+
+  const retrieveRecipe = id => {
+    RecipeDataService.get(id)
+      .then(response => {
+        setCurrentRecipe(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+       
+      });
+  };
+
+  const saveCreator = () => {
     var data = {
-      title: recipe.title,
-      description: recipe.description,
-      recipeType: recipe.recipeType,
-      servingSize: recipe.servingSize,
-      ingredients: recipe.ingredients,
-      directions: recipe.directions,
-      source: recipe.source,
-      userId: userId,
+      creatorName: creator.creatorName,
+      about: creator.about,
+      link: creator.link
     };
 
-    RecipeDataService.create(data)
+    CreatorDataService.create(data)
     .then(response => {
-      setRecipe({
+      setCreator({
         id: response.data.id,
-        title: response.data.title,
-        description: response.data.description,
-        recipeType: response.data.recipeType,
-        servingSize: response.data.servingSize,
-        ingredients: response.data.ingredients,
-        directions: response.data.directions,
-        source: response.data.source,
-        userId: response.data.userId,
-        
+        creatorName: response.data.creatorName,
+        about: response.data.about,
+        link: response.data.link
       });
       setSubmitted(true);
       console.log(response.data);
@@ -62,126 +70,122 @@ const CreatorAddComponent = () => {
     });
 };
 
-const newRecipe = () => {
-    setRecipe(initialRecipeState);
+const saveCreatorRecipe = () => {
+    var data = {
+      creatorId: creator.id,
+      recipeId: currentRecipe.id
+    };
+
+    CreatorRecipeDataService.create(data)
+      .then(response => {
+        setCreatorRecipe({
+            creatorId: response.data.creatorId,
+            recipeId: response.data.regionid
+        })
+        setAdded(true)
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+}
+
+const newCreator = () => {
+    setCreator(initialCreatorState);
     setSubmitted(false);
+    setAdded(false)
   };
+
+  const returnRecipe = () => {
+    navigate("/recipes/" + id)
+  }
+
+  const addAnotherCreator = () => {
+    newCreator()
+  }
+
+  const addRegion = () => {
+    navigate("/regions/add/:id")
+  }
+
+  const addPairing = () => {
+    navigate("/pairings/add/:id")
+  }
 
 
 return (
+<div>
+{added ? (
+  <div>
+    <h4>You've added {creator.creatorName} added to {currentRecipe.title}</h4>
+    <br></br>
+     <br></br>
+     <button onClick={returnRecipe}>View Recipe Page</button>
+     <br></br>
+     <br></br>
+     <button onClick={addAnotherCreator}>Add Another Creator</button>
+     <button onClick={addRegion}>Add a Region</button>
+     <button onClick={addPairing}>Add a Recipe Pairing</button>
+  </div>
 
-    <div className="submit-form">
-      {submitted ? (
-        <div>
-          <h4>Recipe Created!</h4>
-            <div>
-            {recipe.id}
-            <br></br>
-            {recipe.title}
-            </div>
-            <Link
-              to={"/recipes/" + recipe.id}
-            >
-            <button>View Recipe</button>
-            </Link>
-            <button onClick={newRecipe}>Add Another Recipe</button>
-          </div>
-        ):(
-        <div>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              required
-              value={recipe.title}
-              onChange={handleInputChange}
-              name="title"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              required
-              value={recipe.description}
-              onChange={handleInputChange}
-              name="description"
-            />
-          </div> 
-          <div className="form-group">
-            <label htmlFor="recipeType">Recipe Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="recipeType"
-              required
-              value={recipe.recipeType}
-              onChange={handleInputChange}
-              name="recipeType"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="servingSize">Serving Size</label>
-            <input
-              type="text"
-              className="form-control"
-              id="servingSize"
-              required
-              value={recipe.servingSize}
-              onChange={handleInputChange}
-              name="servingSize"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredients"
-              required
-              value={recipe.ingredients}
-              onChange={handleInputChange}
-              name="ingredients"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="directions">Directions</label>
-            <input
-              type="text"
-              className="form-control"
-              id="directions"
-              required
-              value={recipe.directions}
-              onChange={handleInputChange}
-              name="directions"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="source">Source</label>
-            <input
-              type="text"
-              className="form-control"
-              id="source"
-              required
-              value={recipe.source}
-              onChange={handleInputChange}
-              name="source"
-            />
-          </div>
-         
-          <button onClick={saveRecipe} className="btn btn-success">
-           Submit
-          </button>
+):(
+  <div className="submit-form">
+    {submitted ? (
+    <div>
+      <h2>Success!</h2>
+      <div>
+        <h4>{creator.creatorName}</h4>
+      </div>
+      <button onClick={saveCreatorRecipe}>Add this recipe creator to {currentRecipe.title}.</button>
+    </div>
+    ):(
+      <div>
+        <div className="form-group">
+          <label htmlFor="creatorName">Recipe Creator Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="creatorName"
+            required
+            value={creator.creatorName}
+            onChange={handleInputChange}
+            name="creatorName"
+          />
         </div>
-      )}
-
-    </div>    
-  );
-};
+        <div className="form-group">
+          <label htmlFor="about">About Recipe Creator</label>
+          <input
+            type="text"
+            className="form-control"
+            id="about"
+            required
+            value={creator.about}
+            onChange={handleInputChange}
+            name="about"
+          />
+        </div> 
+        <div className="form-group">
+          <label htmlFor="link">Link to Recipe Creator Website</label>
+          <input
+            type="text"
+            className="form-control"
+            id="link"
+            required
+            value={creator.link}
+            onChange={handleInputChange}
+            name="link"
+          />
+        </div>
+        <br></br>
+        <br></br>
+        <button onClick={saveCreator} className="btn btn-success">
+          Submit
+        </button>
+      </div>
+    )}
+  </div>  
+)}
+</div>
+)};
 
 export default CreatorAddComponent;

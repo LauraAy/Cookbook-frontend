@@ -26,20 +26,6 @@ const initialRegionRecipeState = {
     recipeId: null
 }
 
-const initialCurrentRegionState = {
-    id: null, 
-    country: "",
-    lat: null,
-    lng: null,
-    alpha2Code: "",
-    alpah3Code: "",
-    countryCode: "",
-    regionName: "",
-    subRegion: "",
-    intermediateRegion: ""
-
-}
-
 const [regions, setRegions] = useState([]);
 const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
 const [regionId, setRegionId] = useState()
@@ -128,7 +114,11 @@ const saveRegionRecipe = () => {
   }
 
   const addCreator = () => {
-    navigate("/")
+    navigate("/creators/add/:id")
+  }
+
+  const addPairing = () => {
+    navigate("/pairings/add/:id")
   }
 
 return (
@@ -141,7 +131,9 @@ return (
      <button onClick={returnRecipe}>View Recipe Page</button>
      <br></br>
      <br></br>
-     <button onClick={addAnotherRegion}>Add Another Region</button><button>Add a Recipe Creator</button><button>Add a Recipe Pairing</button>
+     <button onClick={addAnotherRegion}>Add Another Region</button>
+     <button onClick={addCreator}>Add a Recipe Creator</button>
+     <button onClick={addPairing}>Add a Recipe Pairing</button>
     </div>
     ):(
     <div>

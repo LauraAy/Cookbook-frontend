@@ -68,23 +68,22 @@ const newRecipe = () => {
 
 
 return (
-
     <div className="submit-form">
       {submitted ? (
         <div>
           <h4>Recipe Created!</h4>
-            <div>
+          <div>
             {recipe.id}
             <br></br>
             {recipe.title}
-            </div>
-            <Link
-              to={"/recipes/" + recipe.id}
-            >
-            <button>View Recipe</button>
-            </Link>
-            <button onClick={newRecipe}>Add Another Recipe</button>
           </div>
+          <Link
+            to={"/recipes/" + recipe.id}
+          >
+          <button>View Recipe</button>
+          </Link>
+          <button onClick={newRecipe}>Add Another Recipe</button>
+        </div>
         ):(
         <div>
           <div className="form-group">
