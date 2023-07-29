@@ -22,7 +22,7 @@ const getCreatorRecipes = id => {
 
 //Get one recipe with creators
 const getRecipeCreators = id => {
-    return http.get(`/creatorRecipes/creators/${id}`);
+    return http.get(`/creatorRecipes/recipes/${id}`);
   };
 
 //Remove creator from recipe

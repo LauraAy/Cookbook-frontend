@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
+import EverythingDataService from "../services/everything.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
 import Accordion from 'react-bootstrap/Accordion';
 import RecipeViewComponent from '../components/recipeView.component.js'
 import RegionViewComponent from '../components/regionView.component.js'
+import CreatorViewComponent from "../components/creatorView.component";
+import PairingViewComponent from "../components/pairingView.component";
 
 const RecipeViewPage = params => {
   const { id } = useParams();
   const [currentRecipe, setCurrentRecipe] = useState ([]);
 
 
-const getRecipeRegions = id => {
-    RegionRecipeDataService.getRecipeRegions(id)
+  // const getRecipeRegions = id => {
+  //   RegionRecipeDataService.getRecipeRegions(id)
+  //   .then(response => {
+  //     setCurrentRecipe(response.data);
+  //     console.log(response.data);
+  //   })
+  //   .catch(e => {
+  //     console.log(e);
+  //   });
+  // };
+  
+  // useEffect(() => {
+  //   if(id)
+  //   getRecipeRegions(id);
+  // }, [id]);
+
+const getRecipeEverything = id => {
+    EverythingDataService.getRecipeEverything(id)
     .then(response => {
       setCurrentRecipe(response.data);
       console.log(response.data);
@@ -24,7 +43,7 @@ const getRecipeRegions = id => {
   
   useEffect(() => {
     if(id)
-    getRecipeRegions(id);
+    getRecipeEverything(id);
   }, [id]);
 
 return (
@@ -43,20 +62,14 @@ return (
         <Accordion.Header>Region</Accordion.Header>
         <Accordion.Body>
 
-            <RegionViewComponent />
+          <RegionViewComponent />
             
         </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item eventKey="2">
         <Accordion.Header>Recipe Creator</Accordion.Header>
         <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <CreatorViewComponent />
         </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item eventKey="3">

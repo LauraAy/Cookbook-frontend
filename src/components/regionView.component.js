@@ -93,8 +93,6 @@ return (
         <h4>Add another region. </h4>
         <button onClick={goAddRegion}>Add a Region</button>
     </div>
-        
-    
     ):(  
       <div> 
         <h2>Add a Region now!</h2>
