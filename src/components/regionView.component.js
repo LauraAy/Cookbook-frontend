@@ -30,6 +30,25 @@ const goAddRegion = () => {
   navigate("/regions/add/" + id)
 }
 
+const refreshPage = () => {
+  navigate(0);
+}
+
+const removeRegion = currentRegionId => {
+  const recipeId = currentRecipe.id
+  const regionId = currentRegionId
+
+  RegionRecipeDataService.removeRegion(recipeId, regionId)
+  .then(response => {
+    console.log(response.data)
+    refreshPage()
+  
+  })
+  .catch(e => {
+    console.log(e)
+  })
+}
+
 return (
 <>
   <div>
@@ -88,10 +107,15 @@ return (
             ):(<div></div>)}
             <br></br>
             <br></br>
+            <button onClick={() => {removeRegion(region.id)}}>Remove Region from This Recipe </button>
+            <br></br>
+            <br></br>
           </div>
         ))}
         <h4>Add another region. </h4>
         <button onClick={goAddRegion}>Add a Region</button>
+        <br></br>
+        <br></br>
     </div>
     ):(  
       <div> 

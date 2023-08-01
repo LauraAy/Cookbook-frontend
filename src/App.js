@@ -118,7 +118,7 @@ const App = () => {
           <Route path="/regions/add/:id" element = {<RegionAdd/>} />
           
           <Route path="/creators/add/:id" element = {<CreatorAdd/>} />
-          <Route path="/creators/edit/:id" element={<CreatorEdit/>} />
+          <Route path="/creators/edit/:recipeId/:id" element={<CreatorEdit/>} />
           
           <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
           <Route path="/pairings/edit/:id" element={<PairingEdit/>} />

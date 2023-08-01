@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 
 const CreatorViewComponent = params => {
   const { id } = useParams();
   let navigate = useNavigate(); 
+
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ creator, setCreator] = useState ([])
 
@@ -54,6 +55,9 @@ return (
                     {creator.link}
                   </div>
                 ):(<div></div>)}
+                <Link to={"/creators/edit/" + currentRecipe.id + "/" + creator.id}>
+                  <button>Edit This Recipe Creator</button>
+                </Link>
                 <br></br>
                 <br></br>
               </div>
