@@ -21,7 +21,7 @@ const getRecipeCreators = id => {
       console.log(e);
     });
   };
-  
+
   useEffect(() => {
     if(id)
     getRecipeCreators(id);
@@ -29,6 +29,25 @@ const getRecipeCreators = id => {
 
 const goAddCreator = () => {
   navigate("/creators/add/" + id)
+}
+
+const refreshPage = () => {
+  navigate(0);
+}
+
+const removeCreator = currentCreatorId => {
+  const recipeId = currentRecipe.id
+  const creatorId = currentCreatorId
+
+  CreatorRecipeDataService.removeCreator(recipeId, creatorId)
+  .then(response => {
+    console.log(response.data)
+    refreshPage()
+  
+  })
+  .catch(e => {
+    console.log(e)
+  })
 }
 
 return (
@@ -58,6 +77,9 @@ return (
                 <Link to={"/creators/edit/" + currentRecipe.id + "/" + creator.id}>
                   <button>Edit This Recipe Creator</button>
                 </Link>
+                <br></br>
+                <br></br>
+                <button onClick={() => {removeCreator(creator.id)}}>Remove Creator from This Recipe </button>
                 <br></br>
                 <br></br>
               </div>

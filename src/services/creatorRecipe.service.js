@@ -26,8 +26,8 @@ const getRecipeCreators = id => {
   };
 
 //Remove creator from recipe
-const removeCreator = () => {
-  return http.delete(`/creatorRecipes`);
+const removeCreator = (recipeId, creatorId) => {
+  return http.delete(`/creatorRecipes/${recipeId}/${creatorId}`);
 };
 
 const CreatorRecipeService = {
