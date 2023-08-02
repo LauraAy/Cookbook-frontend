@@ -35,6 +35,7 @@ const refreshPage = () => {
   navigate(0);
 }
 
+//Remove creator from this recipe
 const removeCreator = currentCreatorId => {
   const recipeId = currentRecipe.id
   const creatorId = currentCreatorId

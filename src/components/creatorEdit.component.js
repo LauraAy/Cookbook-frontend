@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import CreatorDataService from "../services/creator.service";
-import CreatorRecipeDataService from "../services/creator.service";
+import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js";
 
 const CreatorEdit = props => {
-  const { recipeId, id }= useParams();
+  const { recipeId, creatorId }= useParams();
   let navigate = useNavigate();
 
   const initialCreatorState = {
@@ -33,9 +33,9 @@ const CreatorEdit = props => {
   };
 
   useEffect(() => {
-    if(id)
-    getCreator(id);
-  }, [id]);
+    if(creatorId)
+    getCreator(creatorId);
+  }, [creatorId]);
 
 
   //set form input to currentCreator
@@ -73,12 +73,24 @@ const CreatorEdit = props => {
     setDisplayConfirmationModal(false);
   };
 
+  //Remove creator from this recipe
+  const removeCreator = () => {
+    CreatorRecipeDataService.removeCreator(recipeId, creatorId)
+    .then(response => {
+      console.log(response.data)
+      navigate("/recipes/" + recipeId)
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
   //Delete Creator
   const submitDelete = () => {
-    CreatorDataService.remove(creator.id)
+    CreatorDataService.destroy(creator.id)
       .then(response => {
         console.log(response.data);
-        navigate("/recipes");
+        navigate("/recipes/" + recipeId)
       })
       .catch(e => {
         console.log(e);
@@ -128,13 +140,14 @@ const CreatorEdit = props => {
 
         <button
           type="submit"
-          className="badge badge-success"
           onClick={updateCreator}
         >
           Update
         </button>
-
-        <button className="badge badge-danger mr-2" onClick={() => showDeleteModal("creator")} >
+        <button onClick={() => {removeCreator(creator.id)}}>
+          Remove Creator from This Recipe 
+        </button>
+        <button onClick={() => showDeleteModal("creator")} >
           Delete
         </button>
     

@@ -1,7 +1,4 @@
-change currentCreator ? condition to selected ? condition
-
 -create pages to view recipes by region and vice versa 
-
 -add contributed by to allRecipes and userRecipes pages
 -create pre-login home page
 -fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 

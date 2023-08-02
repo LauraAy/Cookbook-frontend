@@ -78,7 +78,7 @@ const RecipeEdit = props => {
 
   //Delete Recipe
   const submitDelete = () => {
-    RecipeDataService.remove(currentRecipe.id)
+    RecipeDataService.destroy(currentRecipe.id)
       .then(response => {
         console.log(response.data);
         navigate("/recipes");

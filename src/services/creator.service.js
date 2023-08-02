@@ -1,30 +1,41 @@
 import http from "../http-common";
 
-class creatorDataService {
-  getAll() {
-    return http.get("/creators");
-  }
+const getAll = () => {
+  return http.get("/creators");
+};
 
-  get(id) {
-    return http.get(`/creators/${id}`);
-  }
+const get = id => {
+  return http.get(`/creators/${id}`);
+};
 
-  create(data) {
-    return http.post("/creators", data);
-  }
+const create = data => {
+  return http.post("/creators", data);
+};
 
-  update(id, data) {
-    return http.put(`/creators/${id}`, data);
-  }
+const update = (id, data) => {
+  return http.put(`/creators/${id}`, data);
+};
 
-  delete(id) {
-    return http.delete(`/creators/${id}`);
-  }
+const destroy = id => {
+  return http.delete(`/creators/${id}`);
+};
 
-  deleteAll() {
-    return http.delete(`/creators`);
-  }
- 
-}
+const destroyAll = () => {
+  return http.delete(`/creators`);
+};
 
-export default new creatorDataService();
+const findByCreatorName = creatorName => {
+  return http.get(`/creators?creatorName=${creatorName}`);
+};
+
+const CreatorService = {
+  getAll,
+  get,
+  create,
+  update,
+  destroy,
+  destroyAll,
+  findByCreatorName,
+};
+
+export default CreatorService;
