@@ -27,6 +27,7 @@ const CreatorAddComponent = () => {
   const [currentCreatorId, setCurrentCreatorId] = useState()
   const [currentRecipe, setCurrentRecipe] =useState ([]);
   const [creatorRecipe, setCreatorRecipe] = useState (initialCreatorRecipeState);
+  const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
   const [createNew, setCreateNew] = useState(false)
@@ -125,6 +126,7 @@ const CreatorAddComponent = () => {
   //retrieve creatorId from dropdown selection and run retrieveCreator function
   const handleCreatorChange = async (event) => {
     setCurrentCreatorId(event.target.value);
+    setSelected(true);
     console.log(currentCreatorId)
   }
   useEffect(()=>{
@@ -259,7 +261,7 @@ const CreatorAddComponent = () => {
             </div>
           ):(
             <div>
-              { currentCreator ? (
+              { selected ? (
                 <div>
                   <h1>{currentCreator.creatorName}</h1>
                   <button onClick={saveCreatorRecipeDropdown}>Add this creator to recipe</button>
