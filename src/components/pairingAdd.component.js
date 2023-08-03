@@ -109,23 +109,18 @@ const PairingAddComponent = () => {
 
   //attach pairing created from form to recipe
   const savePairingRecipe = () => {
-	var data = {
-		pairingId: pairing.id,
-		recipeId: currentRecipe.id
-	};
-	
-	PairingRecipeDataService.create(data)
-	.then(response => {
-		setPairingRecipe({
-			pairingId: response.data.pairingId,
-			recipeId: response.data.recipeId
-		})
-		setAdded(true)
-		console.log(response.data);
-	})
-	.catch(e => {
-		console.log(e);
-	});
+	const data = {
+		pairingId: pairing.id
+	}
+
+  RecipeDataService.update(currentRecipe.id, data)
+      .then(response => {
+        console.log(response.data);
+        navigate("/recipes/" + currentRecipe.id)
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   //retrieve currentPairing from id based on dropdown selection
