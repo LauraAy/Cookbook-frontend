@@ -35,7 +35,7 @@ const refreshPage = () => {
   navigate(0);
 }
 
-//Remove creator from this recipe
+//Remove pairing from this recipe
 const removePairing = currentPairingId => {
   const recipeId = currentRecipe.id
   const pairingId = currentPairingId
@@ -56,72 +56,72 @@ return (
       <div>
         {pairing ? (
           <div >
-                <h2> {pairing.pairingName} </h2>
-                {pairing.description ? (
-                  <div>
-                    <label>
-                      <strong>Description:</strong>
-                    </label>{" "}
-                    {pairing.description}
-                  </div>
-                ):(<div></div>)}
-                {pairing.drinks ? (
-                  <div>
-                    <label>
-                      <strong>Drinks:</strong>
-                    </label>{" "}
-                    {pairing.drinks}
-                  </div>
-                ):(<div></div>)}
-								{pairing.shows ? (
-                  <div>
-                    <label>
-                      <strong>Shows:</strong>
-                    </label>{" "}
-                    {pairing.shows}
-                  </div>
-                ):(<div></div>)}
-								{pairing.books ? (
-                  <div>
-                    <label>
-                      <strong>Books:</strong>
-                    </label>{" "}
-                    {pairing.books}
-                  </div>
-                ):(<div></div>)}
-								{pairing.music ? (
-                  <div>
-                    <label>
-                      <strong>Music:</strong>
-                    </label>{" "}
-                    {pairing.music}
-                  </div>
-                ):(<div></div>)}
-									{pairing.decor ? (
-                  <div>
-                    <label>
-                      <strong>Decor:</strong>
-                    </label>{" "}
-                    {pairing.decor}
-                  </div>
-                ):(<div></div>)}
-									{pairing.more ? (
-                  <div>
-                    <label>
-                      <strong>More:</strong>
-                    </label>{" "}
-                    {pairing.more}
-                  </div>
-                ):(<div></div>)}
-                <Link to={"/pairings/edit/" + currentRecipe.id + "/" + pairing.id}>
-                  <button>Edit This Recipe Pairing</button>
-                </Link>
-                <br></br>
-                <br></br>
-                <button onClick={() => {removePairing(pairing.id)}}>Remove Pairing from This Recipe </button>
-                <br></br>
-                <br></br>
-        </div>
+            <h2> {pairing.pairingName} </h2>
+            {pairing.description ? (
+              <div>
+                <label>
+                  <strong>Description:</strong>
+                </label>{" "}
+                {pairing.description}
+              </div>
+            ):(<div></div>)}
+            {pairing.drinks ? (
+              <div>
+								<label>
+                  <strong>Drinks:</strong>
+                </label>{" "}
+								{pairing.drinks}
+              </div>
+            ):(<div></div>)}
+						{pairing.shows ? (
+              <div>
+                <label>
+                  <strong>Shows:</strong>
+                </label>{" "}
+                {pairing.shows}
+              </div>
+            ):(<div></div>)}
+						{pairing.books ? (
+              <div>
+                <label>
+                  <strong>Books:</strong>
+                </label>{" "}
+                {pairing.books}
+              </div>
+            ):(<div></div>)}
+						{pairing.music ? (
+              <div>
+                <label>
+                  <strong>Music:</strong>
+                </label>{" "}
+                {pairing.music}
+              </div>
+            ):(<div></div>)}
+						{pairing.decor ? (
+              <div>
+                <label>
+                  <strong>Decor:</strong>
+                </label>{" "}
+                {pairing.decor}
+              </div>
+            ):(<div></div>)}
+						{pairing.more ? (
+              <div>
+                <label>
+                  <strong>More:</strong>
+                </label>{" "}
+                {pairing.more}
+              </div>
+            ):(<div></div>)}
+            <Link to={"/pairings/edit/" + currentRecipe.id + "/" + pairing.id}>
+							<button>Edit This Recipe Pairing</button>
+            </Link>
+            <br></br>
+            <br></br>
+            <button onClick={() => {removePairing(pairing.id)}}>Remove Pairing from This Recipe </button>
+            <br></br>
+            <br></br>
+					</div>
         ):(  
           <div> 
             <h2>Add a Pairing now!</h2>

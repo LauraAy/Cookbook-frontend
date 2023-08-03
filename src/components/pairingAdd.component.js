@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const PairingAddComponent = () => { 
 	const { id } = useParams();
-  let navigate = useNavigate();
+	let navigate = useNavigate();
 
   const initialPairingState = {
 		id: null,
@@ -99,11 +99,11 @@ const PairingAddComponent = () => {
 			decor: response.data.decor,
 			more: response.data.more
 		});
-	  setSubmitted(true);
-	  console.log(response.data);
+		setSubmitted(true);
+		console.log(response.data);
 	})
 	.catch(e => {
-	  console.log(e);
+		console.log(e);
 	});
   };
 
@@ -146,21 +146,16 @@ const PairingAddComponent = () => {
 	retrieveCurrentPairing(currentPairingId)
   }, [currentPairingId])
 
-  //attach pairing created from form to recipe
+  //attach pairing selected from dropdown to recipe
   const savePairingRecipeDropdown = () => {
-	var data = {
-		creatorId: currentPairing.id,
-		recipeId: currentRecipe.id
-	};
-	
-	PairingRecipeDataService.create(data)
+	const data = {
+		pairingId: currentPairing.id
+	}
+
+	RecipeDataService.update(currentRecipe.id, data)
 	.then(response => {
-		setPairingRecipe({
-			creatorId: response.data.pairingId,
-			recipeId: response.data.regionid
-		})
-		setAdded(true)
 		console.log(response.data);
+		navigate("/recipes/" + currentRecipe.id)
 	})
 	.catch(e => {
 		console.log(e);
