@@ -43,7 +43,6 @@ const CreatorEdit = props => {
     const { name, value } = event.target;
     setCreator({ ...creator, [name]: value });
   };
- 
 
   //update Creator
   const updateCreator = () => {
@@ -60,11 +59,9 @@ const CreatorEdit = props => {
   //Display delete confirmation modal based on type
   const showDeleteModal = (type) => {
     setType(type);
-
     if (type === "creator") {
       setDeleteMessage('Are you sure you want to delete the creator?');
     }
-
     setDisplayConfirmationModal(true);
   };
 
@@ -115,7 +112,7 @@ const CreatorEdit = props => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description">About Recipe Creator</label>
+            <label htmlFor="about">About Recipe Creator</label>
             <input
               type="text"
               className="form-control"
@@ -126,7 +123,7 @@ const CreatorEdit = props => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="recipeType">Link</label>
+            <label htmlFor="link">Link</label>
             <input
               type="text"
               className="form-control"
