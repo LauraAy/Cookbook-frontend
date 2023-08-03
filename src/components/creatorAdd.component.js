@@ -102,7 +102,7 @@ const CreatorAddComponent = () => {
     .then(response => {
       setCreatorRecipe({
         creatorId: response.data.creatorId,
-        recipeId: response.data.regionid
+        recipeId: response.data.recipeId
       })
       setAdded(true)
       console.log(response.data);
@@ -120,6 +120,7 @@ const CreatorAddComponent = () => {
       console.log(response.data);
     })
     .catch(e => {   
+      console.log(e)
     });
   };
 
@@ -145,7 +146,7 @@ const CreatorAddComponent = () => {
     .then(response => {
       setCreatorRecipe({
         creatorId: response.data.creatorId,
-        recipeId: response.data.regionid
+        recipeId: response.data.recipeId
       })
       setAdded(true)
       console.log(response.data);
@@ -163,8 +164,11 @@ const CreatorAddComponent = () => {
   //Reset form for new creator
   const newCreator = () => {
     setCreator(initialCreatorState);
+    setCurrentCreator(initialCreatorState)
+    setCreateNew(false);
+    setSelected(false);
+    setAdded(false);
     setSubmitted(false);
-    setAdded(false)
   };
 
   //navigate to recipe page
@@ -190,8 +194,8 @@ const CreatorAddComponent = () => {
     return(
     <div>
       { added ? (
-         <div>
-          <h4>You've added {creator.creatorName} added to {currentRecipe.title}</h4>
+        <div>
+          <h4>You've added {creator.creatorName} to {currentRecipe.title}</h4>
           <br></br>
           <br></br>
           <button onClick={returnRecipe}>View Recipe Page</button>
@@ -200,7 +204,7 @@ const CreatorAddComponent = () => {
           <button onClick={addAnotherCreator}>Add Another Creator</button>
           <button onClick={addRegion}>Add a Region</button>
           <button onClick={addPairing}>Add a Recipe Pairing</button>
-       </div>
+        </div>
       ):(
         <div>
           { createNew ? (
@@ -271,7 +275,7 @@ const CreatorAddComponent = () => {
                   <p>Please select a Creator from the dropdown.</p> 
                   <Form>
                     <select class="form-control" onChange={handleCreatorChange} >
-                     <option>Select a Creator</option>
+                      <option>Select a Creator</option>
                       {creators.map((creator, index) => 
                         <option
                           value= {creator.id}
@@ -284,8 +288,8 @@ const CreatorAddComponent = () => {
                   </Form>
                   <br></br>
                   <br></br>
-                  <p>Or create a new recipe</p>
-                  <button onClick={goCreate}>Create New Recipe</button>
+                  <p>Or create a new Recipe Creator</p>
+                  <button onClick={goCreate}>Create New Recipe Creator</button>
                 </div>
               )}
             </div>
@@ -294,104 +298,5 @@ const CreatorAddComponent = () => {
       )}
     </div>
   )}
-
-
-  
-// return (
-// <div>
-// {added ? (
-//   <div>
-//     <h4>You've added {creator.creatorName} added to {currentRecipe.title}</h4>
-//     <br></br>
-//      <br></br>
-//      <button onClick={returnRecipe}>View Recipe Page</button>
-//      <br></br>
-//      <br></br>
-//      <button onClick={addAnotherCreator}>Add Another Creator</button>
-//      <button onClick={addRegion}>Add a Region</button>
-//      <button onClick={addPairing}>Add a Recipe Pairing</button>
-//   </div>
-//   ):(
-//   <div>
-//     {createNew ? (
-
-  
-// ):(
-//   <div className="submit-form">
-//     {submitted ? (
-//     <div>
-//       <h2>Success!</h2>
-//       <div>
-//         <h4>{creator.creatorName}</h4>
-//       </div>
-//       <button onClick={saveCreatorRecipe}>Add this recipe creator to {currentRecipe.title}.</button>
-//     </div>
-//     ):(
-//     <div>  
-//       <div>
-//       <p>Please select a Creator from the dropdown.</p> 
-//       <Form>
-//         <select class="form-control" onChange={handleCreatorChange} >
-//           <option>Select a Creator</option>
-//           {creators.map((creator, index) => 
-//             <option
-//               value= {creator.id}
-//               key={index}
-//             >
-//               {creator.creatorName}
-//             </option>
-//           )}
-//         </select>
-//       </Form>
-//     </div>
-//       <div>
-//         <div className="form-group">
-//           <label htmlFor="creatorName">Recipe Creator Name</label>
-//           <input
-//             type="text"
-//             className="form-control"
-//             id="creatorName"
-//             required
-//             value={creator.creatorName}
-//             onChange={handleInputChange}
-//             name="creatorName"
-//           />
-//         </div>
-//         <div className="form-group">
-//           <label htmlFor="about">About Recipe Creator</label>
-//           <input
-//             type="text"
-//             className="form-control"
-//             id="about"
-//             required
-//             value={creator.about}
-//             onChange={handleInputChange}
-//             name="about"
-//           />
-//         </div> 
-//         <div className="form-group">
-//           <label htmlFor="link">Link to Recipe Creator Website</label>
-//           <input
-//             type="text"
-//             className="form-control"
-//             id="link"
-//             required
-//             value={creator.link}
-//             onChange={handleInputChange}
-//             name="link"
-//           />
-//         </div>
-//         <br></br>
-//         <br></br>
-//         <button onClick={saveCreator} className="btn btn-success">
-//           Submit
-//         </button>
-//       </div>
-//     </div>
-//     )}
-//   </div>  
-// )}
-// </div>
-// )};
 
 export default CreatorAddComponent;
