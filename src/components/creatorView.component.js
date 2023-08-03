@@ -9,7 +9,7 @@ const CreatorViewComponent = params => {
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ creator, setCreator] = useState ([])
 
-const getRecipeCreators = id => {
+   const getRecipeCreators = id => {
     CreatorRecipeDataService.getRecipeCreators(id)
     .then(response => {
       setCurrentRecipe(response.data);
@@ -96,6 +96,7 @@ return (
         )}
       </div>
     </>
-)}
+)
+}
 
 export default CreatorViewComponent

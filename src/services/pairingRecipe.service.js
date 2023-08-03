@@ -22,7 +22,7 @@ const getPairingRecipes = id => {
 
 //Get one recipe with pairings
 const getRecipePairings = id => {
-    return http.get(`/creatorRecipes/recipes/${id}`);
+    return http.get(`/pairingRecipes/recipes/${id}`);
   };
 
 //Remove pairing from recipe
