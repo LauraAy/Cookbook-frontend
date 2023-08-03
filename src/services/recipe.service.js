@@ -20,11 +20,11 @@ const update = (id, data) => {
   return http.put(`/recipes/${id}`, data);
 };
 
-const remove = id => {
+const destroy = id => {
   return http.delete(`/recipes/${id}`);
 };
 
-const removeAll = () => {
+const destroyAll = () => {
   return http.delete(`/recipes`);
 };
 
@@ -41,8 +41,8 @@ const RecipeService = {
   getWithRegions,
   create,
   update,
-  remove,
-  removeAll,
+  destroy,
+  destroyAll,
   findByTitle,
   getUserRecipes
 };

@@ -25,8 +25,10 @@ const getRecipeRegions = id => {
     return http.get(`/regionRecipes/recipes/${id}`);
   };
 
-const removeRegion = () => {
-  return http.delete(`/regionRecipes`);
+
+//Remove region from recipe
+const removeRegion = (recipeId, regionId) => {
+  return http.delete(`/regionRecipes/${recipeId}/${regionId}`);
 };
 
 const RegionRecipeService = {

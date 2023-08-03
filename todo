@@ -1,27 +1,10 @@
-
--write front end to add regionRecipe
+-create view, edit, add components for pairings
 -create pages to view recipes by region and vice versa 
-
--create dropdown to select country and apply to recipe 
--add contributed by to allRecipes and userRecipes pages
--buttons for adding region and creator
--component to add creator to recipe
+-establish what to display on recipe preview for all recipes and your recipes
 -create pre-login home page
--add buttons to edit recipe or go back to main recipe list
 -fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 
 -figure out how to put country id to all states
 
-X-add location and creator tables
-X-add user table and login capability
-x add get recipes to user service 
-xcreate page for user to view their 
-xupload countries and state csv into database
-xcomponent to add region to recipe
-xfinish setting up regionRecipe routes and controller
-xwrite recipeRegions function and route
-xadd model for pairings
-Xadd backend functions to remove region, creator, or pairing from recipe
-xupdate recipecomponent to use functional components
 
 
 
