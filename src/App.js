@@ -121,7 +121,7 @@ const App = () => {
           <Route path="/creators/edit/:recipeId/:creatorId" element={<CreatorEdit/>} />
           
           <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
-          <Route path="/pairings/edit/:id" element={<PairingEdit/>} />
+          <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
          
         </Routes>
       </div>
