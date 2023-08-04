@@ -4,6 +4,10 @@ const getAll = () => {
   return http.get("/recipes");
 };
 
+const getSome = () => {
+  return http.get("/someRecipes")
+}
+
 const get = id => {
   return http.get(`/recipes/${id}`);
 };
@@ -38,6 +42,7 @@ const getUserRecipes = (id) => {
 const RecipeService = {
   getAll,
   get,
+  getSome,
   getWithRegions,
   create,
   update,

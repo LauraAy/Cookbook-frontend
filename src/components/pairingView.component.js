@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import PairingRecipeDataService from "../services/pairingRecipe.service";
 import RecipeDataService from "../services/recipe.service";
+
 const PairingViewComponent = params => {
   const { id } = useParams();
   let navigate = useNavigate(); 
@@ -9,8 +10,8 @@ const PairingViewComponent = params => {
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ pairing, setPairing] = useState ([])
   const [recipeOne, setRecipeOne] = useState ([])
+  const [recipes, setRecipes] = useState ([])
 
-	
   const getRecipeOne = id => {
     RecipeDataService.get(id)
     .then(response => {
@@ -29,10 +30,10 @@ const PairingViewComponent = params => {
       setPairing(response.data.pairings)
       console.log(response.data);
     })
-    .then(()=>{
-      console.log(pairing.recipeOne)
-      getRecipeOne(pairing.recipeOne)
-    })
+    // .then(()=>{
+    //   console.log(pairing.recipeOne)
+    //   getRecipeOne()
+    // })
     .catch(e => {
       console.log(e);
     });
@@ -43,10 +44,11 @@ const PairingViewComponent = params => {
     getRecipePairings(id);
   }, [id]);
 
-
-  // useEffect(() => {
-  //   getRecipeOne(pairing.recipeOne.id)
-  // }, [recipeOne.id]);
+  useEffect(() => {
+    if(pairing.recipeOne)
+    getRecipeOne(pairing.recipeOne)
+  }, [pairing.recipeOne]
+  )
 
 const goAddPairing = () => {
   navigate("/pairings/add/" + id)
@@ -77,6 +79,7 @@ return (
       <div>
         {pairing ? (
           <div >
+            {/* <button onClick={(getRecipes)}>TEST</button> */}
             <h2> {pairing.pairingName} </h2>
             {pairing.description ? (
               <div>
