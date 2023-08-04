@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import PairingRecipeDataService from "../services/pairingRecipe.service";
-
+import RecipeDataService from "../services/recipe.service";
 const PairingViewComponent = params => {
   const { id } = useParams();
   let navigate = useNavigate(); 
@@ -10,13 +10,28 @@ const PairingViewComponent = params => {
   const [ pairing, setPairing] = useState ([])
   const [recipeOne, setRecipeOne] = useState ([])
 
-	const getRecipePairings = id => {
+	
+  const getRecipeOne = id => {
+    RecipeDataService.get(id)
+    .then(response => {
+      setRecipeOne(response.data)
+      console.log (response.data)
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }
+
+  const getRecipePairings = id => {
     PairingRecipeDataService.getRecipePairings(id)
     .then(response => {
       setCurrentRecipe(response.data);
       setPairing(response.data.pairings)
       console.log(response.data);
-      console.log(pairing)
+    })
+    .then(()=>{
+      console.log(pairing.recipeOne)
+      getRecipeOne(pairing.recipeOne)
     })
     .catch(e => {
       console.log(e);
@@ -28,18 +43,9 @@ const PairingViewComponent = params => {
     getRecipePairings(id);
   }, [id]);
 
-  // const getRecipeOne = id => {
-  //   PairingRecipeDataService.getOne(id)
-  //   .then(response => {
-  //     setRecipeOne(response.data)
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //   });
-  // }
 
   // useEffect(() => {
-  //   getRecipeOne(recipeOne.id)
+  //   getRecipeOne(pairing.recipeOne.id)
   // }, [recipeOne.id]);
 
 const goAddPairing = () => {
@@ -125,7 +131,11 @@ return (
                 <label>
                   <strong>Related Recipe:</strong>
                 </label>{" "}
-                {recipeOne.title}
+                 <Link to={"/recipes/" + recipeOne.id}>
+                  {recipeOne.title}
+                </Link>
+                <br></br>
+                <br></br>
               </div>
             ):(<div></div>)}
             	{pairing.more ? (
