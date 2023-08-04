@@ -8,6 +8,7 @@ const PairingViewComponent = params => {
 
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ pairing, setPairing] = useState ([])
+  const [recipeOne, setRecipeOne] = useState ([])
 
 	const getRecipePairings = id => {
     PairingRecipeDataService.getRecipePairings(id)
@@ -26,6 +27,20 @@ const PairingViewComponent = params => {
     if(id)
     getRecipePairings(id);
   }, [id]);
+
+  // const getRecipeOne = id => {
+  //   PairingRecipeDataService.getOne(id)
+  //   .then(response => {
+  //     setRecipeOne(response.data)
+  //   })
+  //   .catch(e => {
+  //     console.log(e);
+  //   });
+  // }
+
+  // useEffect(() => {
+  //   getRecipeOne(recipeOne.id)
+  // }, [recipeOne.id]);
 
 const goAddPairing = () => {
   navigate("/pairings/add/" + id)
@@ -105,7 +120,15 @@ return (
                 {pairing.decor}
               </div>
             ):(<div></div>)}
-						{pairing.more ? (
+						{recipeOne ? (
+              <div>
+                <label>
+                  <strong>Related Recipe:</strong>
+                </label>{" "}
+                {recipeOne.title}
+              </div>
+            ):(<div></div>)}
+            	{pairing.more ? (
               <div>
                 <label>
                   <strong>More:</strong>

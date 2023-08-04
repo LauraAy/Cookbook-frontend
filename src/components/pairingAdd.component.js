@@ -18,20 +18,18 @@ const PairingAddComponent = () => {
 		books: "",
 		music: "",
 		decor: "",
-		more: ""
+		more: "",
+		recipeOne:""
   };
 
-  const initialPairingRecipeState = {
-		pairingId: null,
-		recipeId: null
-  }
-
-  const [pairings, setPairings] = useState([]);  
+  const [pairings, setPairings] = useState ([]);  
   const [pairing, setPairing] = useState(initialPairingState);
   const [currentPairing, setCurrentPairing] = useState(initialPairingState)
   const [currentPairingId, setCurrentPairingId] = useState()
-  const [currentRecipe, setCurrentRecipe] =useState ([]);
-  const [pairingRecipe, setPairingRecipe] = useState (initialPairingRecipeState);
+  const [recipes, setRecipes] = useState([])
+  const [currentRecipe, setCurrentRecipe] = useState ([]);
+	const [selectedRecipeId, setSelectedRecipeId] = useState ()
+	const [selectedRecipe, setSelectedRecipe] = useState ([])
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
@@ -41,6 +39,7 @@ const PairingAddComponent = () => {
   useEffect(() => {
 		retrievePairings();
 		retrieveRecipe(id);
+		retrieveRecipes();
   }, []);
 
 
@@ -66,15 +65,49 @@ const PairingAddComponent = () => {
 	});
   };
 
-	
-  //form input to create pairing
+	const retrieveRecipes = () => {
+    RecipeDataService.getAll()
+    .then(response => {
+      setRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
+
+	//form input to create pairing
   const handleInputChange = event => {
 	const { name, value } = event.target;
 	setPairing({ ...pairing, [name]: value });
   };
 
+	 //retrieve selectedRecipe from id based on dropdown selection
+	 const retrieveSelectedRecipe = id => {
+		RecipeDataService.get(id)
+		.then(response => {
+			setSelectedRecipe(response.data);
+			console.log(response.data);
+		})
+		.catch(e => {   
+			console.log(e)
+		});
+	};
+
+	//retrieve recipeId from dropdown selection and run retrieveRecipe function
+	const handleSelectedRecipeChange = async (event) => {
+		setSelectedRecipeId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeId)
+	}
+		useEffect(()=>{
+			retrieveSelectedRecipe(selectedRecipeId)
+			console.log(selectedRecipe)
+		}, [selectedRecipeId])
+
   //save pairing from form
   const savePairing = () => {
+		// console.log(selectedRecipe.id)
 	var data = {
 		pairingName: pairing.pairingName,
 		description: pairing.description,
@@ -83,7 +116,8 @@ const PairingAddComponent = () => {
 		books: pairing.books,
 		music: pairing.music,
 		decor: pairing.decor,
-		more: pairing.more
+		more: pairing.more,
+		recipeOne: selectedRecipe.id
 	};
 
 	PairingDataService.create(data)
@@ -97,7 +131,8 @@ const PairingAddComponent = () => {
 			books: response.data.books,
 			music: response.data.music,
 			decor: response.data.decor,
-			more: response.data.more
+			more: response.data.more,
+			recipeOne: response.data.recipeOne
 		});
 		setSubmitted(true);
 		console.log(response.data);
@@ -162,6 +197,24 @@ const PairingAddComponent = () => {
 	});
   }
 
+	//  //retrieve currentRecipe from id based on dropdown selection
+	//  const retrieveSelectedRecipe = id => {
+	// 	RecipeDataService.get(id)
+	// 	.then(response => {
+	// 		setSelectedRecipe(response.data);
+	// 		console.log(response.data);
+	// 	})
+	// 	.catch(e => {   
+	// 		console.log(e)
+	// 	});
+	// };
+
+
+
+
+	
+
+
   //create new pairing set to true
   const goCreate = () => {
 		setCreateNew(true)
@@ -224,111 +277,127 @@ const PairingAddComponent = () => {
 									<button onClick={savePairingRecipe}>Add this recipe pairing to {currentRecipe.title}.</button>
 								</div>
 							):(
+							<div>
 								<div>
-									<div className="form-group">
-										<label htmlFor="pairingName">Recipe Pairing Name</label>
-										<input
-											type="text"
-											className="form-control"
-											id="pairingName"
-											required 
-											value={pairing.pairingName}
-											onChange={handleInputChange}
-											name="pairingName"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="description">Pairing Description</label>
-										<input
-											type="text"
-											className="form-control"
-											id="description"
-											required
-											value={pairing.description}
-											onChange={handleInputChange}
-											name="description"
-										/>
-									</div> 
-									<div className="form-group">
-										<label htmlFor="drinks">Drinks</label>
-										<input
-											type="text"
-											className="form-control"
-											id="drinks"
-											required
-											value={pairing.drinks}
-											onChange={handleInputChange}
-											name="drinks"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="shows">TV Shows or Movies</label>
-										<input
-											type="text"
-											className="form-control"
-											id="shows"
-											required
-											value={pairing.shows}
-											onChange={handleInputChange}
-											name="shows"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="books">Books</label>
-										<input
-											type="text"
-											className="form-control"
-											id="books"
-											required
-											value={pairing.books}
-											onChange={handleInputChange}
-											name="books"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="music">Music</label>
-										<input
-											type="text"
-											className="form-control"
-											id="music"
-											required
-											value={pairing.music}
-											onChange={handleInputChange}
-											name="music"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="decor">Decor</label>
-										<input
-											type="text"
-											className="form-control"
-											id="decor"
-											required
-											value={pairing.decor}
-											onChange={handleInputChange}
-											name="decor"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="more">More</label>
-										<input
-											type="text"
-											className="form-control"
-											id="more"
-											required
-											value={pairing.more}
-											onChange={handleInputChange}
-											name="more"
-										/>
-									</div>
-									<br></br>
-									<br></br>
-									<button onClick={savePairing} className="btn btn-success">
-										Submit
-									</button>
+								<div className="form-group">
+									<label htmlFor="pairingName">Recipe Pairing Name</label>
+									<input
+										type="text"
+										className="form-control"
+										id="pairingName"
+										required 
+										value={pairing.pairingName}
+										onChange={handleInputChange}
+										name="pairingName"
+									/>
 								</div>
-							)}
+								<div className="form-group">
+									<label htmlFor="description">Pairing Description</label>
+									<input
+										type="text"
+										className="form-control"
+										id="description"
+										required
+										value={pairing.description}
+										onChange={handleInputChange}
+										name="description"
+									/>
+								</div> 
+								<div className="form-group">
+									<label htmlFor="drinks">Drinks</label>
+									<input
+										type="text"
+										className="form-control"
+										id="drinks"
+										required
+										value={pairing.drinks}
+										onChange={handleInputChange}
+										name="drinks"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="shows">TV Shows or Movies</label>
+									<input
+										type="text"
+										className="form-control"
+										id="shows"
+										required
+										value={pairing.shows}
+										onChange={handleInputChange}
+										name="shows"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="books">Books</label>
+									<input
+										type="text"
+										className="form-control"
+										id="books"
+										required
+										value={pairing.books}
+										onChange={handleInputChange}
+										name="books"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="music">Music</label>
+									<input
+										type="text"
+										className="form-control"
+										id="music"
+										required
+										value={pairing.music}
+										onChange={handleInputChange}
+										name="music"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="decor">Decor</label>
+									<input
+										type="text"
+										className="form-control"
+										id="decor"
+										required
+										value={pairing.decor}
+										onChange={handleInputChange}
+										name="decor"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="more">More</label>
+									<input
+										type="text"
+										className="form-control"
+										id="more"
+										required
+										value={pairing.more}
+										onChange={handleInputChange}
+										name="more"
+									/>
+								</div>
+							</div>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+              <Form>
+                <select class="form-control" onChange={handleSelectedRecipeChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<button onClick={savePairing} className="btn btn-success">
+								Submit
+							</button>
 						</div>
+						)}
+					</div>
 					):(
 						<div>
 							{ selected ? (
