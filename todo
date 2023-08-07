@@ -1,6 +1,10 @@
--create view, edit, add components for pairings
--create pages to view recipes by region and vice versa 
+-add recipeTwo and recipeThree to addPairing form
+-add views for recipeTwo and recipeThree to viewPairing
+-add edit for related recipes to editPairing
+-create filter to view recipes by region and creator
 -establish what to display on recipe preview for all recipes and your recipes
+-display recipes alphabetically 
+-display set amount of recipes with multiple view "pages"
 -create pre-login home page
 -fix the looks of the whole thing, including appearance of buttons, size of input and display for recipe and directions, nice header image, etc. 
 -figure out how to put country id to all states

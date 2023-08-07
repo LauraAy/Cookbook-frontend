@@ -19,7 +19,9 @@ const PairingAddComponent = () => {
 		music: "",
 		decor: "",
 		more: "",
-		recipeOne:""
+		recipeOne:"",
+		recipeTwo:"",
+		recipeThree:""
   };
 
   const [pairings, setPairings] = useState ([]);  
@@ -28,8 +30,12 @@ const PairingAddComponent = () => {
   const [currentPairingId, setCurrentPairingId] = useState()
   const [recipes, setRecipes] = useState([])
   const [currentRecipe, setCurrentRecipe] = useState ([]);
-	const [selectedRecipeId, setSelectedRecipeId] = useState ()
-	const [selectedRecipe, setSelectedRecipe] = useState ([])
+	const [selectedRecipeOneId, setSelectedRecipeOneId] = useState ()
+	const [selectedRecipeTwoId, setSelectedRecipeTwoId] = useState ()
+	const [selectedRecipeThreeId, setSelectedRecipeThreeId] = useState ()
+	const [selectedRecipeOne, setSelectedRecipeOne] = useState ([])
+	const [selectedRecipeTwo, setSelectedRecipeTwo] = useState ([])
+	const [selectedRecipeThree, setSelectedRecipeThree] = useState ([])
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
@@ -82,11 +88,11 @@ const PairingAddComponent = () => {
 	setPairing({ ...pairing, [name]: value });
   };
 
-	 //retrieve selectedRecipe from id based on dropdown selection
-	 const retrieveSelectedRecipe = id => {
+	 //retrieve first selectedRecipe from id based on dropdown selection
+	 const retrieveSelectedRecipeOne = id => {
 		RecipeDataService.get(id)
 		.then(response => {
-			setSelectedRecipe(response.data);
+			setSelectedRecipeOne(response.data);
 			console.log(response.data);
 		})
 		.catch(e => {   
@@ -94,16 +100,64 @@ const PairingAddComponent = () => {
 		});
 	};
 
-	//retrieve recipeId from dropdown selection and run retrieveRecipe function
-	const handleSelectedRecipeChange = async (event) => {
-		setSelectedRecipeId(event.target.value);
+	//retrieve first recipeId from dropdown selection and run retrieveRecipe function
+	const handleSelectedRecipeOneChange = async (event) => {
+		setSelectedRecipeOneId(event.target.value);
 		// setSelected(true);
-		console.log(selectedRecipeId)
+		console.log(selectedRecipeOneId)
 	}
-		useEffect(()=>{
-			retrieveSelectedRecipe(selectedRecipeId)
-			console.log(selectedRecipe)
-		}, [selectedRecipeId])
+
+	useEffect(()=>{
+		retrieveSelectedRecipeOne(selectedRecipeOneId)
+		console.log(selectedRecipeOne)
+	}, [selectedRecipeOneId])
+
+
+		 //retrieve second selectedRecipe from id based on dropdown selection
+		 const retrieveSelectedRecipeTwo = id => {
+			RecipeDataService.get(id)
+			.then(response => {
+				setSelectedRecipeTwo(response.data);
+				console.log(response.data);
+			})
+			.catch(e => {   
+				console.log(e)
+			});
+		};
+
+	const handleSelectedRecipeTwoChange = async (event) => {
+		setSelectedRecipeTwoId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeTwoId)
+	}
+
+	useEffect(()=>{
+		retrieveSelectedRecipeTwo(selectedRecipeTwoId)
+		console.log(selectedRecipeTwo)
+	}, [selectedRecipeTwoId])
+
+		 //retrieve third selectedRecipe from id based on dropdown selection
+		 const retrieveSelectedRecipeThree = id => {
+			RecipeDataService.get(id)
+			.then(response => {
+				setSelectedRecipeThree(response.data);
+				console.log(response.data);
+			})
+			.catch(e => {   
+				console.log(e)
+			});
+		};
+
+	const handleSelectedRecipeThreeChange = async (event) => {
+		setSelectedRecipeThreeId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeThreeId)
+	}
+
+	useEffect(()=>{
+		retrieveSelectedRecipeThree(selectedRecipeThreeId)
+		console.log(selectedRecipeTwo)
+	}, [selectedRecipeTwoId])
 
   //save pairing from form
   const savePairing = () => {
@@ -117,7 +171,9 @@ const PairingAddComponent = () => {
 		music: pairing.music,
 		decor: pairing.decor,
 		more: pairing.more,
-		recipeOne: selectedRecipe.id
+		recipeOne: selectedRecipeOne.id,
+		recipeTwo: selectedRecipeTwo.id,
+		recipeThree: selectedRecipeThree.id
 	};
 
 	PairingDataService.create(data)
@@ -209,12 +265,6 @@ const PairingAddComponent = () => {
 	// 	});
 	// };
 
-
-
-
-	
-
-
   //create new pairing set to true
   const goCreate = () => {
 		setCreateNew(true)
@@ -278,6 +328,7 @@ const PairingAddComponent = () => {
 								</div>
 							):(
 							<div>
+								<h1>Create a new pairing for {currentRecipe.title}</h1>
 								<div>
 								<div className="form-group">
 									<label htmlFor="pairingName">Recipe Pairing Name</label>
@@ -380,7 +431,7 @@ const PairingAddComponent = () => {
 							<br></br>
 							<p>Please select a Recipe from the dropdown.</p> 
               <Form>
-                <select class="form-control" onChange={handleSelectedRecipeChange} >
+                <select class="form-control" onChange={handleSelectedRecipeOneChange} >
                   <option>Select a Recipe</option>
                   {recipes.map((recipes, index) => 
                     <option
@@ -392,6 +443,40 @@ const PairingAddComponent = () => {
                   )}
                 </select>
               </Form>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+							<Form>
+                <select class="form-control" onChange={handleSelectedRecipeTwoChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+							<Form>
+                <select class="form-control" onChange={handleSelectedRecipeThreeChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<br></br>
+							<br></br>
 							<button onClick={savePairing} className="btn btn-success">
 								Submit
 							</button>
@@ -406,6 +491,8 @@ const PairingAddComponent = () => {
 									<button onClick={savePairingRecipeDropdown}>Add this pairing to recipe</button>
 								</div>
 							):(
+								<div>
+									<h1>Attach a pairing to {currentRecipe.title}</h1>
 								<div>  
 									<p>Please select a pairing from the dropdown.</p> 
 									<Form>
@@ -425,6 +512,7 @@ const PairingAddComponent = () => {
 									<br></br>
 									<p>Or create a new recipe pairing</p>
 									<button onClick={goCreate}>Create New Recipe Pairing</button>
+								</div>
 								</div>
 							)}
 						</div>
