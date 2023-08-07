@@ -33,12 +33,6 @@ const PairingEdit = props => {
   const [recipeTwoId, setRecipeTwoId] = useState ("")
   const [recipeThree, setRecipeThree] = useState ([])
   const [recipeThreeId, setRecipeThreeId] = useState ("")
-  const [selectedRecipeOneId, setSelectedRecipeOneId] = useState ()
-	const [selectedRecipeTwoId, setSelectedRecipeTwoId] = useState ()
-	const [selectedRecipeThreeId, setSelectedRecipeThreeId] = useState ()
-	const [selectedRecipeOne, setSelectedRecipeOne] = useState ([])
-	const [selectedRecipeTwo, setSelectedRecipeTwo] = useState ([])
-	const [selectedRecipeThree, setSelectedRecipeThree] = useState ([])
   const [type, setType] = useState(null);
   const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(null);
@@ -147,78 +141,6 @@ const PairingEdit = props => {
     const { name, value } = event.target;
     setPairing({ ...pairing, [name]: value });
   };
-
-  //  //retrieve first selectedRecipe from id based on dropdown selection
-	//  const retrieveSelectedRecipeOne = id => {
-	// 	RecipeDataService.get(id)
-	// 	.then(response => {
-	// 		setSelectedRecipeOne(response.data);
-	// 		console.log(response.data);
-	// 	})
-	// 	.catch(e => {   
-	// 		console.log(e)
-	// 	});
-	// };
-
-  // 	//retrieve first recipeId from dropdown selection and set to recipeOne
-	// const handleSelectedRecipeOneChange = async (event) => {
-	// 	setRecipeOne(event.target.value);
-	// 	// setSelected(true);
-	// 	console.log(selectedRecipeOneId)
-	// }
-
-	// useEffect(()=>{
-	// 	retrieveSelectedRecipeOne(selectedRecipeOneId)
-	// 	console.log(selectedRecipeOne)
-	// }, [selectedRecipeOneId])
-
-// //retrieve second selectedRecipe from id based on dropdown selection
-// const retrieveSelectedRecipeTwo = id => {
-//   RecipeDataService.get(id)
-//   .then(response => {
-//     setSelectedRecipeTwo(response.data);
-//     console.log(response.data);
-//   })
-//   .catch(e => {   
-//     console.log(e)
-//   });
-// };
-
-//   //retrieve second recipeId from dropdown selection and setRecipeTwo
-// const handleSelectedRecipeTwoChange = async (event) => {
-//   setRecipeTwoId(event.target.value);
-//   // setSelected(true);
-//   console.log(selectedRecipeTwoId)
-// }
-
-// useEffect(()=>{
-//   retrieveSelectedRecipeTwo(selectedRecipeTwoId)
-//   console.log(selectedRecipeTwo)
-// }, [selectedRecipeTwoId])
-
-// //retrieve third selectedRecipe from id based on dropdown selection
-// const retrieveSelectedRecipeThree = id => {
-//   RecipeDataService.get(id)
-//   .then(response => {
-//     setSelectedRecipeThree(response.data);
-//     console.log(response.data);
-//   })
-//   .catch(e => {   
-//     console.log(e)
-//   });
-// };
-
-// //retrieve third recipeId from dropdown selection and set recipeThree
-// const handleSelectedRecipeThreeChange = async (event) => {
-//   setRecipeThree(event.target.value);
-//   // setSelected(true);
-//   console.log(selectedRecipeOneId)
-// }
-
-// useEffect(()=>{
-//   retrieveSelectedRecipeThree(selectedRecipeThreeId)
-//   console.log(selectedRecipeThree)
-// }, [selectedRecipeThreeId])
 
   //update Pairing
   const updatePairing = () => {
@@ -386,7 +308,7 @@ const PairingEdit = props => {
           <div>
             <p>Please select a Recipe from the dropdown.</p> 
             <Form>
-              <select class="form-control"  name="recipeOne"
+              <select className="form-control"  name="recipeOne"
               value={pairing.recipeOne}
               onChange={handleInputChange} >
                 <option>Select a Recipe</option>
