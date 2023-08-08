@@ -44,54 +44,54 @@ return (
     </label>{" "}
     {currentRecipe.title}
   </div>
-  {currentRecipe.description ? (
+  {currentRecipe.description && (
   <div>
     <label>
       <strong>Description:</strong>
     </label>{" "}
     {currentRecipe.description}
   </div>
-  ): null}
-  {currentRecipe.recipeType ? (
+  )}
+  {currentRecipe.recipeType && (
   <div>
     <label>
       <strong>Recipe Type:</strong>
     </label>{" "}
     {currentRecipe.recipeType}
   </div>
-  ): null}
-   {currentRecipe.servingSize ? (
+  )}
+   {currentRecipe.servingSize && (
     <div>
       <label>
         <strong>ServingSize:</strong>
       </label>{" "}
       {currentRecipe.servingSize}
     </div>
-   ): null}
-  {currentRecipe.description ? (
+   )}
+  {currentRecipe.description && (
   <div>
     <label>
       <strong>Ingredients:</strong>
     </label>{" "}
     {currentRecipe.ingredients}
   </div>
-  ): null}
-  {currentRecipe.directions ? (
+  )}
+  {currentRecipe.directions && (
   <div>
     <label>
       <strong>Directions:</strong>
     </label>{" "}
     {currentRecipe.directions}
   </div>
-  ): null}
-  {currentRecipe.source ? (
+  )}
+  {currentRecipe.source && (
   <div>
     <label>
       <strong>Source:</strong>
     </label>{" "}
     {currentRecipe.source}
   </div>
-  ): null}
+  )}
 
   <Link
     to={"/recipes/edit/" + currentRecipe.id}

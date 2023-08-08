@@ -147,55 +147,55 @@ return (
           <div >
             {/* <button onClick={(getRecipes)}>TEST</button> */}
             <h2> {pairing.pairingName} </h2>
-            {pairing.description ? (
+            {pairing.description && (
               <div>
                 <label>
                   <strong>Description:</strong>
                 </label>{" "}
                 {pairing.description}
               </div>
-            ): null}
-            {pairing.drinks ? (
+            )}
+            {pairing.drinks && (
               <div>
 								<label>
                   <strong>Drinks:</strong>
                 </label>{" "}
 								{pairing.drinks}
               </div>
-            ): null}
-						{pairing.shows ? (
+            )}
+						{pairing.shows && (
               <div>
                 <label>
                   <strong>Shows:</strong>
                 </label>{" "}
                 {pairing.shows}
               </div>
-            ): null}
-						{pairing.books ? (
+            )}
+						{pairing.books && (
               <div>
                 <label>
                   <strong>Books:</strong>
                 </label>{" "}
                 {pairing.books}
               </div>
-            ): null}
-						{pairing.music ? (
+            )}
+						{pairing.music && (
               <div>
                 <label>
                   <strong>Music:</strong>
                 </label>{" "}
                 {pairing.music}
               </div>
-            ): null}
-						{pairing.decor ? (
+            )}
+						{pairing.decor && (
               <div>
                 <label>
                   <strong>Decor:</strong>
                 </label>{" "}
                 {pairing.decor}
               </div>
-            ): null}
-						{pairing.recipeOne ? (
+            )}
+						{pairing.recipeOne && (
               <div>
                 <label>
                   <strong>Related Recipe 1:</strong>
@@ -206,8 +206,8 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ): null}
-            {pairing.recipeTwo ? (
+            )}
+            {pairing.recipeTwo && (
               <div>
                 <label>
                   <strong>Related Recipe 2:</strong>
@@ -218,8 +218,8 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ): null}
-             {pairing.recipeThree ? (
+            )}
+             {pairing.recipeThree && (
               <div>
                 <label>
                   <strong>Related Recipe 3:</strong>
@@ -230,15 +230,15 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ): null}
-            	{pairing.more ? (
+            )}
+            	{pairing.more && (
               <div>
                 <label>
                   <strong>More:</strong>
                 </label>{" "}
                 {pairing.more}
               </div>
-            ): null}
+            )}
             <Link to={"/pairings/edit/" + currentRecipe.id + "/" + pairing.id}>
 							<button>Edit This Recipe Pairing</button>
             </Link>
