@@ -64,7 +64,7 @@ return (
                 </label>{" "}
                 {region.regionName}
               </div>
-            ):(<div></div>)}
+            ): null}
             {region.subRegion ? (
               <div>
                 <label>
@@ -72,7 +72,7 @@ return (
                 </label>{" "}
                 {region.subRegion}
               </div>
-            ):(<div></div>)}
+            ): null}
             {region.intermediateRegion ? (
               <div>
                 <label>
@@ -80,7 +80,7 @@ return (
                 </label>{" "}
                 {region.intermediateRegion}
               </div>
-            ):(<div></div>)}
+            ): null}
              {region.countryCode ? (
               <div>
                 <label>
@@ -88,7 +88,7 @@ return (
                 </label>{" "}
                 {region.countryCode}
               </div>
-            ):(<div></div>)}
+            ): null}
              {region.lat ? (
               <div>
                 <label>
@@ -96,7 +96,7 @@ return (
                 </label>{" "}
                 {region.lat}
               </div>
-            ):(<div></div>)}
+            ): null}
              {region.lng ? (
               <div>
                 <label>
@@ -104,7 +104,7 @@ return (
                 </label>{" "}
                 {region.lng}
               </div>
-            ):(<div></div>)}
+            ): null}
             <br></br>
             <br></br>
             <button onClick={() => {removeRegion(region.id)}}>Remove Region from This Recipe </button>

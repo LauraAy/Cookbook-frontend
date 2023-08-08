@@ -154,7 +154,7 @@ return (
                 </label>{" "}
                 {pairing.description}
               </div>
-            ):(<div></div>)}
+            ): null}
             {pairing.drinks ? (
               <div>
 								<label>
@@ -162,7 +162,7 @@ return (
                 </label>{" "}
 								{pairing.drinks}
               </div>
-            ):(<div></div>)}
+            ): null}
 						{pairing.shows ? (
               <div>
                 <label>
@@ -170,7 +170,7 @@ return (
                 </label>{" "}
                 {pairing.shows}
               </div>
-            ):(<div></div>)}
+            ): null}
 						{pairing.books ? (
               <div>
                 <label>
@@ -178,7 +178,7 @@ return (
                 </label>{" "}
                 {pairing.books}
               </div>
-            ):(<div></div>)}
+            ): null}
 						{pairing.music ? (
               <div>
                 <label>
@@ -186,7 +186,7 @@ return (
                 </label>{" "}
                 {pairing.music}
               </div>
-            ):(<div></div>)}
+            ): null}
 						{pairing.decor ? (
               <div>
                 <label>
@@ -194,7 +194,7 @@ return (
                 </label>{" "}
                 {pairing.decor}
               </div>
-            ):(<div></div>)}
+            ): null}
 						{pairing.recipeOne ? (
               <div>
                 <label>
@@ -206,7 +206,7 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ):(<div></div>)}
+            ): null}
             {pairing.recipeTwo ? (
               <div>
                 <label>
@@ -218,7 +218,7 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ):(<div></div>)}
+            ): null}
              {pairing.recipeThree ? (
               <div>
                 <label>
@@ -230,7 +230,7 @@ return (
                 <br></br>
                 <br></br>
               </div>
-            ):(<div></div>)}
+            ): null}
             	{pairing.more ? (
               <div>
                 <label>
@@ -238,7 +238,7 @@ return (
                 </label>{" "}
                 {pairing.more}
               </div>
-            ):(<div></div>)}
+            ): null}
             <Link to={"/pairings/edit/" + currentRecipe.id + "/" + pairing.id}>
 							<button>Edit This Recipe Pairing</button>
             </Link>

@@ -1,6 +1,3 @@
--add recipeTwo and recipeThree to addPairing form
--add views for recipeTwo and recipeThree to viewPairing
--add edit for related recipes to editPairing
 -create filter to view recipes by region and creator
 -establish what to display on recipe preview for all recipes and your recipes
 -display recipes alphabetically 

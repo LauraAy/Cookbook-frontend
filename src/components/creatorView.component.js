@@ -66,7 +66,7 @@ return (
                     </label>{" "}
                     {creator.about}
                   </div>
-                ):(<div></div>)}
+                ): null}
                 {creator.link ? (
                   <div>
                     <label>
@@ -74,7 +74,7 @@ return (
                     </label>{" "}
                     {creator.link}
                   </div>
-                ):(<div></div>)}
+                ): null}
                 <Link to={"/creators/edit/" + currentRecipe.id + "/" + creator.id}>
                   <button>Edit This Recipe Creator</button>
                 </Link>

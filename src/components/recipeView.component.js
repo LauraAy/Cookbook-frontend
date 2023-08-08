@@ -38,58 +38,70 @@ const RecipeViewComponent = props => {
 
 return (
 <>
-<div>
-      <label>
-        <strong>Title:</strong>
-      </label>{" "}
-      {currentRecipe.title}
-    </div>
-    <div>
-      <label>
-        <strong>Description:</strong>
-      </label>{" "}
-      {currentRecipe.description}
-    </div>
-    <div>
-      <label>
-        <strong>Recipe Type:</strong>
-      </label>{" "}
-      {currentRecipe.recipeType}
-    </div>
+  <div>
+    <label>
+      <strong>Title:</strong>
+    </label>{" "}
+    {currentRecipe.title}
+  </div>
+  {currentRecipe.description ? (
+  <div>
+    <label>
+      <strong>Description:</strong>
+    </label>{" "}
+    {currentRecipe.description}
+  </div>
+  ): null}
+  {currentRecipe.recipeType ? (
+  <div>
+    <label>
+      <strong>Recipe Type:</strong>
+    </label>{" "}
+    {currentRecipe.recipeType}
+  </div>
+  ): null}
+   {currentRecipe.servingSize ? (
     <div>
       <label>
         <strong>ServingSize:</strong>
       </label>{" "}
       {currentRecipe.servingSize}
     </div>
-    <div>
-      <label>
-        <strong>Ingredients:</strong>
-      </label>{" "}
-      {currentRecipe.ingredients}
-    </div>
-    <div>
-      <label>
-        <strong>Directions:</strong>
-      </label>{" "}
-      {currentRecipe.directions}
-    </div>
-    <div>
-      <label>
-        <strong>Source:</strong>
-      </label>{" "}
-      {currentRecipe.source}
-    </div>
+   ): null}
+  {currentRecipe.description ? (
+  <div>
+    <label>
+      <strong>Ingredients:</strong>
+    </label>{" "}
+    {currentRecipe.ingredients}
+  </div>
+  ): null}
+  {currentRecipe.directions ? (
+  <div>
+    <label>
+      <strong>Directions:</strong>
+    </label>{" "}
+    {currentRecipe.directions}
+  </div>
+  ): null}
+  {currentRecipe.source ? (
+  <div>
+    <label>
+      <strong>Source:</strong>
+    </label>{" "}
+    {currentRecipe.source}
+  </div>
+  ): null}
 
-    <Link
-      to={"/recipes/edit/" + currentRecipe.id}
-      className="badge badge-warning"
-    >
-      <button>
-      Edit
-      </button>
-    </Link>
-    </>
+  <Link
+    to={"/recipes/edit/" + currentRecipe.id}
+    className="badge badge-warning"
+  >
+    <button>
+    Edit
+    </button>
+  </Link>
+</>
 )}
 
 export default RecipeViewComponent
