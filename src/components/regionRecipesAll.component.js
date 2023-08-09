@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
+import regionRecipeDataService from "../services/regionRecipe.service";
 import { Link } from "react-router-dom";
 
 const RecipesAll = ()=> {
-  const [recipes, setRecipes] = useState ([]);
+	const [recipe, setRecipe] = useState ([]);
+  const [regionRecipes, setRegionRecipes] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
 
   useEffect(() => {
-  retrieveRecipes();
+  retrieveRegionRecipes();
 }, []);
 
 const onChangeSearchTitle = e => {
@@ -17,10 +19,10 @@ const onChangeSearchTitle = e => {
   setSearchTitle(searchTitle);
 };
 
-const retrieveRecipes = () => {
-  recipeDataService.getAll()
+const retrieveRegionRecipes = () => {
+  regionRecipeDataService.getAllRegionRecipes()
   .then(response => {
-    setRecipes(response.data);
+    setRegionRecipes(response.data);
     console.log(response.data);
   })
   .catch(e => {
@@ -28,42 +30,42 @@ const retrieveRecipes = () => {
   });
 };
 
-const refreshList = () => {
-  retrieveRecipes();
-  setCurrentRecipe(null);
-  setCurrentIndex(-1);
-};
+// const refreshList = () => {
+//   retrieveRecipes();
+//   setCurrentRecipe(null);
+//   setCurrentIndex(-1);
+// };
 
 const setActiveRecipe = (recipe, index) => {
   setCurrentRecipe(recipe);
   setCurrentIndex(index);
 };
 
-const removeAllrecipes = () => {
-  recipeDataService.removeAll()
-  .then(response => {
-    console.log(response.data);
-    refreshList();
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+// const removeAllrecipes = () => {
+//   recipeDataService.removeAll()
+//   .then(response => {
+//     console.log(response.data);
+//     refreshList();
+//   })
+//   .catch(e => {
+//     console.log(e);
+//   });
+// };
 
-const findByTitle = () => {
-  recipeDataService.findByTitle(searchTitle)
-  .then (response => {
-    setRecipes(response.data);
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+// const findByTitle = () => {
+//   recipeDataService.findByTitle(searchTitle)
+//   .then (response => {
+//     setRecipes(response.data);
+//     console.log(response.data);
+//   })
+//   .catch(e => {
+//     console.log(e);
+//   });
+// };
 
 return (
   <div className="list row">
-    <div className="col-md-8">
+    {/* <div className="col-md-8">
       <div className="input-group mb-3">
         <input
           type="text"
@@ -82,31 +84,38 @@ return (
             </button>
           </div>
         </div>
-      </div>
-      <div className="col-md-6">
-        <h4>Recipes List</h4>
+      </div> */}
+    <div className="col-md-6">
+      <h4>Recipes by Country</h4>
+			<div>
+        {regionRecipes &&
+        regionRecipes.map((regionRecipe, index) => (
+				<div>
+          <div
+            key={index}
+          >
+						<h4>{regionRecipe.country}</h4>
+					</div>
+					<div>
+						<ul>
+							{regionRecipe.recipe &&
+							regionRecipe.recipe.map((recipe, index) => (
+								<li
+									className={
+										"list-group-item" + (index === currentIndex ? "active" : "")
+									}
+									onClick={() => setActiveRecipe(recipe, index)}
+									key={index}
+								>
+									{recipe.title}
+								</li>
+							))}	
+						</ul>
+					</div>
+				</div>
+				))}
 
-        <ul className="list-group">
-          {recipes &&
-          recipes.map((recipe, index) => (
-            <li
-              className={
-                "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-              onClick={() => setActiveRecipe(recipe, index)}
-              key={index}
-            >
-              {recipe.title}
-            </li>
-          ))}
-        </ul>
-
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllrecipes}
-        >
-          Remove All
-        </button>
+				</div>
       </div>
 
       <div className="col-md-6">

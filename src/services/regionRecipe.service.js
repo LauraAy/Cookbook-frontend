@@ -5,7 +5,7 @@ const create = data => {
     return http.post("/regionRecipes", data);
   };
 
-//Get all recipes with regions
+//Get all regions with recipes
 const getAllRegionRecipes = () => {
   return http.get("/regionRecipes");
 };
