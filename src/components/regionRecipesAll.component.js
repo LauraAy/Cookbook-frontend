@@ -9,6 +9,7 @@ const RecipesAll = ()=> {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
   retrieveRegionRecipes();
@@ -52,6 +53,8 @@ const setActiveRecipe = (recipe, index) => {
 //   });
 // };
 
+
+
 // const findByTitle = () => {
 //   recipeDataService.findByTitle(searchTitle)
 //   .then (response => {
@@ -89,11 +92,9 @@ return (
       <h4>Recipes by Country</h4>
 			<div>
         {regionRecipes &&
-        regionRecipes.map((regionRecipe, index) => (
-				<div>
-          <div
-            key={index}
-          >
+        regionRecipes.map((regionRecipe) => (
+				<div  key={regionRecipe.id}>
+          <div>
 						<h4>{regionRecipe.country}</h4>
 					</div>
 					<div>

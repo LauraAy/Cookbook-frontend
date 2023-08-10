@@ -7,6 +7,7 @@ const RecipesAll = ()=> {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
+  const [searchInput, setSearchInput] = useState ("");
 
   useEffect(() => {
   retrieveRecipes();
@@ -60,12 +61,51 @@ const findByTitle = () => {
     console.log(e);
   });
 };
+const handleChange = (e) => {
+  e.preventDefault();
+  setSearchInput(e.target.value);
+};
+
+function searchRecipes() {  
+  // filter recipes according to search values
+  let filteredRecipes = recipes.filter((recipe) => {
+     return recipe.title.match(searchInput.toLowerCase());
+  });
+  
+  // create table rows
+  const filtered = filteredRecipes?.map((recipe) => (
+     <tr>
+        <td> {recipe.title}</td>
+     </tr>
+  ));
+  return <div> {filtered} </div>;
+}
 
 return (
   <div className="list row">
     <div className="col-md-8">
       <div className="input-group mb-3">
-        <input
+      <h2>
+            {" "}
+            Creating the <i> dynamic search </i> component to implement search.
+         </h2>
+         <input
+            Type="search"
+            placeholder="Search here"
+            onChange={handleChange}
+            value={searchInput}
+         />
+           <table style={{ tableLayout: "fixed", width: "11rem" }}>
+            <tr>
+               <th>Titles</th> 
+            </tr>
+            {searchRecipes()}
+         </table>
+         <br></br>
+         <br></br>
+         <br></br>
+         <br></br>
+        {/* <input
           type="text"
           className="form-control"
           placeholder="Search by title"
@@ -80,7 +120,7 @@ return (
             >
               Search
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="col-md-6">
