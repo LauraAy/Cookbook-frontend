@@ -7,10 +7,8 @@ const RecipesAll = ()=> {
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchRecipe, setSearchRecipe] = useState("");
+  const [selectedRecipe, setSelectedRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
- 
-  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
   retrieveRecipes();
@@ -38,20 +36,9 @@ const setActiveRecipe = (recipe, index) => {
   setCurrentIndex(index);
 };
 
-const removeAllrecipes = () => {
-  recipeDataService.removeAll()
-  .then(response => {
-    console.log(response.data);
-    refreshList();
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
-
 const findByTitle = () => {
-  const searchTitle = searchRecipe.title
-  console.log(searchRecipe.title)
+  const searchTitle = selectedRecipe.title
+  console.log(selectedRecipe.title)
   recipeDataService.findByTitle(searchTitle)
   .then (response => {
     setRecipes(response.data);
@@ -86,7 +73,7 @@ return (
               id="combo-box-demo"
               options = {recipes.map((recipe) => recipe)}
               getOptionLabel={(recipe) => recipe.title }
-              onChange={(event, value) => setSearchRecipe(value)}
+              onChange={(event, value) => setSelectedRecipe(value)}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
             />
