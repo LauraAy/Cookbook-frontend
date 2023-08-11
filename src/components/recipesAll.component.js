@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
+import { Autocomplete, TextField, Options} from '@mui/material';
 
 const RecipesAll = ()=> {
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchTitle, setSearchTitle] = useState("");
-  const [searchInput, setSearchInput] = useState ("");
+  const [searchRecipe, setSearchRecipe] = useState("");
+  const [searchActive, setSearchActive] = useState(false);
+ 
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
   retrieveRecipes();
 }, []);
-
-const onChangeSearchTitle = e => {
-  const searchTitle = e.target.value;
-  setSearchTitle(searchTitle);
-};
 
 const retrieveRecipes = () => {
   recipeDataService.getAll()
@@ -52,78 +50,54 @@ const removeAllrecipes = () => {
 };
 
 const findByTitle = () => {
+  const searchTitle = searchRecipe.title
+  console.log(searchRecipe.title)
   recipeDataService.findByTitle(searchTitle)
   .then (response => {
     setRecipes(response.data);
+    setSearchActive(true)
+    setCurrentRecipe(null)
     console.log(response.data);
   })
   .catch(e => {
     console.log(e);
   });
 };
-const handleChange = (e) => {
-  e.preventDefault();
-  setSearchInput(e.target.value);
-};
 
-function searchRecipes() {  
-  // filter recipes according to search values
-  let filteredRecipes = recipes.filter((recipe) => {
-     return recipe.title.match(searchInput.toLowerCase());
-  });
-  
-  // create table rows
-  const filtered = filteredRecipes?.map((recipe) => (
-     <tr>
-        <td> {recipe.title}</td>
-     </tr>
-  ));
-  return <div> {filtered} </div>;
+const resetAll = () => {
+  retrieveRecipes()
+  setSearchActive(false)
 }
-
 return (
   <div className="list row">
-    <div className="col-md-8">
-      <div className="input-group mb-3">
-      <h2>
-            {" "}
-            Creating the <i> dynamic search </i> component to implement search.
-         </h2>
-         <input
-            Type="search"
-            placeholder="Search here"
-            onChange={handleChange}
-            value={searchInput}
-         />
-           <table style={{ tableLayout: "fixed", width: "11rem" }}>
-            <tr>
-               <th>Titles</th> 
-            </tr>
-            {searchRecipes()}
-         </table>
-         <br></br>
-         <br></br>
-         <br></br>
-         <br></br>
-        {/* <input
-          type="text"
-          className="form-control"
-          placeholder="Search by title"
-          value={searchTitle}
-          onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={findByTitle}
-            >
-              Search
-            </button>
-          </div> */}
+    
+    <div>
+      {searchActive ? (
+        <div>
+          <div className="col-md-8">
+            <button onClick={resetAll}>Return to all recipes</button>
+          </div>
         </div>
-      </div>
-      <div className="col-md-6">
+      ):(
+        <div>
+          <div className="col-md-8">
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options = {recipes.map((recipe) => recipe)}
+              getOptionLabel={(recipe) => recipe.title }
+              onChange={(event, value) => setSearchRecipe(value)}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
+            />
+            <button onClick={findByTitle}>Search</button>
+            <br></br>
+            <br></br>
+          </div>
+        </div>
+      )}
+    </div>
+    <div className="col-md-6">
         <h4>Recipes List</h4>
 
         <ul className="list-group">
@@ -140,13 +114,6 @@ return (
             </li>
           ))}
         </ul>
-
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllrecipes}
-        >
-          Remove All
-        </button>
       </div>
 
       <div className="col-md-6">
