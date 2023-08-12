@@ -57,54 +57,54 @@ return (
         {region.map((region, index) => (
           <div key={index}>
             <h2> {region.country} </h2>
-            {region.regionName ? (
+            {region.regionName && (
               <div>
                 <label>
                   <strong>Region Name:</strong>
                 </label>{" "}
                 {region.regionName}
               </div>
-            ):(<div></div>)}
-            {region.subRegion ? (
+            )}
+            {region.subRegion && (
               <div>
                 <label>
                   <strong>Sub Region:</strong>
                 </label>{" "}
                 {region.subRegion}
               </div>
-            ):(<div></div>)}
-            {region.intermediateRegion ? (
+            )}
+            {region.intermediateRegion && (
               <div>
                 <label>
                   <strong>Intermediate Region:</strong>
                 </label>{" "}
                 {region.intermediateRegion}
               </div>
-            ):(<div></div>)}
-             {region.countryCode ? (
+            )}
+             {region.countryCode && (
               <div>
                 <label>
                   <strong>Country Code:</strong>
                 </label>{" "}
                 {region.countryCode}
               </div>
-            ):(<div></div>)}
-             {region.lat ? (
+            )}
+             {region.lat && (
               <div>
                 <label>
                   <strong>Latitude:</strong>
                 </label>{" "}
                 {region.lat}
               </div>
-            ):(<div></div>)}
-             {region.lng ? (
+            )}
+             {region.lng && (
               <div>
                 <label>
                   <strong>Longitude:</strong>
                 </label>{" "}
                 {region.lng}
               </div>
-            ):(<div></div>)}
+            )}
             <br></br>
             <br></br>
             <button onClick={() => {removeRegion(region.id)}}>Remove Region from This Recipe </button>

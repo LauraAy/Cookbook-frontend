@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
+import { Autocomplete, TextField, Options} from '@mui/material';
 
 const RecipesAll = ()=> {
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchTitle, setSearchTitle] = useState("");
+  const [selectedRecipe, setSelectedRecipe] = useState("");
+  const [searchActive, setSearchActive] = useState(false);
 
   useEffect(() => {
   retrieveRecipes();
 }, []);
-
-const onChangeSearchTitle = e => {
-  const searchTitle = e.target.value;
-  setSearchTitle(searchTitle);
-};
 
 const retrieveRecipes = () => {
   recipeDataService.getAll()
@@ -39,21 +36,14 @@ const setActiveRecipe = (recipe, index) => {
   setCurrentIndex(index);
 };
 
-const removeAllrecipes = () => {
-  recipeDataService.removeAll()
-  .then(response => {
-    console.log(response.data);
-    refreshList();
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
-
 const findByTitle = () => {
+  const searchTitle = selectedRecipe.title
+  console.log(selectedRecipe.title)
   recipeDataService.findByTitle(searchTitle)
   .then (response => {
     setRecipes(response.data);
+    setSearchActive(true)
+    setCurrentRecipe(null)
     console.log(response.data);
   })
   .catch(e => {
@@ -61,29 +51,40 @@ const findByTitle = () => {
   });
 };
 
+const resetAll = () => {
+  retrieveRecipes()
+  setSearchActive(false)
+}
 return (
   <div className="list row">
-    <div className="col-md-8">
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by title"
-          value={searchTitle}
-          onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={findByTitle}
-            >
-              Search
-            </button>
+    
+    <div>
+      {searchActive ? (
+        <div>
+          <div className="col-md-8">
+            <button onClick={resetAll}>Return to all recipes</button>
           </div>
         </div>
-      </div>
-      <div className="col-md-6">
+      ):(
+        <div>
+          <div className="col-md-8">
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options = {recipes.map((recipe) => recipe)}
+              getOptionLabel={(recipe) => recipe.title }
+              onChange={(event, value) => setSelectedRecipe(value)}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
+            />
+            <button onClick={findByTitle}>Search</button>
+            <br></br>
+            <br></br>
+          </div>
+        </div>
+      )}
+    </div>
+    <div className="col-md-6">
         <h4>Recipes List</h4>
 
         <ul className="list-group">
@@ -97,17 +98,9 @@ return (
               key={index}
             >
               {recipe.title}
-  
             </li>
           ))}
         </ul>
-
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllrecipes}
-        >
-          Remove All
-        </button>
       </div>
 
       <div className="col-md-6">

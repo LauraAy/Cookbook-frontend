@@ -18,20 +18,24 @@ const PairingAddComponent = () => {
 		books: "",
 		music: "",
 		decor: "",
-		more: ""
+		more: "",
+		recipeOne:"",
+		recipeTwo:"",
+		recipeThree:""
   };
 
-  const initialPairingRecipeState = {
-		pairingId: null,
-		recipeId: null
-  }
-
-  const [pairings, setPairings] = useState([]);  
+  const [pairings, setPairings] = useState ([]);  
   const [pairing, setPairing] = useState(initialPairingState);
   const [currentPairing, setCurrentPairing] = useState(initialPairingState)
   const [currentPairingId, setCurrentPairingId] = useState()
-  const [currentRecipe, setCurrentRecipe] =useState ([]);
-  const [pairingRecipe, setPairingRecipe] = useState (initialPairingRecipeState);
+  const [recipes, setRecipes] = useState([])
+  const [currentRecipe, setCurrentRecipe] = useState ([]);
+	const [selectedRecipeOneId, setSelectedRecipeOneId] = useState ()
+	const [selectedRecipeTwoId, setSelectedRecipeTwoId] = useState ()
+	const [selectedRecipeThreeId, setSelectedRecipeThreeId] = useState ()
+	const [selectedRecipeOne, setSelectedRecipeOne] = useState ([])
+	const [selectedRecipeTwo, setSelectedRecipeTwo] = useState ([])
+	const [selectedRecipeThree, setSelectedRecipeThree] = useState ([])
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
@@ -41,6 +45,7 @@ const PairingAddComponent = () => {
   useEffect(() => {
 		retrievePairings();
 		retrieveRecipe(id);
+		retrieveRecipes();
   }, []);
 
 
@@ -66,15 +71,97 @@ const PairingAddComponent = () => {
 	});
   };
 
-	
-  //form input to create pairing
+	const retrieveRecipes = () => {
+    RecipeDataService.getAll()
+    .then(response => {
+      setRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
+
+	//form input to create pairing
   const handleInputChange = event => {
 	const { name, value } = event.target;
 	setPairing({ ...pairing, [name]: value });
   };
 
+	 //retrieve first selectedRecipe from id based on dropdown selection
+	 const retrieveSelectedRecipeOne = id => {
+		RecipeDataService.get(id)
+		.then(response => {
+			setSelectedRecipeOne(response.data);
+			console.log(response.data);
+		})
+		.catch(e => {   
+			console.log(e)
+		});
+	};
+
+	//retrieve first recipeId from dropdown selection and run retrieveRecipe function
+	const handleSelectedRecipeOneChange = async (event) => {
+		setSelectedRecipeOneId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeOneId)
+	}
+
+	useEffect(()=>{
+		retrieveSelectedRecipeOne(selectedRecipeOneId)
+		console.log(selectedRecipeOne)
+	}, [selectedRecipeOneId])
+
+
+		 //retrieve second selectedRecipe from id based on dropdown selection
+		 const retrieveSelectedRecipeTwo = id => {
+			RecipeDataService.get(id)
+			.then(response => {
+				setSelectedRecipeTwo(response.data);
+				console.log(response.data);
+			})
+			.catch(e => {   
+				console.log(e)
+			});
+		};
+
+	const handleSelectedRecipeTwoChange = async (event) => {
+		setSelectedRecipeTwoId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeTwoId)
+	}
+
+	useEffect(()=>{
+		retrieveSelectedRecipeTwo(selectedRecipeTwoId)
+		console.log(selectedRecipeTwo)
+	}, [selectedRecipeTwoId])
+
+		 //retrieve third selectedRecipe from id based on dropdown selection
+		 const retrieveSelectedRecipeThree = id => {
+			RecipeDataService.get(id)
+			.then(response => {
+				setSelectedRecipeThree(response.data);
+				console.log(response.data);
+			})
+			.catch(e => {   
+				console.log(e)
+			});
+		};
+
+	const handleSelectedRecipeThreeChange = async (event) => {
+		setSelectedRecipeThreeId(event.target.value);
+		// setSelected(true);
+		console.log(selectedRecipeThreeId)
+	}
+
+	useEffect(()=>{
+		retrieveSelectedRecipeThree(selectedRecipeThreeId)
+		console.log(selectedRecipeTwo)
+	}, [selectedRecipeTwoId])
+
   //save pairing from form
   const savePairing = () => {
+		// console.log(selectedRecipe.id)
 	var data = {
 		pairingName: pairing.pairingName,
 		description: pairing.description,
@@ -83,7 +170,10 @@ const PairingAddComponent = () => {
 		books: pairing.books,
 		music: pairing.music,
 		decor: pairing.decor,
-		more: pairing.more
+		more: pairing.more,
+		recipeOne: selectedRecipeOne.id,
+		recipeTwo: selectedRecipeTwo.id,
+		recipeThree: selectedRecipeThree.id
 	};
 
 	PairingDataService.create(data)
@@ -97,7 +187,8 @@ const PairingAddComponent = () => {
 			books: response.data.books,
 			music: response.data.music,
 			decor: response.data.decor,
-			more: response.data.more
+			more: response.data.more,
+			recipeOne: response.data.recipeOne
 		});
 		setSubmitted(true);
 		console.log(response.data);
@@ -162,6 +253,18 @@ const PairingAddComponent = () => {
 	});
   }
 
+	//  //retrieve currentRecipe from id based on dropdown selection
+	//  const retrieveSelectedRecipe = id => {
+	// 	RecipeDataService.get(id)
+	// 	.then(response => {
+	// 		setSelectedRecipe(response.data);
+	// 		console.log(response.data);
+	// 	})
+	// 	.catch(e => {   
+	// 		console.log(e)
+	// 	});
+	// };
+
   //create new pairing set to true
   const goCreate = () => {
 		setCreateNew(true)
@@ -224,111 +327,162 @@ const PairingAddComponent = () => {
 									<button onClick={savePairingRecipe}>Add this recipe pairing to {currentRecipe.title}.</button>
 								</div>
 							):(
+							<div>
+								<h1>Create a new pairing for {currentRecipe.title}</h1>
 								<div>
-									<div className="form-group">
-										<label htmlFor="pairingName">Recipe Pairing Name</label>
-										<input
-											type="text"
-											className="form-control"
-											id="pairingName"
-											required 
-											value={pairing.pairingName}
-											onChange={handleInputChange}
-											name="pairingName"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="description">Pairing Description</label>
-										<input
-											type="text"
-											className="form-control"
-											id="description"
-											required
-											value={pairing.description}
-											onChange={handleInputChange}
-											name="description"
-										/>
-									</div> 
-									<div className="form-group">
-										<label htmlFor="drinks">Drinks</label>
-										<input
-											type="text"
-											className="form-control"
-											id="drinks"
-											required
-											value={pairing.drinks}
-											onChange={handleInputChange}
-											name="drinks"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="shows">TV Shows or Movies</label>
-										<input
-											type="text"
-											className="form-control"
-											id="shows"
-											required
-											value={pairing.shows}
-											onChange={handleInputChange}
-											name="shows"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="books">Books</label>
-										<input
-											type="text"
-											className="form-control"
-											id="books"
-											required
-											value={pairing.books}
-											onChange={handleInputChange}
-											name="books"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="music">Music</label>
-										<input
-											type="text"
-											className="form-control"
-											id="music"
-											required
-											value={pairing.music}
-											onChange={handleInputChange}
-											name="music"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="decor">Decor</label>
-										<input
-											type="text"
-											className="form-control"
-											id="decor"
-											required
-											value={pairing.decor}
-											onChange={handleInputChange}
-											name="decor"
-										/>
-									</div>
-									<div className="form-group">
-										<label htmlFor="more">More</label>
-										<input
-											type="text"
-											className="form-control"
-											id="more"
-											required
-											value={pairing.more}
-											onChange={handleInputChange}
-											name="more"
-										/>
-									</div>
-									<br></br>
-									<br></br>
-									<button onClick={savePairing} className="btn btn-success">
-										Submit
-									</button>
+								<div className="form-group">
+									<label htmlFor="pairingName">Recipe Pairing Name</label>
+									<input
+										type="text"
+										className="form-control"
+										id="pairingName"
+										required 
+										value={pairing.pairingName}
+										onChange={handleInputChange}
+										name="pairingName"
+									/>
 								</div>
-							)}
+								<div className="form-group">
+									<label htmlFor="description">Pairing Description</label>
+									<input
+										type="text"
+										className="form-control"
+										id="description"
+										required
+										value={pairing.description}
+										onChange={handleInputChange}
+										name="description"
+									/>
+								</div> 
+								<div className="form-group">
+									<label htmlFor="drinks">Drinks</label>
+									<input
+										type="text"
+										className="form-control"
+										id="drinks"
+										required
+										value={pairing.drinks}
+										onChange={handleInputChange}
+										name="drinks"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="shows">TV Shows or Movies</label>
+									<input
+										type="text"
+										className="form-control"
+										id="shows"
+										required
+										value={pairing.shows}
+										onChange={handleInputChange}
+										name="shows"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="books">Books</label>
+									<input
+										type="text"
+										className="form-control"
+										id="books"
+										required
+										value={pairing.books}
+										onChange={handleInputChange}
+										name="books"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="music">Music</label>
+									<input
+										type="text"
+										className="form-control"
+										id="music"
+										required
+										value={pairing.music}
+										onChange={handleInputChange}
+										name="music"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="decor">Decor</label>
+									<input
+										type="text"
+										className="form-control"
+										id="decor"
+										required
+										value={pairing.decor}
+										onChange={handleInputChange}
+										name="decor"
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="more">More</label>
+									<input
+										type="text"
+										className="form-control"
+										id="more"
+										required
+										value={pairing.more}
+										onChange={handleInputChange}
+										name="more"
+									/>
+								</div>
+							</div>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+              <Form>
+                <select class="form-control" onChange={handleSelectedRecipeOneChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+							<Form>
+                <select class="form-control" onChange={handleSelectedRecipeTwoChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<br></br>
+							<br></br>
+							<p>Please select a Recipe from the dropdown.</p> 
+							<Form>
+                <select class="form-control" onChange={handleSelectedRecipeThreeChange} >
+                  <option>Select a Recipe</option>
+                  {recipes.map((recipes, index) => 
+                    <option
+                      value= {recipes.id}
+                      key={index}
+                    >
+											{recipes.title}
+                    </option>
+                  )}
+                </select>
+              </Form>
+							<br></br>
+							<br></br>
+							<button onClick={savePairing} className="btn btn-success">
+								Submit
+							</button>
 						</div>
+						)}
+					</div>
 					):(
 						<div>
 							{ selected ? (
@@ -337,6 +491,8 @@ const PairingAddComponent = () => {
 									<button onClick={savePairingRecipeDropdown}>Add this pairing to recipe</button>
 								</div>
 							):(
+								<div>
+									<h1>Attach a pairing to {currentRecipe.title}</h1>
 								<div>  
 									<p>Please select a pairing from the dropdown.</p> 
 									<Form>
@@ -356,6 +512,7 @@ const PairingAddComponent = () => {
 									<br></br>
 									<p>Or create a new recipe pairing</p>
 									<button onClick={goCreate}>Create New Recipe Pairing</button>
+								</div>
 								</div>
 							)}
 						</div>

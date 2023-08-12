@@ -5,10 +5,20 @@ const create = data => {
     return http.post("/regionRecipes", data);
   };
 
-//Get all recipes with regions
+//Get all regions with recipes
 const getAllRegionRecipes = () => {
   return http.get("/regionRecipes");
 };
+
+//Get all regions with recipes by country  
+const findByCountry = country => {
+  return http.get(`/regionRecipes/search?country=${country}`);
+};
+
+//Get all regions with recipes by regionName
+const findByRegionName = regionName => {
+  return http.get(`/regionRecipes/search?regionName=${regionName}`);
+}
 
 //Get all recipes with regions
 const getAllRecipeRegions = () => {
@@ -25,7 +35,6 @@ const getRecipeRegions = id => {
     return http.get(`/regionRecipes/recipes/${id}`);
   };
 
-
 //Remove region from recipe
 const removeRegion = (recipeId, regionId) => {
   return http.delete(`/regionRecipes/${recipeId}/${regionId}`);
@@ -37,6 +46,8 @@ const RegionRecipeService = {
   getAllRecipeRegions,
   getRegionRecipes,
   getRecipeRegions,
+  findByCountry,
+  findByRegionName,
   removeRegion
 };
 

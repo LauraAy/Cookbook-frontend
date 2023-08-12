@@ -157,9 +157,6 @@ const CreatorEdit = props => {
       </div>
     )}
   </div>
-
-
-
   );
 };
 
