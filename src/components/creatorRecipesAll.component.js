@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import { Link } from "react-router-dom";
-import { Autocomplete, TextField, Options} from '@mui/material';
+import { Autocomplete, TextField} from '@mui/material';
 
 
 const CreatorRecipesAll = ()=> {
@@ -10,8 +10,6 @@ const CreatorRecipesAll = ()=> {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedCreator, setSelectedCreator] = useState("")
   const [searchActive, setSearchActive] = useState(false);
-	// const [countrySearch, setCountrySearch] = useState(false)
-	// const [currentRegionName, setCurrentRegionName] = useState("")
 
   useEffect(() => {
   retrieveCreatorRecipes();
@@ -79,7 +77,7 @@ return (
               getOptionLabel={(creatorRecipe) => creatorRecipe.creatorName }
               onChange={(event, value) => setSelectedCreator(value)}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Search By Country" />}
+              renderInput={(params) => <TextField {...params} label="Search By Recipe Creator Name" />}
             />
             <button onClick={findByCreatorName}>Search</button>
             <br></br>

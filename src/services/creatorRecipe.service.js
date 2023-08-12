@@ -12,7 +12,7 @@ const getAllCreatorRecipes = () => {
 
 //Get all creators with recipes by creatorName  
 const findByCreatorName = creatorName => {
-  return http.get(`/regionRecipes/search?creatorName=${creatorName}`);
+  return http.get(`/creatorRecipes/search?creatorName=${creatorName}`);
 };
 
 //Get all recipes with creators
