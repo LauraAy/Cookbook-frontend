@@ -1,3 +1,4 @@
+-adjust regionRecipes controller for findAll and search 
 -create filter to view recipes by region and creator
 -add hash links to components on recipe page and links in subNav above
 -establish what to display on recipe preview for all recipes and your recipes

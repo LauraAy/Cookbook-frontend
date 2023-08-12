@@ -3,6 +3,7 @@ import RegionRecipeDataService from "../services/regionRecipe.service";
 import RegionDataService from "../services/region.service";
 import { Link } from "react-router-dom";
 import { Autocomplete, TextField, Options} from '@mui/material';
+import RegionRecipeService from "../services/regionRecipe.service";
 
 const RegionRecipesAll = ()=> {
   const [regionRecipes, setRegionRecipes] = useState ([]);
@@ -10,6 +11,8 @@ const RegionRecipesAll = ()=> {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRegion, setSelectedRegion] = useState("")
   const [searchActive, setSearchActive] = useState(false);
+	const [countrySearch, setCountrySearch] = useState(false)
+	const [currentRegionName, setCurrentRegionName] = useState("")
 
   useEffect(() => {
   retrieveRegionRecipes();
@@ -40,9 +43,26 @@ const setActiveRecipe = (recipe, index) => {
 const findByCountry = () => {
   const searchCountry = selectedRegion.country
   console.log(selectedRegion.country)
-  RegionDataService.findByCountry(searchCountry)
+  RegionRecipeDataService.findByCountry(searchCountry)
   .then (response => {
     setRegionRecipes(response.data);
+    setSearchActive(true)
+		setCountrySearch(true)
+    setCurrentRecipe(null)
+    console.log(response.data);
+  })
+  .catch(e => {
+    console.log(e);
+  });
+};
+
+const findByRegionName = () => {
+  const searchRegionName = selectedRegion.regionName
+  console.log(selectedRegion.regionName)
+  RegionRecipeDataService.findByRegionName(searchRegionName)
+  .then (response => {
+    setRegionRecipes(response.data);
+		setCurrentRegionName(searchRegionName)
     setSearchActive(true)
     setCurrentRecipe(null)
     console.log(response.data);
@@ -55,6 +75,9 @@ const findByCountry = () => {
 const resetAll = () => {
   retrieveRegionRecipes()
   setSearchActive(false)
+	if ( countrySearch === true ) {
+		setCountrySearch(false)
+	}
 }
 
 return (
@@ -76,17 +99,41 @@ return (
               getOptionLabel={(regionRecipe) => regionRecipe.country }
               onChange={(event, value) => setSelectedRegion(value)}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
+              renderInput={(params) => <TextField {...params} label="Search By Country" />}
             />
             <button onClick={findByCountry}>Search</button>
             <br></br>
             <br></br>
           </div>
-        </div>
+          <div>
+            <div className="col-md-8">
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options = {regionRecipes.map((regionRecipe) => regionRecipe)}
+                getOptionLabel={(regionRecipe) => regionRecipe.regionName }
+                onChange={(event, value) => setSelectedRegion(value)}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="Search By RegionName" />}
+              />
+              <button onClick={findByRegionName}>Search</button>
+              <br></br>
+              <br></br>
+            </div>
+          </div>
+        </div> 
       )} 
     </div>
     <div className="col-md-6">
-    <h4>Recipes by Country</h4>
+			{countrySearch? (<h4>Recipes by Country</h4>)
+			:(
+			<div>
+				<h4>Recipes by Region</h4>
+				<h4>{currentRegionName}</h4>
+				<br></br>
+			</div>
+			)}
+  
     <div>
       {regionRecipes &&
       regionRecipes.map((regionRecipe) => (

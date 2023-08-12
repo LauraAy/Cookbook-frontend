@@ -9,11 +9,11 @@ const get = id => {
 };
 
 const findByCountry = country => {
-  return http.get(`/regions?country=${country}`);
+  return http.get(`/regions/search?country=${country}`);
 };
 
 const findByRegionName = regionName => {
-  return http.get(`/regions?regionName=${regionName}`);
+  return http.get(`/regions/search?regionName=${regionName}`);
 };
 
 const create = data => {

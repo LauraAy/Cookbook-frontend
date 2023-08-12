@@ -12,12 +12,12 @@ const getAllRegionRecipes = () => {
 
 //Get all regions with recipes by country  
 const findByCountry = country => {
-  return http.get(`/regionRecipes?country=${country}`);
+  return http.get(`/regionRecipes/search?country=${country}`);
 };
 
 //Get all regions with recipes by regionName
 const findByRegionName = regionName => {
-  return http.get(`/regionRecipes?regionName=${regionName}`);
+  return http.get(`/regionRecipes/search?regionName=${regionName}`);
 }
 
 //Get all recipes with regions
@@ -34,8 +34,6 @@ const getRegionRecipes = id => {
 const getRecipeRegions = id => {
     return http.get(`/regionRecipes/recipes/${id}`);
   };
-
-
 
 //Remove region from recipe
 const removeRegion = (recipeId, regionId) => {
