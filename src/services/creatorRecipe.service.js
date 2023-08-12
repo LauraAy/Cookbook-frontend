@@ -5,9 +5,14 @@ const create = data => {
     return http.post("/creatorRecipes", data);
   };
 
-//Get all recipes with creators
+//Get all creators with recipes
 const getAllCreatorRecipes = () => {
   return http.get("/creatorRecipes");
+};
+
+//Get all creators with recipes by creatorName  
+const findByCreatorName = creatorName => {
+  return http.get(`/regionRecipes/search?creatorName=${creatorName}`);
 };
 
 //Get all recipes with creators
@@ -33,6 +38,7 @@ const removeCreator = (recipeId, creatorId) => {
 const CreatorRecipeService = {
   create,
   getAllCreatorRecipes,
+  findByCreatorName,
   getAllRecipeCreators,
   getCreatorRecipes,
   getRecipeCreators,

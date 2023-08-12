@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecipesAll from "../components/recipesAll.component.js";
 import RegionRecipesAll from "../components/regionRecipesAll.component.js"
+import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
 
 const RecipesAllPage = () => {
   
@@ -73,7 +74,7 @@ const RecipesAllPage = () => {
 			{ creatorView && (
 			<div>
 				<div>
-					<h1>Creators</h1>
+					<CreatorRecipesAll />
 				</div>
 				<button onClick={goRecipeView}>filter by recipe title</button>
 				<button onClick={goRegionView}>filter by region</button>
