@@ -57,12 +57,11 @@ const findByCountry = () => {
 };
 
 const findByRegionName = () => {
-  const searchRegionName = selectedRegion.regionName
+  const searchRegionName = currentRegionName
   console.log(selectedRegion.regionName)
   RegionRecipeDataService.findByRegionName(searchRegionName)
   .then (response => {
     setRegionRecipes(response.data);
-		setCurrentRegionName(searchRegionName)
     setSearchActive(true)
     setCurrentRecipe(null)
     console.log(response.data);
@@ -110,9 +109,10 @@ return (
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                options = {regionRecipes.map((regionRecipe) => regionRecipe)}
-                getOptionLabel={(regionRecipe) => regionRecipe.regionName }
-                onChange={(event, value) => setSelectedRegion(value)}
+                options = {Array.from(new Set(regionRecipes.map((regionRecipe) => regionRecipe.regionName)))
+									.map((regionName) => regionName)}
+                getOptionLabel={(regionName) => regionName }
+                onChange={(event, value) => setCurrentRegionName(value)}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Search By RegionName" />}
               />
