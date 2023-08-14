@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import recipeDataService from "../services/recipe.service";
 import UserRecipeDataService from "../services/userRecipe.service"
 import { Link } from "react-router-dom";
 import { Autocomplete, TextField, Options} from '@mui/material';
@@ -9,21 +8,16 @@ const UserRecipesAll = ()=> {
   const [userRecipes, setUserRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchTitle, setSearchTitle] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
 
   const currentUser = AuthService.getCurrentUser();
-  // const id = currentUser.id
+  const userId = currentUser.id
+ 
   useEffect(() => {
     retrieveUserRecipes(currentUser.id)
     console.log (currentUser.id)
   }, []);
-
-// const onChangeSearchTitle = e => {
-//   const searchTitle = e.target.value;
-//   setSearchTitle(searchTitle);
-// };
 
 const retrieveUserRecipes = (id) => {
   UserRecipeDataService.findUserRecipes(id)
@@ -36,11 +30,11 @@ const retrieveUserRecipes = (id) => {
   });
 };
 
-const refreshList = () => {
-  retrieveUserRecipes();
-  setCurrentRecipe(null);
-  setCurrentIndex(-1);
-};
+// const refreshList = () => {
+//   retrieveUserRecipes();
+//   setCurrentRecipe(null);
+//   setCurrentIndex(-1);
+// };
 
 const setActiveRecipe = (recipe, index) => {
   setCurrentRecipe(recipe);
@@ -48,10 +42,10 @@ const setActiveRecipe = (recipe, index) => {
 };
 
 
-const findByTitle = (id) => {
+const findByTitle = () => {
   const searchTitle = selectedRecipe.title
   console.log(selectedRecipe.title)
-  UserRecipeDataService.findByTitle(id, searchTitle)
+  UserRecipeDataService.findByTitle(userId, searchTitle)
   .then (response => {
     setUserRecipes(response.data);
     setSearchActive(true)
@@ -64,7 +58,7 @@ const findByTitle = (id) => {
 };
 
 const resetAll = () => {
-  retrieveUserRecipes()
+  retrieveUserRecipes(userId)
   setSearchActive(false)
 }
 

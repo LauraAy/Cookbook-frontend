@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UserRecipesAll from "../components/userRecipesAll.component.js";
-import UserRegionRecipes from "../components/userRegionRecipes.component.js";
-import UserCreatorRecipes from "../components/userCreatorRecipes.component.js";
+import UserRegionRecipesAll from "../components/userRegionRecipesAll.component.js";
+import UserCreatorRecipesAll from "../components/userCreatorRecipesAll.component.js";
 
 const UserRecipesPage = () => {
 	const [userRecipesView, setUserRecipesView] = useState(true)
@@ -60,7 +60,7 @@ const UserRecipesPage = () => {
 		<div>
 			{ userRegionView && (
 				<div>	
-					<UserRegionRecipes />
+					<UserRegionRecipesAll />
 					<button onClick={goUserRecipesView}>filter by recipe title</button>
 					<button onClick={goUserCreatorView}>filter by creator</button>
 				</div>
@@ -69,7 +69,7 @@ const UserRecipesPage = () => {
 		<div>
 			{ userCreatorView && (
 				<div>	
-					<UserCreatorRecipes />
+					<UserCreatorRecipesAll />
 					<button onClick={goUserRecipesView}>filter by recipe title</button>
 					<button onClick={goUserRegionView}>filter by region</button>
 				</div>

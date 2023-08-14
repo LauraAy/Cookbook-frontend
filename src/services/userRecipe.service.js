@@ -15,9 +15,9 @@ const findUserRecipeCreators = id => {
   return http.get(`userRecipes/creators/${id}`)
 }
 
-//Get all regions with recipes by creatorName and user id
-const findByCreatorName = creatorName => {
-    return http.get(`/userRecipes/creatorSearch?creatorName=${creatorName}`);
+//Find all recipes by creatorName and user id
+const findByCreatorName = (id, creatorName) => {
+    return http.get(`/userRecipes/creatorSearch/${id}?creatorName=${creatorName}`);
   };
 
 //Get all regions with recipes by userId 
@@ -26,21 +26,22 @@ const findUserRecipeRegions = id => {
 }
 
 //Get all regions with recipes by country and user id 
-const findByCountry = country => {
-  return http.get(`/userRecipes/regionSearch?country=${country}`);
+const findByCountry = (id, country) => {
+  return http.get(`/userRecipes/regionSearch/${id}?country=${country}`);
 };
 
 //Get all regions with recipes by regionName and user id
-const findByRegionName = regionName => {
-    return http.get(`/userRecipes/regionSearch?regionName=${regionName}`);
+const findByRegionName = (id, regionName) => {
+    return http.get(`/userRecipes/regionSearch/${id}?regionName=${regionName}`);
   };
   
 
 const RegionRecipeService = {
   findUserRecipes,
 	findByTitle,
-  // findUserRecipeCreators,
+  findUserRecipeCreators,
 	findByCreatorName,
+  findUserRecipeRegions,
   findByCountry,
   findByRegionName,
 };
