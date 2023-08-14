@@ -3,10 +3,9 @@ import RecipesAll from "../components/recipesAll.component.js";
 import RegionRecipesAll from "../components/regionRecipesAll.component.js"
 import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
 
-const RecipesAllPage = () => {
-  
+const RecipesAllPage = () => { 
 	const [allView, setAllView] = useState(true)
-  const [regionView, setRegionView] = useState(false)
+	const [regionView, setRegionView] = useState(false)
   const [creatorView, setCreatorView] = useState(false)
 
 	const goRecipeView = () => {

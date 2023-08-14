@@ -57,7 +57,6 @@ const resetAll = () => {
 }
 return (
   <div className="list row">
-    
     <div>
       {searchActive ? (
         <div>

@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
+import UserRecipeDataService from "../services/userRecipe.service"
 import { Link } from "react-router-dom";
+import { Autocomplete, TextField, Options} from '@mui/material';
 import AuthService from "../services/auth.service";
 
-const UserRecipes = ()=> {
+const UserRecipesAll = ()=> {
   const [userRecipes, setUserRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
+  const [selectedRecipe, setSelectedRecipe] = useState("");
+  const [searchActive, setSearchActive] = useState(false);
 
   const currentUser = AuthService.getCurrentUser();
-  
+  // const id = currentUser.id
   useEffect(() => {
     retrieveUserRecipes(currentUser.id)
     console.log (currentUser.id)
   }, []);
 
-const onChangeSearchTitle = e => {
-  const searchTitle = e.target.value;
-  setSearchTitle(searchTitle);
-};
+// const onChangeSearchTitle = e => {
+//   const searchTitle = e.target.value;
+//   setSearchTitle(searchTitle);
+// };
 
 const retrieveUserRecipes = (id) => {
-  recipeDataService.getUserRecipes(id)
+  UserRecipeDataService.findUserRecipes(id)
   .then(response => {
     setUserRecipes(response.data);
     console.log(response.data);
@@ -43,56 +47,61 @@ const setActiveRecipe = (recipe, index) => {
   setCurrentIndex(index);
 };
 
-const removeAllrecipes = () => {
-  recipeDataService.removeAll()
-  .then(response => {
+
+const findByTitle = (id) => {
+  const searchTitle = selectedRecipe.title
+  console.log(selectedRecipe.title)
+  UserRecipeDataService.findByTitle(id, searchTitle)
+  .then (response => {
+    setUserRecipes(response.data);
+    setSearchActive(true)
+    setCurrentRecipe(null)
     console.log(response.data);
-    refreshList();
   })
   .catch(e => {
     console.log(e);
   });
 };
 
-const findByTitle = () => {
-  recipeDataService.findByTitle(searchTitle)
-  .then (response => {
-    setUserRecipes(response.data);
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+const resetAll = () => {
+  retrieveUserRecipes()
+  setSearchActive(false)
+}
 
 return (
   <div className="list row">
-    <div className="col-md-8">
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by title"
-          value={searchTitle}
-          onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={findByTitle}
-            >
-              Search
-            </button>
+    <div>
+      {searchActive ? (
+        <div>
+          <div className="col-md-8">
+            <button onClick={resetAll}>Return to your recipes</button>
           </div>
         </div>
-      </div>
-      <div className="col-md-6">
+      ):(
+        <div>
+          <div className="col-md-8">
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options = {userRecipes.map((recipe) => recipe)}
+              getOptionLabel={(recipe) => recipe.title }
+              onChange={(event, value) => setSelectedRecipe(value)}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
+            />
+            <button onClick={findByTitle}>Search</button>
+            <br></br>
+            <br></br>
+          </div>
+        </div>
+      )}
+    </div>
+    <div className="col-md-6">
         <h4>Recipes List</h4>
 
         <ul className="list-group">
           {userRecipes &&
-          userRecipes.recipes?.map((recipe, index) => (
+          userRecipes.map((recipe, index) => (
             <li
               className={
                 "list-group-item " + (index === currentIndex ? "active" : "")
@@ -101,17 +110,9 @@ return (
               key={index}
             >
               {recipe.title}
-  
             </li>
           ))}
         </ul>
-
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllrecipes}
-        >
-          Remove All
-        </button>
       </div>
 
       <div className="col-md-6">
@@ -160,6 +161,7 @@ return (
               </label>{" "}
                ?
             </div>
+
             <Link
               to={"/recipes/" + currentRecipe.id}
             >
@@ -188,4 +190,4 @@ return (
     );
   }
 
-  export default UserRecipes;
+  export default UserRecipesAll;
