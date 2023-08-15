@@ -19,7 +19,7 @@ import RecipeAdd from "./pages/recipeAdd.page.js";
 import RecipeEdit from "./pages/recipeEdit.page.js";
 import RecipeView from "./pages/recipeView.page.js";
 import RecipesAll from "./pages/recipesAll.page.js";
-import UserRecipes from "./pages/userRecipes.page.js";
+import UserRecipesAll from "./pages/userRecipesAll.page.js";
 
 import RegionAdd from "./pages/regionAdd.page.js";
 
@@ -111,7 +111,7 @@ const App = () => {
 
           <Route path="/recipes/:id" element={<RecipeView/>} />
           <Route path="/recipes" element={<RecipesAll/>} />
-          <Route path="/user/recipes" element={<UserRecipes/>} /> 
+          <Route path="/user/recipes" element={<UserRecipesAll/>} /> 
           <Route path="/recipes/add" element={<RecipeAdd/>} />
           <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
           
