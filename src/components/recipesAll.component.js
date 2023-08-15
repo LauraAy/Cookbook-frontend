@@ -96,7 +96,14 @@ return (
               onClick={() => setActiveRecipe(recipe, index)}
               key={index}
             >
-              {recipe.title}
+              <div>
+                <strong>
+                {recipe.title}
+                </strong>
+              </div>
+              <div>
+                {recipe.description}
+              </div>
             </li>
           ))}
         </ul>

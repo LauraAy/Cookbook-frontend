@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import RecipeDataService from "../services/recipe.service";
 import EverythingDataService from "../services/everything.service";
-import RegionRecipeDataService from "../services/regionRecipe.service";
 import Accordion from 'react-bootstrap/Accordion';
 import RecipeViewComponent from '../components/recipeView.component.js'
 import RegionViewComponent from '../components/regionView.component.js'
@@ -12,23 +10,6 @@ import PairingViewComponent from "../components/pairingView.component";
 const RecipeViewPage = params => {
   const { id } = useParams();
   const [currentRecipe, setCurrentRecipe] = useState ([]);
-
-
-  // const getRecipeRegions = id => {
-  //   RegionRecipeDataService.getRecipeRegions(id)
-  //   .then(response => {
-  //     setCurrentRecipe(response.data);
-  //     console.log(response.data);
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //   });
-  // };
-  
-  // useEffect(() => {
-  //   if(id)
-  //   getRecipeRegions(id);
-  // }, [id]);
 
 const getRecipeEverything = id => {
     EverythingDataService.getRecipeEverything(id)
@@ -48,8 +29,40 @@ const getRecipeEverything = id => {
 
 return (
   <div>
-  <h2>{currentRecipe.title}</h2>
-<Accordion defaultActiveKey="0">
+    <h2>{currentRecipe.title}</h2>
+    <div><strong>Description: </strong>{currentRecipe.description}</div>
+    <div>
+      <strong>Region: </strong>
+      {currentRecipe.region &&
+        currentRecipe.region.map((region) => (
+          <>
+            {region.regionName}&nbsp;&nbsp;
+          </>
+        ) 
+      )}
+      <br></br>
+      <strong>Country: </strong>
+        {currentRecipe.region &&
+          currentRecipe.region.map((region) => (
+            <>
+              {region.country}&nbsp;&nbsp;
+            </>
+          ) 
+        )}
+        <br></br>
+        <strong>Recipe Creator: </strong>
+        {currentRecipe.creator &&
+          currentRecipe.creator.map((creator) => (
+            <>
+              {creator.creatorName}&nbsp;&nbsp;
+            </>
+          )
+        )}
+        <br></br>
+        <br></br>
+    </div>
+
+    <Accordion defaultActiveKey="0">
       <Accordion.Item eventKey="0">
         <Accordion.Header>Full Recipe</Accordion.Header>
         <Accordion.Body>
@@ -95,6 +108,5 @@ return (
     </Link>
   </div>
 )}
-
 
 export default RecipeViewPage
