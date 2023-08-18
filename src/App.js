@@ -31,6 +31,34 @@ const App = () => {
   return (
     <>
     <NavbarComponent />
+      
+    <div className="container mt-3">
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/user" element={<BoardUser />} />
+        <Route path="/mod" element={<BoardModerator />} />
+        <Route path="/admin" element={<BoardAdmin />} />
+
+        <Route path="/recipes/:id" element={<RecipeView/>} />
+        <Route path="/recipes" element={<RecipesAll/>} />
+        <Route path="/user/recipes" element={<UserRecipesAll/>} /> 
+        <Route path="/recipes/add" element={<RecipeAdd/>} />
+        <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
+          
+        <Route path="/regions/add/:id" element = {<RegionAdd/>} />
+          
+        <Route path="/creators/add/:id" element = {<CreatorAdd/>} />
+        <Route path="/creators/edit/:recipeId/:creatorId" element={<CreatorEdit/>} />
+          
+        <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
+        <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
+        </Routes>
+
+
+      
       {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to ={"/"} className="navbar-brand">
           Your World Cookbook 
@@ -79,32 +107,6 @@ const App = () => {
           </div>
         )}
       </nav> */}
-      
-      <div className="container mt-3">
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/user" element={<BoardUser />} />
-          <Route path="/mod" element={<BoardModerator />} />
-          <Route path="/admin" element={<BoardAdmin />} />
-
-          <Route path="/recipes/:id" element={<RecipeView/>} />
-          <Route path="/recipes" element={<RecipesAll/>} />
-          <Route path="/user/recipes" element={<UserRecipesAll/>} /> 
-          <Route path="/recipes/add" element={<RecipeAdd/>} />
-          <Route path="/recipes/edit/:id" element={<RecipeEdit/>} />
-          
-          <Route path="/regions/add/:id" element = {<RegionAdd/>} />
-          
-          <Route path="/creators/add/:id" element = {<CreatorAdd/>} />
-          <Route path="/creators/edit/:recipeId/:creatorId" element={<CreatorEdit/>} />
-          
-          <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
-          <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
-         
-        </Routes>
       </div>
     </>
     );

@@ -7,22 +7,26 @@ import { MenuBook, BakeryDining }from '@mui/icons-material';
 
 import AuthService from "../services/auth.service";
 
-const NavbarComponent = () => {
+// const NavbarComponent = () => {
 
-const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-const [showAdminBoard, setShowAdminBoard] = useState(false);
-const [currentUser, setCurrentUser] = useState(undefined);
+// // const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+// // const [showAdminBoard, setShowAdminBoard] = useState(false);
+// const [currentUser, setCurrentUser] = useState(undefined);
+// const [userName, setUserName] = useState(undefined);
 
-//user login and logout functions
-useEffect(() => {
+// //user login and logout functions
+// useEffect(() => {
   const user = AuthService.getCurrentUser();
 
-  if (user) {
-    setCurrentUser(user);
-    setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-    setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-  }
-}, []);
+//   if (user) {
+//     setCurrentUser(user);
+// 		setUserName("something")
+// 		console.log(user)
+// 		console.log(user.username)
+//     // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+//     // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+//   }
+// }, []);
 
 const logOut = () => {
   AuthService.logout();
@@ -30,10 +34,21 @@ const logOut = () => {
 
 	//app bar functions
 	const pages = [
-		{name: 'Your Recipes', value: 'userRecipes'},
-		{name: 'All Recipes', value: 'recipesAll'}
+		{name: 'Your Recipes', link: '/user/recipes'},
+		{name: 'All Recipes', link: '/recipes'},
+		{name: 'Add Recipes', link: '/recipes/add'}
 	]
-	const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+	const userPages = [
+		{name: '{currentUser.username}', link: '/user/profile'},
+		{name: 'Sign Out', link: '/logOut'}
+	]
+
+	const loginPages = [
+		{name: 'Register', link: '/register'},
+		{name: 'Sign In', link: '/logIn'}
+	]
+	const settings = [ `${user.username}`, 'Account', 'Dashboard', 'Logout'];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -73,9 +88,8 @@ const logOut = () => {
               textDecoration: 'none',
             }}
           >
-            Your World Cookbook
+						Your World Cookbook
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -107,7 +121,11 @@ const logOut = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
+									<Typography textAlign="center">
+										<Link to ={`${page.link}`} className="navbar-brand">
+											{page.name}
+										</Link>
+									</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -129,7 +147,7 @@ const logOut = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Your World Cookbook
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -138,16 +156,19 @@ const logOut = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page.name}
+								<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
+									{page.name}
+								</Link>
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+              <Button 
+							onClick={handleOpenUserMenu} 
+							sx={{  my: 2, color: 'white', display: 'block'  }}>
+                <Typography>hi{userName}</Typography>
+              </Button>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
