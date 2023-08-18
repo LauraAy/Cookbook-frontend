@@ -73,7 +73,7 @@ const logOut = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Your World Cookbook
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
