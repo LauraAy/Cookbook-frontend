@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-
-import AuthService from "./services/auth.service";
-
-// import Navbar from "./components/navbar.component";
+// import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
+// Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
+import NavbarComponent from "./components/navbar.component";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "./App.css"
+// import AuthService from "./services/auth.service";
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
@@ -14,43 +14,24 @@ import Profile from "./pages/profile.page.js";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
-
 import RecipeAdd from "./pages/recipeAdd.page.js";
 import RecipeEdit from "./pages/recipeEdit.page.js";
 import RecipeView from "./pages/recipeView.page.js";
 import RecipesAll from "./pages/recipesAll.page.js";
 import UserRecipesAll from "./pages/userRecipesAll.page.js";
-
 import RegionAdd from "./pages/regionAdd.page.js";
-
 import CreatorAdd from "./pages/creatorAdd.page.js";
 import CreatorEdit from "./pages/creatorEdit.page.js";
-
 import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
 
 const App = () => {
-  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
-  const [currentUser, setCurrentUser] = useState(undefined);
-
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-    }
-  }, []);
-
-  const logOut = () => {
-    AuthService.logout();
-  };
+ 
 
   return (
     <>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+    <NavbarComponent />
+      {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to ={"/"} className="navbar-brand">
           Your World Cookbook 
         </Link>
@@ -97,7 +78,7 @@ const App = () => {
             </li>
           </div>
         )}
-      </nav>
+      </nav> */}
       
       <div className="container mt-3">
         <Routes>

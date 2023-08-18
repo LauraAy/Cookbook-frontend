@@ -117,7 +117,8 @@ const RecipesAll = ()=> {
       />
 
       <List p="10" pt="3" spacing={2}>
-        {_DATA.currentData().map(recipe => {
+        {_DATA &&
+          _DATA.currentData().map(recipe => {
           return (
           <>
             <ListItemButton 
