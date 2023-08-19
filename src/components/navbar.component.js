@@ -1,36 +1,16 @@
 import React, { useState, useEffect } from "react";
+import AuthService from "../services/auth.service";
 import { Routes, Route, Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container,
 Avatar, Button, Tooltip, MenuItem }from '@mui/material';
 import { MenuBook, BakeryDining }from '@mui/icons-material';
 
-
-import AuthService from "../services/auth.service";
-
-// const NavbarComponent = () => {
-
-// // const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-// // const [showAdminBoard, setShowAdminBoard] = useState(false);
-// const [currentUser, setCurrentUser] = useState(undefined);
-// const [userName, setUserName] = useState(undefined);
-
-// //user login and logout functions
-// useEffect(() => {
+const NavbarComponent = () => {
   const user = AuthService.getCurrentUser();
 
-//   if (user) {
-//     setCurrentUser(user);
-// 		setUserName("something")
-// 		console.log(user)
-// 		console.log(user.username)
-//     // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-//     // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-//   }
-// }, []);
-
-const logOut = () => {
-  AuthService.logout();
-};
+	const logOut = () => {
+		AuthService.logout();
+	};
 
 	//app bar functions
 	const pages = [
@@ -39,16 +19,10 @@ const logOut = () => {
 		{name: 'Add Recipes', link: '/recipes/add'}
 	]
 
-	const userPages = [
-		{name: '{currentUser.username}', link: '/user/profile'},
-		{name: 'Sign Out', link: '/logOut'}
-	]
-
 	const loginPages = [
 		{name: 'Register', link: '/register'},
-		{name: 'Sign In', link: '/logIn'}
+		{name: 'Sign In', link: '/login'}
 	]
-	const settings = [ `${user.username}`, 'Account', 'Dashboard', 'Logout'];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -56,6 +30,7 @@ const logOut = () => {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -72,6 +47,8 @@ const logOut = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+				{ user ? (
+				<>
         <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -167,7 +144,7 @@ const logOut = () => {
               <Button 
 							onClick={handleOpenUserMenu} 
 							sx={{  my: 2, color: 'white', display: 'block'  }}>
-                <Typography>hi{userName}</Typography>
+                <Typography>{user.username}</Typography>
               </Button>
             </Tooltip>
             <Menu
@@ -186,13 +163,56 @@ const logOut = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={handleCloseUserMenu}>
+									<Link to ={`/profile`} className="navbar-brand">
+                  	<Typography textAlign="center">Profile</Typography>
+									</Link>
                 </MenuItem>
-              ))}
+								<MenuItem onClick={handleCloseUserMenu}>
+									<Link to ={`/logout`} className="navbar-brand" onClick={logOut}>
+                  	<Typography textAlign="center">Sign Out</Typography>
+									</Link>
+                </MenuItem>
+             
             </Menu>
           </Box>
+					</>
+						):(
+						<>
+						 <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+						Your World Cookbook
+          </Typography>
+					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {loginPages.map((page) => (
+              <Button
+                key={page.name}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+								<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
+									{page.name}
+								</Link>
+              </Button>
+            ))}
+          </Box>
+
+						</>
+						)}
         </Toolbar>
       </Container>
     </AppBar>
