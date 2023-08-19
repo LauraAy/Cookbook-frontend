@@ -6,7 +6,18 @@ Avatar, Button, Tooltip, MenuItem }from '@mui/material';
 import { MenuBook, BakeryDining }from '@mui/icons-material';
 
 const NavbarComponent = () => {
-  const user = AuthService.getCurrentUser();
+	const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+		const user = AuthService.getCurrentUser();
+		  if (user) {
+		    setCurrentUser(user);
+				console.log(user)
+				console.log(user.username)
+		    // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+		    // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+		  }
+		}, []);
 
 	const logOut = () => {
 		AuthService.logout();
@@ -47,7 +58,7 @@ const NavbarComponent = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-				{ user ? (
+				{ currentUser ? (
 				<>
         <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
@@ -144,7 +155,7 @@ const NavbarComponent = () => {
               <Button 
 							onClick={handleOpenUserMenu} 
 							sx={{  my: 2, color: 'white', display: 'block'  }}>
-                <Typography>{user.username}</Typography>
+                <Typography>{currentUser.username}</Typography>
               </Button>
             </Tooltip>
             <Menu
@@ -169,9 +180,9 @@ const NavbarComponent = () => {
 									</Link>
                 </MenuItem>
 								<MenuItem onClick={handleCloseUserMenu}>
-									<Link to ={`/logout`} className="navbar-brand" onClick={logOut}>
+									<a href={`/logout`} className="navbar-brand" onClick={logOut}>
                   	<Typography textAlign="center">Sign Out</Typography>
-									</Link>
+									</a>
                 </MenuItem>
              
             </Menu>
