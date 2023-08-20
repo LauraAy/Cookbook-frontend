@@ -3,6 +3,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+import { Box, TextField, InputAdornment, IconButton} from '@mui/material';
+import { Visibility, VisibilityOff,} from '@mui/icons-material';
 
 import AuthService from "../services/auth.service";
 
@@ -100,61 +102,72 @@ const RegisterComponent = () => {
     }
   };
 
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
-
-        <Form onSubmit={handleRegister} ref={form}>
-          {!successful && (
-            <div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="username"
-                  value={username}
-                  onChange={onChangeUsername}
-                  validations={[required, vusername]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="email"
-                  value={email}
-                  onChange={onChangeEmail}
-                  validations={[required, validEmail]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={password}
-                  onChange={onChangePassword}
-                  validations={[required, vpassword]}
-                />
-              </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
-              </div>
-            </div>
-          )}
-
-          {message && (
+  <>
+    <Form onSubmit={handleRegister} ref={form}>
+      {!successful && (
+      <>
+        <Box
+          sx={{
+            '& > :not(style)': { m: 1, width: '25ch' },
+          }}
+          onSubmit={handleRegister}
+        >
+          <div className="form-group">
+            <TextField 
+              id="outlined-basic" 
+              label="User Name" 
+              value={username} 
+              onChange={onChangeUsername} 
+              variant="outlined" 
+            />
+          </div>
+          <div className="form-group">
+            <TextField 
+              id="outlined-basic" 
+              label="Email" 
+              value={email} 
+              onChange={onChangeEmail} 
+              variant="outlined" 
+            />
+          </div>
+          <div className="form-group">
+            <TextField 
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password" 
+              value={password} 
+              onChange={onChangePassword} 
+              variant="outlined" 
+            />
+          </div>
+          <div className="form-group">
+            <button className="btn btn-primary btn-block">Sign Up</button>
+          </div>
+        </Box>
+      </>
+      )}
+      {message && (
             <div className="form-group">
               <div
                 className={ successful ? "alert alert-success" : "alert alert-danger" }
@@ -165,10 +178,68 @@ const RegisterComponent = () => {
             </div>
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
-      </div>
-    </div>
-  );
-};
+    </Form>
+  </>
+      
+        //  <Form onSubmit={handleRegister} ref={form}>
+        //   {!successful && (
+        //     <div>
+        //       <div className="form-group">
+        //         <label htmlFor="username">Username</label>
+        //         <Input
+        //           type="text"
+        //           className="form-control"
+        //           name="username"
+        //           value={username}
+        //           onChange={onChangeUsername}
+        //           validations={[required, vusername]}
+        //         />
+        //       </div>
+
+        //       <div className="form-group">
+        //         <label htmlFor="email">Email</label>
+        //         <Input
+        //           type="text"
+        //           className="form-control"
+        //           name="email"
+        //           value={email}
+        //           onChange={onChangeEmail}
+        //           validations={[required, validEmail]}
+        //         />
+        //       </div>
+
+        //       <div className="form-group">
+        //         <label htmlFor="password">Password</label>
+        //         <Input
+        //           type="password"
+        //           className="form-control"
+        //           name="password"
+        //           value={password}
+        //           onChange={onChangePassword}
+        //           validations={[required, vpassword]}
+        //         />
+        //       </div>
+            
+
+        //       <div className="form-group">
+        //         <button className="btn btn-primary btn-block">Sign Up</button>
+        //       </div>
+        //     </div>
+        //   )}
+
+        //   {message && (
+        //     <div className="form-group">
+        //       <div
+        //         className={ successful ? "alert alert-success" : "alert alert-danger" }
+        //         role="alert"
+        //       >
+        //         {message}
+        //       </div>
+        //     </div>
+        //   )}
+        //   <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        // </Form> 
+  )
+}
 
 export default RegisterComponent;
