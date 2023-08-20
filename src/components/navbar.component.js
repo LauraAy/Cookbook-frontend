@@ -10,13 +10,13 @@ const NavbarComponent = () => {
 
   useEffect(() => {
 		const user = AuthService.getCurrentUser();
-		  if (user) {
-		    setCurrentUser(user);
+			if (user) {
+				setCurrentUser(user);
 				console.log(user)
 				console.log(user.username)
 		    // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
 		    // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-		  }
+			}
 		}, []);
 
 	const logOut = () => {
@@ -58,172 +58,173 @@ const NavbarComponent = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-				{ currentUser ? (
-				<>
-        <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-						Your World Cookbook
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuBook />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">
-										<Link to ={`${page.link}`} className="navbar-brand">
-											{page.name}
-										</Link>
-									</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <BakeryDining sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Your World Cookbook
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-								<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
-									{page.name}
-								</Link>
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <Button 
-							onClick={handleOpenUserMenu} 
-							sx={{  my: 2, color: 'white', display: 'block'  }}>
-                <Typography>{currentUser.username}</Typography>
-              </Button>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+					{ currentUser ? (
+					<>
+						<BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+							<Typography
+								variant="h6"
+								component="a"
+								href="/"
+								sx={{
+								mr: 2,
+								display: { xs: 'none', md: 'flex' },
+								fontFamily: 'monospace',
+								fontWeight: 700,
+								letterSpacing: '.3rem',
+								color: 'inherit',
+								textDecoration: 'none',
+							}}
+						>
+							Your World Cookbook
+						</Typography>
+						<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+							<IconButton
+								size="large"
+								aria-label="account of current user"
+								aria-controls="menu-appbar"
+								aria-haspopup="true"
+								onClick={handleOpenNavMenu}
+								color="inherit"
+							>
+								<MenuBook />
+							</IconButton>
+							<Menu
+								id="menu-appbar"
+								anchorEl={anchorElNav}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'left',
+								}}
+								open={Boolean(anchorElNav)}
+								onClose={handleCloseNavMenu}
+								sx={{
+									display: { xs: 'block', md: 'none' },
+									}}
+							>
+								{pages.map((page) => (
+									<MenuItem key={page.name} onClick={handleCloseNavMenu}>
+										<Typography textAlign="center">
+											<Link to ={`${page.link}`} className="navbar-brand">
+												{page.name}
+											</Link>
+										</Typography>
+									</MenuItem>
+								))}
+							</Menu>
+						</Box>
+						<BakeryDining sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, ml: 2 }} />
+						<Typography
+							variant="h5"
+							component="a"
+							href="/"
+							sx={{
+								mr: 2,
+								display: { xs: 'flex', md: 'none' },
+								flexGrow: 1,
+								fontFamily: 'monospace',
+								fontWeight: 700,
+								letterSpacing: '.3rem',
+								color: 'inherit',
+								textDecoration: 'none'
+							}}
+						>
+							Your World Cookbook
+						</Typography>
+						<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+							{pages.map((page) => (
+								<Button
+									key={page.name}
+									onClick={handleCloseNavMenu}
+									sx={{ my: 2, color: 'white', display: 'block' }}
+								>
+									<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
+										{page.name}
+									</Link>
+								</Button>
+							))}
+						</Box>
+						<Box sx={{ flexGrow: 0 }}>
+							<Tooltip title="Open settings">
+								<Button	
+									onClick={handleOpenUserMenu}
+									sx={{  my: 2, color: 'white', display: 'block'  }}
+								>
+									<Typography>{currentUser.username}</Typography>
+								</Button>
+							</Tooltip>
+							<Menu
+								sx={{ mt: '45px' }}
+								id="menu-appbar"
+								anchorEl={anchorElUser}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}
+							>
                 <MenuItem onClick={handleCloseUserMenu}>
 									<Link to ={`/profile`} className="navbar-brand">
-                  	<Typography textAlign="center">Profile</Typography>
+										<Typography textAlign="center">Profile</Typography>
 									</Link>
                 </MenuItem>
 								<MenuItem onClick={handleCloseUserMenu}>
 									<a href={`/logout`} className="navbar-brand" onClick={logOut}>
-                  	<Typography textAlign="center">Sign Out</Typography>
+										<Typography textAlign="center">Sign Out</Typography>
 									</a>
                 </MenuItem>
-             
-            </Menu>
-          </Box>
+							</Menu>
+						</Box>
 					</>
-						):(
-						<>
-						 <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-						Your World Cookbook
-          </Typography>
-					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {loginPages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-								<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
-									{page.name}
-								</Link>
-              </Button>
-            ))}
-          </Box>
-
-						</>
-						)}
+					):(
+					<>
+						<BakeryDining sx={{ mr: 1 }} />
+						<Typography
+							variant="h6"
+							component="a" 
+							href="/"
+							sx={{
+							mr: 2,
+							flexGrow: 1,
+							display: 'flex',
+							fontFamily: 'monospace',
+							fontWeight: 700,		
+							letterSpacing: '.3rem',
+							color: 'inherit',
+							textDecoration: 'none',
+						}}
+						>
+							Your World Cookbook
+						</Typography>
+						<Box sx={{ flexGrow: 0 }}>
+							{loginPages.map((page) => (
+								<Button
+									key={page.name}
+									onClick={handleCloseNavMenu}
+									sx={{ 
+										my: 2, 
+										color: 'white', 
+										display: 'inline'
+									}}
+								>
+									<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
+										{page.name}
+									</Link>
+								</Button>
+							))}
+						</Box>
+					</>
+					)}
         </Toolbar>
       </Container>
     </AppBar>
