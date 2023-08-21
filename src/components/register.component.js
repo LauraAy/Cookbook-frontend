@@ -12,8 +12,12 @@ import { Visibility, VisibilityOff,} from '@mui/icons-material';
 
 import AuthService from "../services/auth.service";
 
+ 
 
 const RegisterComponent = () => {
+   // const form = useRef();
+   const checkBtn = useRef();
+   
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,8 +58,8 @@ const RegisterComponent = () => {
     const password = data.password
  
 
-    // setMessage("");
-    // setSuccessful(false);
+    setMessage("");
+    setSuccessful(false);
 
     // form.current.validateAll();
 
@@ -63,8 +67,8 @@ const RegisterComponent = () => {
       AuthService.register(username, email, password).then(
         (response) => {
           console.log("success")
-          // setMessage(response.data.message);
-          // setSuccessful(true);
+          setMessage(response.data.message);
+          setSuccessful(true);
         },
         (error) => {
           const resMessage =
@@ -82,9 +86,9 @@ const RegisterComponent = () => {
   
   
 
-  const onSubmit = data => {
-    console.log(JSON.stringify(data, null, 2));
-  };
+  // const onSubmit = data => {
+  //   console.log(JSON.stringify(data, null, 2));
+  // };
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -97,9 +101,10 @@ const RegisterComponent = () => {
    return (
     <Fragment>
       <Paper>
+        {!successful && (
         <Box px={3} py={2}>
           <Typography variant="h6" align="center" margin="dense">
-            React Hook Form - Material UI - Validation
+            Register to Start Your Cookbook Now!
           </Typography>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
@@ -133,36 +138,58 @@ const RegisterComponent = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="password"
-                name="password"
-                label="Password"
-                type="password"
-                fullWidth
-                margin="dense"
-                {...register('password')}
-                error={errors.password ? true : false}
-              />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.password?.message}
-              </Typography>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  {...register('password')}
+                    error={errors.password ? true : false}
+                />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.password?.message}
+                </Typography>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="confirmPassword"
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                fullWidth
-                margin="dense"
-                {...register('confirmPassword')}
-                error={errors.confirmPassword ? true : false}
-              />
-              <Typography variant="inherit" color="textSecondary">
-                {errors.confirmPassword?.message}
-              </Typography>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Confirm Password"
+                  {...register('confirmPassword')}
+                    error={errors.confirmPassword ? true : false}
+                />
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.confirmPassword?.message}
+                </Typography>
+              </FormControl>
             </Grid>
           </Grid>
 
@@ -177,9 +204,15 @@ const RegisterComponent = () => {
             </Button>
           </Box>
         </Box>
+        )}
+        {message && (
+        <>
+         <h1>You registered succesfully!</h1>
+        </>
+        )}
       </Paper>
     </Fragment>
-  );
+       
 
 
 //   const form = useRef();
@@ -347,7 +380,7 @@ const RegisterComponent = () => {
 //           <CheckButton style={{ display: "none" }} ref={checkBtn} />
 //     </Form>
 //   </>   
-//   )
+   )
 }
 
 export default RegisterComponent;
