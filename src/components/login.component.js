@@ -93,8 +93,8 @@ const LoginComponent = () => {
         <Typography variant="h6" align="center" margin="dense">
           Login to Start Cooking!
         </Typography>
-          <Box sx={{ml:15, mr:15 }}>
-            <FormControl fullWidth >
+          <Box sx={{ ml: "10%", mr: "10%" }}>
+            <FormControl fullWidth>
               <TextField
                 required
                 id="username"
