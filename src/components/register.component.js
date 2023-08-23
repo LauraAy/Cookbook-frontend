@@ -93,7 +93,8 @@ const RegisterComponent = () => {
                 required
                 id="username"
                 name="username"
-                label="Username"
+                label="User name"
+                placeholder="User name"
                 fullWidth
                 margin="dense"
                 {...register('username')}
@@ -109,6 +110,7 @@ const RegisterComponent = () => {
                 id="email"
                 name="email"
                 label="Email"
+                placeholder="Email"
                 fullWidth
                 margin="dense"
                 {...register('email')}

@@ -6,12 +6,7 @@ import * as Yup from 'yup';
 import { Paper, Box, Grid, Button, FillledInput, OutlinedInput, InputLabel, InputAdornment, 
 IconButton, FormHelperText, FormControl, FormControlLabel, Checkbox, TextField, Typography} from '@mui/material';
 import { Visibility, VisibilityOff,} from '@mui/icons-material';
-// import Form from "react-validation/build/form";
-// import Input from "react-validation/build/input";
-// import CheckButton from "react-validation/build/button";
-
 import AuthService from "../services/auth.service";
-import { Center } from "@chakra-ui/react";
 
 
 const LoginComponent = () => {
@@ -21,7 +16,7 @@ const LoginComponent = () => {
   //validation functions
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .required('Username is required'),
+      .required('User name is required'),
     password: Yup.string()
       .required('Password is required')
     });
@@ -44,25 +39,8 @@ const LoginComponent = () => {
       event.preventDefault();
     };
 
-
-
-  const form = useRef();
-  const checkBtn = useRef();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
-  };
-
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
 
   const handleLogin = (data) => {
     const username=data.username
@@ -99,7 +77,8 @@ const LoginComponent = () => {
                 required
                 id="username"
                 name="username"
-                label="Username"
+                label="User name"
+                placeholder="User name"
                 fullWidth
                 margin="dense"
                 {...register('username')}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
-import { Autocomplete, TextField, Pagination, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider } from '@mui/material';
+import { Autocomplete, TextField, Pagination, Box, List, ListItem, ListItemButton,
+  ListItemIcon, ListItemText, Divider } from '@mui/material';
 import usePagination from "../utils/pagination.util";
 import { useNavigate } from 'react-router-dom';
 
