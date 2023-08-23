@@ -115,15 +115,47 @@ const RecipeAddComponent = () => {
 
 // const recipeTypesClean = Array.from(recipes.filter((recipes) => recipes.recipeType !== ''))
 
-const options = Array.from(new Set(recipes.filter((recipes) => recipes.recipeType !== '')))
-.map((option) => {
-  const firstLetter = option.recipeType[0].toUpperCase();
-  return {
-    firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-    ...option,
-  };
- 
-});
+const filRecipes = recipes.filter((recipes) => recipes.recipeType !== '')
+
+const filAlphaRecipes = filRecipes.sort()
+
+// const filAlphaRecipes = filRecipes.map((filAlpha) => {
+//   const firstLetter = filAlpha.recipeType[0].toUpperCase();
+//   return {
+//     firstLetter: /[0-9]/.test(firstLetter) ? 'o-9' : firstLetter, 
+//     ...filAlpha
+//   }
+// })
+
+const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => filAlphaRecipe.recipeType)))
+  .map((option) => (option))
+
+const options = cleanRecipes.sort()
+
+// const options = top100Films.map((option) => {
+//   const firstLetter = option.title[0].toUpperCase();
+//   return {
+//     firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+//     ...option,
+//   };
+// });
+
+// const options = Array.from(new Set(filteredRecipes.map((filteredRecipe) => filteredRecipe.recipeType)))
+//   .map((option) => {
+//   const firstLetter = option[0].toUpperCase();
+//   return {
+//     firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+//     ...option,
+//   };
+// });
+
+const runTest = () => {
+  console.log(options)
+
+}
+
+// options = {Array.from(new Set(regionRecipes.map((regionRecipe) => regionRecipe.regionName)))
+//   .map((regionName) => regionName)}
 
 
 const newRecipe = () => {
@@ -190,7 +222,7 @@ return (
                   {...register('description')}
                 />
 
-<Autocomplete
+{/* <Autocomplete
       value={value}
       onChange={(event, newValue) => {
         if (typeof newValue === 'string') {
@@ -244,7 +276,7 @@ return (
       renderInput={(params) => (
         <TextField {...params} label="Free solo with text demo" />
       )}
-    />
+    /> */}
 
                 <Stack spacing={2} >
                   <Autocomplete
@@ -252,8 +284,8 @@ return (
                     fullWidth
                     id="recipeType"
                     disableClearable
-                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                    getOptionLabel={(option) => option.recipeType}
+                    options={options.map((option) => option)}
+                    getOptionLabel={(option) => option}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -262,10 +294,11 @@ return (
                         ...params.InputProps,
                         type: 'search',
                         }}
+                        {...register('recipeType')}
                       />
                     )}
                   />
-                </Stack>
+                </Stack> 
               <TextField
                     sx={{ mt: 2, mb: 2 }}
                     id="servingSize"
@@ -409,7 +442,7 @@ return (
           </button>
         </div> */}
     
-
+<Button onClick={runTest}>Test</Button>
     </div>     
   );
 };
