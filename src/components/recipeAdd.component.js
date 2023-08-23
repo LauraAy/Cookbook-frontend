@@ -190,7 +190,7 @@ return (
                   {...register('description')}
                 />
 
-{/* <Autocomplete
+<Autocomplete
       value={value}
       onChange={(event, newValue) => {
         if (typeof newValue === 'string') {
@@ -244,7 +244,7 @@ return (
       renderInput={(params) => (
         <TextField {...params} label="Free solo with text demo" />
       )}
-    /> */}
+    />
 
                 <Stack spacing={2} >
                   <Autocomplete
