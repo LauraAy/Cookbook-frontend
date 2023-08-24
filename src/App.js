@@ -25,6 +25,8 @@ import CreatorEdit from "./pages/creatorEdit.page.js";
 import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
 
+import Test from "./components/test.js"
+
 const App = () => {
  
 
@@ -55,58 +57,11 @@ const App = () => {
           
         <Route path="/pairings/add/:id" element = {<PairingAdd/>} />
         <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
+
+        <Route path="/test" element={<Test/>} />
+        
         </Routes>
-
-
-      
-      {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <Link to ={"/"} className="navbar-brand">
-          Your World Cookbook 
-        </Link>
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/user/recipes"} className="nav-link">
-                Your Recipes
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/recipes"} className="nav-link">
-                All Recipes
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/recipes/add"} className="nav-link">
-                Add Recipes
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </div>
-        )}
-      </nav> */}
+   
       </div>
     </>
     );

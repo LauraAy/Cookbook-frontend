@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Grid, Button, FillledInput, OutlinedInput, InputLabel, InputAdornment, 
+import { Paper, Box, Grid, Button, FillledInput, OutlinedInput, InputLabel, InputAdornment,
   IconButton, FormHelperText, FormControl, FormControlLabel, Checkbox, TextField, Typography,
   Stack} from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
@@ -12,7 +12,6 @@ import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
 
 const filter = createFilterOptions();
-
 
 const RecipeAddComponent = () => { 
   const currentUser = AuthService.getCurrentUser();
@@ -33,8 +32,6 @@ const RecipeAddComponent = () => {
 
   const [recipes, setRecipes] = useState ([]);
   const [recipe, setRecipe] = useState(initialRecipeState);
-  const [recipeTypes, setRecipeTypes] = useState ([])
-  // const [recipeTypeClean, setRecipeTypeClean] = useState([])
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
   const [value, setValue] = React.useState(null);
@@ -60,6 +57,8 @@ const RecipeAddComponent = () => {
     title: Yup.string()
       .required('title is required')
     });
+
+    // const form = useForm({ defaultValues: { "servingSize": null }});
   
     const {
       register,
@@ -67,18 +66,12 @@ const RecipeAddComponent = () => {
       handleSubmit,
       formState: { errors }
     } = useForm({
+      defaultValues: { "servingSize": null, "recipeType": ""},
       resolver: yupResolver(validationSchema)
     });
-
-
- 
-  
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setRecipe({ ...recipe, [name]: value });
-  };
   
   const saveRecipe = (formData) => {
+  
     var data = {
       title: formData.title,
       description: formData.description,
@@ -113,50 +106,14 @@ const RecipeAddComponent = () => {
     });
 };
 
-// const recipeTypesClean = Array.from(recipes.filter((recipes) => recipes.recipeType !== ''))
-
 const filRecipes = recipes.filter((recipes) => recipes.recipeType !== '')
 
 const filAlphaRecipes = filRecipes.sort()
 
-// const filAlphaRecipes = filRecipes.map((filAlpha) => {
-//   const firstLetter = filAlpha.recipeType[0].toUpperCase();
-//   return {
-//     firstLetter: /[0-9]/.test(firstLetter) ? 'o-9' : firstLetter, 
-//     ...filAlpha
-//   }
-// })
-
 const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => filAlphaRecipe.recipeType)))
   .map((option) => (option))
 
-const options = cleanRecipes.sort()
-
-// const options = top100Films.map((option) => {
-//   const firstLetter = option.title[0].toUpperCase();
-//   return {
-//     firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-//     ...option,
-//   };
-// });
-
-// const options = Array.from(new Set(filteredRecipes.map((filteredRecipe) => filteredRecipe.recipeType)))
-//   .map((option) => {
-//   const firstLetter = option[0].toUpperCase();
-//   return {
-//     firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-//     ...option,
-//   };
-// });
-
-const runTest = () => {
-  console.log(options)
-
-}
-
-// options = {Array.from(new Set(regionRecipes.map((regionRecipe) => regionRecipe.regionName)))
-//   .map((regionName) => regionName)}
-
+const typeOptions = cleanRecipes.sort()
 
 const newRecipe = () => {
     setRecipe(initialRecipeState);
@@ -164,6 +121,9 @@ const newRecipe = () => {
     window.location.reload(false);
   };
 
+  const runTest = () => {
+    console.log(typeOptions)
+  }
 
 return (
     <div>
@@ -221,88 +181,65 @@ return (
                   rows={2}
                   {...register('description')}
                 />
+                <Autocomplete
+                  value={value}
+                  defaultValue=""
+                  {...register('recipeType')}
+                  onChange={(event, newValue) => {
+                    if (typeof newValue === 'string') {
+                      const updatedValue = newValue.replace("Add ", "");
+                      setValue(updatedValue);
+                    } else if (newValue && newValue.inputValue) {
+				              // Create a new value from the user input
+                      setValue(newValue.inputValue);
+                    } else {
+                      setValue(newValue);
+                    }
+                  }}
+                  filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
 
-{/* <Autocomplete
-      value={value}
-      onChange={(event, newValue) => {
-        if (typeof newValue === 'string') {
-          setValue({
-            title: newValue,
-          });
-        } else if (newValue && newValue.inputValue) {
-          // Create a new value from the user input
-          setValue({
-            title: newValue.inputValue,
-          });
-        } else {
-          setValue(newValue);
-        }
-      }}
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
+                    const { inputValue } = params;
 
-        const { inputValue } = params;
-        // Suggest the creation of a new value
-        const isExisting = options.some((option) => inputValue === option.title);
-        if (inputValue !== '' && !isExisting) {
-          filtered.push({
-            inputValue,
-            title: `Add "${inputValue}"`,
-          });
-        }
+                    // Suggest the creation of a new value
+                    const isExisting = options.some((option) => inputValue === option);
+                    if (inputValue !== "" && !isExisting) {
+                      filtered.push(`Add ${inputValue}`);
+                    }
 
-        return filtered;
-      }}
-      selectOnFocus
-      clearOnBlur
-      handleHomeEndKeys
-      id="free-solo-with-text-demo"
-      options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-      getOptionLabel={(option) => {
-        // Value selected with enter, right from the input
-        if (typeof option.recipeType === 'string') {
-          return option.recipeType;
-        }
-        // Add "xxx" option created dynamically
-        if (option.inputValue) {
-          return option.inputValue;
-        }
-        // Regular option
-        return option.recipeType;
-      }}
-      renderOption={(props, option) => <li {...props}>{option.recipeType}</li>}
-      sx={{ width: 300 }}
-      freeSolo
-      renderInput={(params) => (
-        <TextField {...params} label="Free solo with text demo" />
-      )}
-    /> */}
-
-                <Stack spacing={2} >
-                  <Autocomplete
-                    freeSolo
-                    fullWidth
-                    id="recipeType"
-                    disableClearable
-                    options={options.map((option) => option)}
-                    getOptionLabel={(option) => option}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Recipe Type"
-                        InputProps={{
-                        ...params.InputProps,
-                        type: 'search',
-                        }}
-                        {...register('recipeType')}
-                      />
-                    )}
+                    return filtered;
+                  }}
+                  selectOnFocus
+                  clearOnBlur
+                  handleHomeEndKeys
+                  id="recipeType"
+                  options={typeOptions}
+                  getOptionLabel= {(option) => {
+		
+                    // Value selected with enter, right from the input
+                    if (typeof option === 'string') {
+                      const updatedOption = option.replace("Add ", "");
+                      return updatedOption;
+                    }
+                    // Add "xxx" option created dynamically
+                    if (option.inputValue) {
+                      return option.inputValue;
+                    }
+                    // Regular option
+                  return option.toString();
+                  }}
+                  renderOption={(props, option) => <li {...props}>{option}</li>}
+                  sx={{ width: 300 }}
+                  freeSolo
+                  renderInput={(params) => (
+                    <TextField {...params} label="RecipeType" />
+                  )}
                   />
-                </Stack> 
-              <TextField
+                  <TextField
                     sx={{ mt: 2, mb: 2 }}
                     id="servingSize"
-                    defaultValue=""
+                    type="{number}"
+                    // defaultValue={undefined}
                     name="servingSize"
                     label="Serving Size"
                     placeholder="Serving Size"
@@ -336,113 +273,34 @@ return (
                     rows={4}
                     {...register('directions')}
                   />
-                </Box>
+                  <TextField
+                    sx={{ mt: 2, mb: 2 }}
+                    id="source"
+                    defaultValue=""
+                    name="source"
+                    label="Recipe Source"
+                    placeholder="Recipe Source"
+                    fullWidth
+                    margin="dense"
+                    {...register('directions')}
+                  />
                 <Box mt={3}>
                   <Button
                     variant="contained"
                     color="primary"
-                  onClick={handleSubmit(saveRecipe)}
+                    onClick={handleSubmit(saveRecipe)}
                   >
                     Create Recipe
                   </Button>
+                  {/* <Button onClick={runTest}>
+                    Test
+                  </Button> */}
                 </Box>
-              
+              </Box>
             </Paper>
           </Fragment>
         </div>
-          )}
-          {/* <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              required
-              value={recipe.title}
-              onChange={handleInputChange}
-              name="title"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              required
-              value={recipe.description}
-              onChange={handleInputChange}
-              name="description"
-            />
-          </div> 
-          <div className="form-group">
-            <label htmlFor="recipeType">Recipe Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="recipeType"
-              required
-              value={recipe.recipeType}
-              onChange={handleInputChange}
-              name="recipeType"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="servingSize">Serving Size</label>
-            <input
-              type="text"
-              className="form-control"
-              id="servingSize"
-              required
-              value={recipe.servingSize}
-              onChange={handleInputChange}
-              name="servingSize"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredients"
-              required
-              value={recipe.ingredients}
-              onChange={handleInputChange}
-              name="ingredients"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="directions">Directions</label>
-            <input
-              type="text"
-              className="form-control"
-              id="directions"
-              required
-              value={recipe.directions}
-              onChange={handleInputChange}
-              name="directions"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="source">Source</label>
-            <input
-              type="text"
-              className="form-control"
-              id="source"
-              required
-              value={recipe.source}
-              onChange={handleInputChange}
-              name="source"
-            />
-          </div>
-         
-          <button onClick={saveRecipe} className="btn btn-success">
-           Submit
-          </button>
-        </div> */}
-    
-<Button onClick={runTest}>Test</Button>
+      )}
     </div>     
   );
 };
