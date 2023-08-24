@@ -4,13 +4,12 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Button, FormControl, Stack, TextField, Typography } from '@mui/material';
+import { Paper, Box, Button, FormControl, Grid, Item, Stack, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
-
-const filter = createFilterOptions();
+import { NavItem } from "react-bootstrap";
 
 const RegionAddComponent = () => { 
 const { id } = useParams();
@@ -147,50 +146,70 @@ const saveRegionRecipe = () => {
 return (
 <div>
   { submitted ? (
-    <div>
-      <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
-      <br></br>
-      <br></br>
-      <Button onClick={returnRecipe}>View Recipe Page</Button>
-      <br></br>
-      <br></br>
-      <Button onClick={addAnotherRegion}>Add Another Region</Button>
-      <Button onClick={addCreator}>Add a Recipe Creator</Button>
-      <Button onClick={addPairing}>Add a Recipe Pairing</Button>
-    </div>
+    <Paper>
+      <Box m={2}>
+        <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
+      </Box>
+      <Box m={2}>
+        <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
+      </Box>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addAnotherRegion}>Add Another Region</Button>
+      <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+    </Paper>
     ):(
-    <div>
+    <Paper>
       {currentRegion? (
         <div>
-          <h4>Region</h4>
-          <div>
-            <label>
-              <strong>Region</strong>
-            </label>{" "}
-            {currentRegion.regionName}
-          </div>
-          <div>
-            <label>
-              <strong>Country</strong>
-            </label>{" "}
-            {currentRegion.country}
-          </div>
-          <div>
-            <label>
-              <strong>Latitude:</strong>
-            </label>{" "}
-            {currentRegion.lat}
-          </div>
-          <div>
-            <label>
-              <strong>Longitude:</strong>
-            </label>{" "}
-            {currentRegion.long}
-          </div> 
-          <br></br>
-          <br></br>
-          <div>
-            <Typography variant="h6">Please select a country from the dropdown.</Typography>
+          <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+            <Typography variant="h4">
+              Selected Region
+            </Typography>
+            <div>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+                Country:&nbsp;
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+                {currentRegion.country}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+                Region:&nbsp; 
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+                {currentRegion.regionName}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+                Latitude:&nbsp; 
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+                {currentRegion.lat}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+                Longitude:&nbsp; 
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+                {currentRegion.lng}
+              </Typography>
+            </div>
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveRegionRecipe}
+              >
+                Add Region to {currentRecipe.title}
+              </Button>
+            </Box>
+          </Box>
+        
+          <Box mr={'10%'} ml={'10%'}>
+            <Typography variant="h6">Or select a different country from the dropdown.</Typography>
             <Autocomplete
               fullWidth
               disablePortal
@@ -211,15 +230,11 @@ return (
                 />
               )}
             />
-            <br></br>
-            <br></br>
-            <Button onClick={saveRegionRecipe}>
-              Add Region
-            </Button>
-          </div>
+          </Box>
         </div>
         ): (
         <div>
+            <Box mr={'10%'} ml={'10%'} mt={2}>
           <Typography variant="h6">Please select a country from the dropdown.</Typography>
           <Autocomplete
             fullWidth
@@ -241,9 +256,10 @@ return (
               />
             )}
           /> 
+          </Box>
         </div>
       )} 
-    </div>
+    </Paper>
   )}
 </div>
 )}
