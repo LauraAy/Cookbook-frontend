@@ -181,6 +181,27 @@ return (
                   rows={2}
                   {...register('description')}
                 />
+                {/* <Stack spacing={2} >
+                  <Autocomplete
+                    freeSolo
+                    fullWidth
+                    id="recipeType"
+                    disableClearable
+                    options={typeOptions.map((option) => option)}
+                    getOptionLabel={(option) => option}
+                    renderInput={(option) => (
+                      <TextField
+                        {...option}
+                        label="Recipe Type"
+                        InputProps={{
+                        ...option.InputProps,
+                        type: 'search',
+                        }}
+                        {...register('recipeType')}
+                      />
+                    )}
+                  />
+                </Stack>  */}
                 <Autocomplete
                   value={value}
                   defaultValue=""
@@ -215,7 +236,6 @@ return (
                   id="recipeType"
                   options={typeOptions}
                   getOptionLabel= {(option) => {
-		
                     // Value selected with enter, right from the input
                     if (typeof option === 'string') {
                       const updatedOption = option.replace("Add ", "");
@@ -231,8 +251,15 @@ return (
                   renderOption={(props, option) => <li {...props}>{option}</li>}
                   sx={{ width: 300 }}
                   freeSolo
-                  renderInput={(params) => (
-                    <TextField {...params} label="RecipeType" />
+                  renderInput={(option) => (
+                    <TextField   {...option}
+                    label="RecipeType" 
+                    // InputProps={{
+                    // ...option.InputProps,
+                    // type: 'search',
+                    // }} 
+                    {...register('recipeType')}
+                    />
                   )}
                   />
                   <TextField

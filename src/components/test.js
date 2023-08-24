@@ -201,3 +201,25 @@ const top100Films = [
   { title: '3 Idiots', year: 2009 },
   { title: 'Monty Python and the Holy Grail', year: 1975 },
 ];
+
+    {/* <Stack spacing={2} >
+                  <Autocomplete
+                    freeSolo
+                    fullWidth
+                    id="recipeType"
+                    disableClearable
+                    options={typeOptions.map((option) => option)}
+                    getOptionLabel={(option) => option}
+                    renderInput={(option) => (
+                      <TextField
+                        {...option}
+                        label="Recipe Type"
+                        InputProps={{
+                        ...option.InputProps,
+                        type: 'search',
+                        }}
+                        {...register('recipeType')}
+                      />
+                    )}
+                  />
+                </Stack>  */}
