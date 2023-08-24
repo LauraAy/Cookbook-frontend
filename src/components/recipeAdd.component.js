@@ -1,13 +1,10 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom"
-import { useForm, Controller } from 'react-hook-form';
+import { Link } from "react-router-dom"
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Grid, Button, FillledInput, OutlinedInput, InputLabel, InputAdornment,
-  IconButton, FormHelperText, FormControl, FormControlLabel, Checkbox, TextField, Typography,
-  Stack} from '@mui/material';
+import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import { Visibility, VisibilityOff,} from '@mui/icons-material';
 import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
 
@@ -15,7 +12,6 @@ const filter = createFilterOptions();
 
 const RecipeAddComponent = () => { 
   const currentUser = AuthService.getCurrentUser();
-  let navigate = useNavigate();
 
   const initialRecipeState = {
     id: null,
@@ -28,7 +24,6 @@ const RecipeAddComponent = () => {
     source: "",
     userId: undefined
   };
-
 
   const [recipes, setRecipes] = useState ([]);
   const [recipe, setRecipe] = useState(initialRecipeState);
@@ -57,12 +52,9 @@ const RecipeAddComponent = () => {
     title: Yup.string()
       .required('title is required')
     });
-
-    // const form = useForm({ defaultValues: { "servingSize": null }});
   
     const {
       register,
-      control,
       handleSubmit,
       formState: { errors }
     } = useForm({
@@ -121,216 +113,186 @@ const newRecipe = () => {
     window.location.reload(false);
   };
 
-  const runTest = () => {
-    console.log(typeOptions)
-  }
-
-return (
-    <div>
-      {submitted ? (
+  return (
+  <div>
+    {submitted ? (
+      <div>
+        <h4>Recipe Created!</h4>
         <div>
-          <h4>Recipe Created!</h4>
-          <div>
-            {recipe.id}
-            <br></br>
-            {recipe.title}
-          </div>
-          <Link
-            to={"/recipes/" + recipe.id}
-          >
-          <button>View Recipe</button>
-          </Link>
-          <button onClick={newRecipe}>Add Another Recipe</button>
+          {recipe.id}
+          <br></br>
+          {recipe.title}
         </div>
-        ):(
-        <div>
-          <Fragment>
-            <Paper>
-              <Typography variant="h6" align="center" margin="dense">
-                Create a New Recipe
-              </Typography>
-              <Box sx={{ ml: "10%", mr: "10%" }}>
-                <FormControl fullWidth>
-                  <TextField
-                    sx={{ mt: 2, mb: 2 }}
-                    required
-                    id="title"
-                    name="title"
-                    label="Title"
-                    placeholder="Title"
-                    defaultValue=""
-                    fullWidth
-                    margin="dense"
-                    {...register('title')}
-                    error={errors.title ? true : false}
-                  />
-                  <Typography variant="inherit" color="textSecondary">
-                    {errors.username?.message}
-                  </Typography>
-                </FormControl>
+        <Link
+          to={"/recipes/" + recipe.id}
+        >
+          <button>View Recipe</button>
+        </Link>
+        <button onClick={newRecipe}>Add Another Recipe</button>
+      </div>
+      ):(
+      <div>
+        <Fragment>
+          <Paper>
+            <Typography variant="h6" align="center" margin="dense">
+              Create a New Recipe
+            </Typography>
+            <Box sx={{ ml: "10%", mr: "10%" }}>
+              <FormControl fullWidth>
                 <TextField
                   sx={{ mt: 2, mb: 2 }}
-                  id="outlined-multiline-static"
+                  required
+                  id="title"
+                  name="title"
+                  label="Title"
+                  placeholder="Title"
                   defaultValue=""
-                  name="description"
-                  label="Recipe Description"
-                  placeholder="Recipe Description"
                   fullWidth
                   margin="dense"
-                  multiline
-                  rows={2}
-                  {...register('description')}
+                  {...register('title')}
+                  error={errors.title ? true : false}
                 />
-                {/* <Stack spacing={2} >
-                  <Autocomplete
-                    freeSolo
-                    fullWidth
-                    id="recipeType"
-                    disableClearable
-                    options={typeOptions.map((option) => option)}
-                    getOptionLabel={(option) => option}
-                    renderInput={(option) => (
-                      <TextField
-                        {...option}
-                        label="Recipe Type"
-                        InputProps={{
-                        ...option.InputProps,
-                        type: 'search',
-                        }}
-                        {...register('recipeType')}
-                      />
-                    )}
-                  />
-                </Stack>  */}
-                <Autocomplete
-                  value={value}
-                  defaultValue=""
-                  {...register('recipeType')}
-                  onChange={(event, newValue) => {
-                    if (typeof newValue === 'string') {
-                      const updatedValue = newValue.replace("Add ", "");
-                      setValue(updatedValue);
-                    } else if (newValue && newValue.inputValue) {
-				              // Create a new value from the user input
-                      setValue(newValue.inputValue);
-                    } else {
-                      setValue(newValue);
-                    }
-                  }}
-                  filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
+                <Typography variant="inherit" color="textSecondary">
+                  {errors.username?.message}
+                </Typography>
+              </FormControl>
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                id="outlined-multiline-static"
+                defaultValue=""
+                name="description"
+                label="Recipe Description"
+                placeholder="Recipe Description"
+                fullWidth
+                margin="dense"
+                multiline
+                rows={2}
+                {...register('description')}
+              />
+              <Autocomplete
+                value={value}
+                defaultValue=""
+                {...register('recipeType')}
+                onChange={(event, newValue) => {
+                  if (typeof newValue === 'string') {
+                    const updatedValue = newValue.replace("Add ", "");
+                    setValue(updatedValue);
+                  } else if (newValue && newValue.inputValue) {
+				            // Create a new value from the user input
+                    setValue(newValue.inputValue);
+                  } else {
+                    setValue(newValue);
+                  }
+                }}
+                filterOptions={(options, params) => {
+                  const filtered = filter(options, params);
+                  const { inputValue } = params;
 
-                    const { inputValue } = params;
+                  // Suggest the creation of a new value
+                  const isExisting = options.some((option) => inputValue === option);
+                  if (inputValue !== "" && !isExisting) {
+                    filtered.push(`Add ${inputValue}`);
+                  }
 
-                    // Suggest the creation of a new value
-                    const isExisting = options.some((option) => inputValue === option);
-                    if (inputValue !== "" && !isExisting) {
-                      filtered.push(`Add ${inputValue}`);
-                    }
-
-                    return filtered;
-                  }}
-                  selectOnFocus
-                  clearOnBlur
-                  handleHomeEndKeys
-                  id="recipeType"
-                  options={typeOptions}
-                  getOptionLabel= {(option) => {
-                    // Value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                      const updatedOption = option.replace("Add ", "");
-                      return updatedOption;
-                    }
-                    // Add "xxx" option created dynamically
-                    if (option.inputValue) {
-                      return option.inputValue;
-                    }
-                    // Regular option
+                  return filtered;
+                }}
+                selectOnFocus
+                clearOnBlur
+                handleHomeEndKeys
+                id="recipeType"
+                options={typeOptions}
+                getOptionLabel= {(option) => {
+                  // Value selected with enter, right from the input
+                  if (typeof option === 'string') {
+                    const updatedOption = option.replace("Add ", "");
+                    return updatedOption;
+                  }
+                  // Add "xxx" option created dynamically
+                  if (option.inputValue) {
+                    return option.inputValue;
+                  }
+                  // Regular option
                   return option.toString();
-                  }}
-                  renderOption={(props, option) => <li {...props}>{option}</li>}
-                  sx={{ width: 300 }}
-                  freeSolo
-                  renderInput={(option) => (
-                    <TextField   {...option}
+                }}
+                renderOption={(props, option) => <li {...props}>{option}</li>}
+                freeSolo
+                fullWidth
+                renderInput={(option) => (
+                  <TextField   
+                    {...option}
                     label="RecipeType" 
-                    // InputProps={{
-                    // ...option.InputProps,
-                    // type: 'search',
-                    // }} 
+                    InputProps={{
+                      ...option.InputProps,
+                      type: 'search',
+                    }} 
                     {...register('recipeType')}
-                    />
-                  )}
                   />
-                  <TextField
-                    sx={{ mt: 2, mb: 2 }}
-                    id="servingSize"
-                    type="{number}"
-                    // defaultValue={undefined}
-                    name="servingSize"
-                    label="Serving Size"
-                    placeholder="Serving Size"
-                    fullWidth
-                    margin="dense"
-                    {...register('servingSize')}
-                  />
-                  <TextField
-                    sx={{ mt: 2, mb: 2 }}
-                    id="outlined-multiline-static"
-                    defaultValue=""
-                    name="ingredients"
-                    label="Ingredients"
-                    placeholder="ingredients"
-                    fullWidth
-                    margin="dense"
-                    multiline
-                    rows={4}
-                    {...register('ingredients')}
-                  />
-                  <TextField
-                    sx={{ mt: 2, mb: 2 }}
-                    id="outlined-multiline-static"
-                    defaultValue=""
-                    name="directions"
-                    label="Directions"
-                    placeholder="directions"
-                    fullWidth
-                    margin="dense"
-                    multiline
-                    rows={4}
-                    {...register('directions')}
-                  />
-                  <TextField
-                    sx={{ mt: 2, mb: 2 }}
-                    id="source"
-                    defaultValue=""
-                    name="source"
-                    label="Recipe Source"
-                    placeholder="Recipe Source"
-                    fullWidth
-                    margin="dense"
-                    {...register('directions')}
-                  />
-                <Box mt={3}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit(saveRecipe)}
-                  >
-                    Create Recipe
-                  </Button>
-                  {/* <Button onClick={runTest}>
-                    Test
-                  </Button> */}
-                </Box>
+                )}
+              />
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                id="servingSize"
+                type="{number}"
+                name="servingSize"
+                label="Serving Size"
+                placeholder="Serving Size"
+                fullWidth
+                margin="dense"
+                {...register('servingSize')}
+              />
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                id="outlined-multiline-static"
+                defaultValue=""
+                name="ingredients"
+                label="Ingredients"
+                placeholder="ingredients"
+                fullWidth
+                margin="dense"
+                multiline
+                rows={4}
+                {...register('ingredients')}
+              />
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                id="outlined-multiline-static"
+                defaultValue=""
+                name="directions"
+                label="Directions"
+                placeholder="directions"
+                fullWidth
+                margin="dense"
+                multiline
+                rows={4}
+                {...register('directions')}
+              />
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                id="source"
+                defaultValue=""
+                name="source"
+                label="Recipe Source"
+                placeholder="Recipe Source"
+                fullWidth
+                margin="dense"
+                {...register('directions')}
+              />
+              <Box mt={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit(saveRecipe)}
+                >
+                  Create Recipe
+                </Button>
               </Box>
-            </Paper>
-          </Fragment>
-        </div>
-      )}
-    </div>     
+            </Box>
+          </Paper>
+        </Fragment>
+      </div>
+    )}
+  </div>     
   );
 };
-
 
 export default RecipeAddComponent;

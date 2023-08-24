@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { Paper, Box, Button, FormControl, Stack, TextField, Typography } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
-import { useParams, useNavigate } from 'react-router-dom';
+
+const filter = createFilterOptions();
 
 const RegionAddComponent = () => { 
 const { id } = useParams();
@@ -94,15 +101,31 @@ const saveRegionRecipe = () => {
 
   };
 
-  const handleRegionChange = async (event) => {
-    setRegionId(event.target.value);
-    console.log(regionId)
+  const handleRegionChange = async (event, option) => {
+    setRegionId(option.id);
+    console.log(option.id)
   }
   useEffect(()=>{
     console.log(regionId)
     retrieveRegion(regionId)
   }, [regionId])
 
+   //validation functions
+   const validationSchema = Yup.object().shape({
+    title: Yup.string()
+      .required('title is required')
+    });
+  
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm({
+      defaultValues: { "servingSize": null, "recipeType": ""},
+      resolver: yupResolver(validationSchema)
+    });
+
+  //nav functions
   const returnRecipe = () => {
     navigate("/recipes/" + id)
     setSubmitted(false)
@@ -125,15 +148,15 @@ return (
 <div>
   { submitted ? (
     <div>
-     <h4>You've added {currentRegion.country} to {currentRecipe.title}!</h4> 
-     <br></br>
-     <br></br>
-     <button onClick={returnRecipe}>View Recipe Page</button>
-     <br></br>
-     <br></br>
-     <button onClick={addAnotherRegion}>Add Another Region</button>
-     <button onClick={addCreator}>Add a Recipe Creator</button>
-     <button onClick={addPairing}>Add a Recipe Pairing</button>
+      <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
+      <br></br>
+      <br></br>
+      <Button onClick={returnRecipe}>View Recipe Page</Button>
+      <br></br>
+      <br></br>
+      <Button onClick={addAnotherRegion}>Add Another Region</Button>
+      <Button onClick={addCreator}>Add a Recipe Creator</Button>
+      <Button onClick={addPairing}>Add a Recipe Pairing</Button>
     </div>
     ):(
     <div>
@@ -167,48 +190,62 @@ return (
           <br></br>
           <br></br>
           <div>
-            <p>Please select a region from the dropdown.</p> 
-            <Form>
-              <select class="form-control" onChange={handleRegionChange} >
-                <option>Select a Region</option>
-                {regions.map((region, index) => 
-                  <option
-                    value= {region.id}
-                    key={index}
-                  >
-                    {region.country}
-                  </option>
-                )}
-              </select>
-            </Form>
+            <Typography variant="h6">Please select a country from the dropdown.</Typography>
+            <Autocomplete
+              fullWidth
+              disablePortal
+              disableClearable
+              onChange={handleRegionChange}
+              id="recipeType"
+              options={regions.map((option) => option)}
+              getOptionLabel={(option) => option.country}
+              renderInput={(option) => (
+                <TextField
+                  {...option}
+                  label="Country"
+                  InputProps={{
+                  ...option.InputProps,
+                  type: 'search',
+                  }}
+                  {...register('region')}
+                />
+              )}
+            />
             <br></br>
             <br></br>
-            <button onClick={saveRegionRecipe} class="btn btn-success">
+            <Button onClick={saveRegionRecipe}>
               Add Region
-            </button>
+            </Button>
           </div>
         </div>
         ): (
         <div>
-          <p>Please select a region from the dropdown.</p> 
-          <Form>
-            <select class="form-control" onChange={handleRegionChange} >
-              <option>Select a Region</option>
-              {regions.map((region, index) => 
-                <option
-                  value= {region.id}
-                  key={index}
-                >
-                  {region.country}
-                </option>
-              )}
-            </select>
-          </Form>
+          <Typography variant="h6">Please select a country from the dropdown.</Typography>
+          <Autocomplete
+            fullWidth
+            disablePortal
+            disableClearable
+            onChange={handleRegionChange}
+            id="recipeType"
+            options={regions.map((option) => option)}
+            getOptionLabel={(option) => option.country}
+            renderInput={(option) => (
+              <TextField
+                {...option}
+                label="Country"
+                InputProps={{
+                ...option.InputProps,
+                type: 'search',
+                }}
+                {...register('region')}
+              />
+            )}
+          /> 
         </div>
       )} 
     </div>
   )}
 </div>
 )}
-   
+
 export default RegionAddComponent;
