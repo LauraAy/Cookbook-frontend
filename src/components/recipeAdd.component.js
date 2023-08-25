@@ -46,7 +46,6 @@ const RecipeAddComponent = () => {
     });
   };
 
-
    //validation functions
    const validationSchema = Yup.object().shape({
     title: Yup.string()

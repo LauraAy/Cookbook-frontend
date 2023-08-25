@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
 
@@ -42,15 +47,25 @@ const RecipeEdit = props => {
 
 
   //set form input to currentRecipe
-  const handleInputChange = event => {
+  const handleInputChange = (event, option) => {
     const { name, value } = event.target;
     setCurrentRecipe({ ...currentRecipe, [name]: value });
   };
  
 
   //update recipe
-  const updateRecipe = () => {
-    RecipeDataService.update(currentRecipe.id, currentRecipe)
+  const updateRecipe = (formData) => {
+    var data = {
+      title: formData.title,
+      description: formData.description,
+      recipeType: formData.recipeType,
+      servingSize: formData.servingSize,
+      ingredients: formData.ingredients,
+      directions: formData.directions,
+      source: formData.source
+    };
+
+    RecipeDataService.update(currentRecipe.id, data)
       .then(response => {
         console.log(response.data);
         navigate("/recipes/" + currentRecipe.id)
@@ -59,6 +74,21 @@ const RecipeEdit = props => {
         console.log(e);
       });
   };
+
+  //validation functions
+  const validationSchema = Yup.object().shape({
+    // title: Yup.string()
+    //   .required('title is required')
+    });
+  
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm({
+      defaultValues: { title: currentRecipe.title, description: currentRecipe.description, "servingSize": null, "recipeType": ""},
+      resolver: yupResolver(validationSchema)
+    });
 
   //Display delete confirmation modal based on type
   const showDeleteModal = (type) => {
@@ -88,12 +118,71 @@ const RecipeEdit = props => {
       });
   };
 
+  const runTest = (formData) => {
+    console.log(formData)
+  }
+
   return (
-    <div>
-    {currentRecipe ? (
+  <div>
+    <Fragment>
+      <Paper>
+        <Box>
+          <FormControl fullWidth>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              // required
+              id="title"
+              name="title"
+              label="Title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              // defaultValue={currentRecipe.title}
+              // onChange={handleInputChange}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={1}
+              {...register('title')}
+              error={errors.title ? true : false}
+            />
+            <Typography variant="inherit" color="textSecondary">
+              {errors.username?.message}
+            </Typography>
+          </FormControl>
+          <TextField
+            sx={{ mt: 2, mb: 2 }}
+            id="description"
+            name="description"
+            label="Recipe Description"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            defaultValue={currentRecipe.description}
+            // onChange={handleInputChange}
+            fullWidth
+            margin="dense"
+            multiline
+            rows={2}
+            {...register('description')}
+          />  
+          <Button
+            onClick={handleSubmit(updateRecipe)}
+          >
+          Update
+        </Button>  
+        <Button onClick={handleSubmit(runTest)}>
+          Test
+        </Button>      
+        </Box>
+      </Paper>
+    </Fragment>
+    
+
+     {currentRecipe ? (
       <div className="edit-form">
         <h4>Recipe</h4>
-        <form>
+        {/* <form>
           <div className="form-group">
             <label htmlFor="title">Title</label>
             <input
@@ -177,7 +266,7 @@ const RecipeEdit = props => {
             </label>
             {currentRecipe.published ? "Published" : "Pending"}
           </div>
-        </form>
+        </form> */}
 
         {/* {currentRecipe.published ? (
           <button
@@ -216,9 +305,6 @@ const RecipeEdit = props => {
       </div>
     )}
   </div>
-
-
-
   );
 };
 
