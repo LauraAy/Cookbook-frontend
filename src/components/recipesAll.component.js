@@ -36,7 +36,7 @@ const RecipesAll = ()=> {
 
   //variables for set up pagination
   let [page, setPage] = useState(1);
-  const PER_PAGE = 5;
+  const PER_PAGE = 10;
   const count = Math.ceil(recipes.length / PER_PAGE);
   const _DATA = usePagination(recipes, PER_PAGE);
 
