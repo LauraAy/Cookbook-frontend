@@ -86,7 +86,7 @@ const RecipeEdit = props => {
       handleSubmit,
       formState: { errors }
     } = useForm({
-      defaultValues: { title: currentRecipe.title, description: currentRecipe.description, "servingSize": null, "recipeType": ""},
+      values: { title: currentRecipe.title, description: currentRecipe.description, "servingSize": null, "recipeType": ""},
       resolver: yupResolver(validationSchema)
     });
 
@@ -126,19 +126,19 @@ const RecipeEdit = props => {
   <div>
     <Fragment>
       <Paper>
-        <Box>
+        <Typography variant="h6" align="center" margin="dense">
+          Edit {currentRecipe.title}
+        </Typography>
+        <Box sx={{ ml: "10%", mr: "10%" }}>
           <FormControl fullWidth>
             <TextField
               sx={{ mt: 2, mb: 2 }}
-              // required
               id="title"
               name="title"
               label="Title"
               InputLabelProps={{
                 shrink: true,
               }}
-              // defaultValue={currentRecipe.title}
-              // onChange={handleInputChange}
               fullWidth
               margin="dense"
               multiline
@@ -149,162 +149,59 @@ const RecipeEdit = props => {
             <Typography variant="inherit" color="textSecondary">
               {errors.username?.message}
             </Typography>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="description"
+              name="description"
+              label="Recipe Description"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              defaultValue={currentRecipe.description}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={2}
+              {...register('description')}
+            />  
           </FormControl>
-          <TextField
-            sx={{ mt: 2, mb: 2 }}
-            id="description"
-            name="description"
-            label="Recipe Description"
-            InputLabelProps={{
-              shrink: true,
+          <Box 
+            sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 10 
             }}
-            defaultValue={currentRecipe.description}
-            // onChange={handleInputChange}
-            fullWidth
-            margin="dense"
-            multiline
-            rows={2}
-            {...register('description')}
-          />  
-          <Button
-            onClick={handleSubmit(updateRecipe)}
           >
-          Update
-        </Button>  
-        <Button onClick={handleSubmit(runTest)}>
-          Test
-        </Button>      
+            <Button
+              onClick={handleSubmit(updateRecipe)}
+              sx={{my: 2}}
+              variant="contained"
+            >
+              Update
+            </Button>  
+            <Button 
+              onClick={() => showDeleteModal("recipe")}
+              sx={{my: 2, ml: 2}}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button> 
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
+          </Box>   
         </Box>
       </Paper>
     </Fragment>
-    
 
-     {currentRecipe ? (
-      <div className="edit-form">
-        <h4>Recipe</h4>
-        {/* <form>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              name="title"
-              value={currentRecipe.title}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              name="description"
-              value={currentRecipe.description}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="recipeType">Recipe Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="recipeType"
-              name="recipeType"
-              value={currentRecipe.recipeType}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="servingSize">ServingSize</label>
-            <input
-              type="text"
-              className="form-control"
-              id="servingSize"
-              name="servingSize"
-              value={currentRecipe.servingSize}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredients"
-              name="ingredients"
-              value={currentRecipe.ingredients}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="directions">Directions</label>
-            <input
-              type="text"
-              className="form-control"
-              id="directions"
-              name="directions"
-              value={currentRecipe.directions}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="source">Source</label>
-            <input
-              type="text"
-              className="form-control"
-              id="source"
-              name="source"
-              value={currentRecipe.source}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>
-              <strong>Status:</strong>
-            </label>
-            {currentRecipe.published ? "Published" : "Pending"}
-          </div>
-        </form> */}
 
-        {/* {currentRecipe.published ? (
-          <button
-            className="badge badge-primary mr-2"
-            onClick={() => updatePublished(false)}
-          >
-            UnPublish
-          </button>
-        ) : (
-          <button
-            className="badge badge-primary mr-2"
-            onClick={() => updatePublished(true)}
-          >
-            Publish
-          </button>
-        )} */}
-
-        <button
-          type="submit"
-          className="badge badge-success"
-          onClick={updateRecipe}
-        >
-          Update
-        </button>
-
-        <button className="badge badge-danger mr-2" onClick={() => showDeleteModal("recipe")} >
+        {/* <Button className="badge badge-danger mr-2" onClick={() => showDeleteModal("recipe")} >
           Delete
-        </button>
+        </Button> */}
     
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
+        {/* <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  /> */}
       </div>
-    ) : (
-      <div>
-        <br />
-        <p>Please click on a Recipe...</p>
-      </div>
-    )}
-  </div>
+  
+
   );
 };
 

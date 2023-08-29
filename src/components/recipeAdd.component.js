@@ -278,7 +278,7 @@ const newRecipe = () => {
               />
               <Box mt={3}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
                   onClick={handleSubmit(saveRecipe)}
                 >
