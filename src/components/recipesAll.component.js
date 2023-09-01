@@ -89,14 +89,11 @@ const RecipesAll = ()=> {
 
   return (
   <div>
-    <Typography variant="h4" gutterBottom>
-      All Recipes
-    </Typography>
-    <Typography variant="h5" gutterBottom>
-      Search Recipes By Title
-    </Typography>
       {searchActive ? (
         <Box>
+          <Typography variant="h4" gutterBottom>
+            Click to view full recipe.
+          </Typography>
           <Button variant="contained" onClick={resetAll}>Return to all recipes</Button>
           <List p="10" pt="3" spacing={2}>
             {_DATA &&
@@ -120,6 +117,12 @@ const RecipesAll = ()=> {
         </Box>
         ):(
         <div>
+          <Typography variant="h4" gutterBottom>
+            All Recipes
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            Search Recipes By Title
+          </Typography>
           <Box m={3} sx={{ display: 'flex' }}>
             <Autocomplete
               disablePortal
@@ -159,7 +162,7 @@ const RecipesAll = ()=> {
                   return (
                   <>
                     <ListItemButton onClick={() => handleListItemClick(recipe)}>
-                      <ListItem key={recipe.id} listStyleType="disc">
+                      <ListItem key={recipe.id} >
                         <ListItemText
                           primary={recipe.title}
                           secondary={recipe.description}

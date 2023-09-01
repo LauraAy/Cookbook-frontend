@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 const RecipesAllPage = () => { 
 	const [allView, setAllView] = useState(true)
 	const [regionView, setRegionView] = useState(false)
-  const [creatorView, setCreatorView] = useState(false)
+	const [creatorView, setCreatorView] = useState(false)
 
 	const goRecipeView = () => {
 		console.log("hi recipe")
@@ -55,7 +55,7 @@ const RecipesAllPage = () => {
 				<div>
 					<RecipesAll />
 					<Button onClick={goRegionView}>filter by region</Button>
-				<Button onClick={goCreatorView}>filter by creator</Button>
+					<Button onClick={goCreatorView}>filter by creator</Button>
 					
 				</div>	
 			)}
