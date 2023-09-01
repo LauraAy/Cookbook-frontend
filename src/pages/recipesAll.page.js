@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import RecipesAll from "../components/recipesAll.component.js";
 import RegionRecipesAll from "../components/regionRecipesAll.component.js"
 import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
+import { Button } from '@mui/material';
 
 const RecipesAllPage = () => { 
 	const [allView, setAllView] = useState(true)
@@ -53,8 +54,9 @@ const RecipesAllPage = () => {
 			{ allView && (
 				<div>
 					<RecipesAll />
-					<button onClick={goRegionView}>filter by region</button>
-					<button onClick={goCreatorView}>filter by creator</button>
+					<Button onClick={goRegionView}>filter by region</Button>
+				<Button onClick={goCreatorView}>filter by creator</Button>
+					
 				</div>	
 			)}
     </div>
@@ -64,8 +66,8 @@ const RecipesAllPage = () => {
 				<div>
 					<RegionRecipesAll />
 				</div>
-				<button onClick={goRecipeView}>filter by recipe title</button>
-				<button onClick={goCreatorView}>filter by creator</button>
+				<Button onClick={goRecipeView}>filter by recipe title</Button>
+				<Button onClick={goCreatorView}>filter by creator</Button>
 			</div>
 			)}
 		</div>
@@ -75,8 +77,8 @@ const RecipesAllPage = () => {
 				<div>
 					<CreatorRecipesAll />
 				</div>
-				<button onClick={goRecipeView}>filter by recipe title</button>
-				<button onClick={goRegionView}>filter by region</button>
+				<Button onClick={goRecipeView}>filter by recipe title</Button>
+				<Button onClick={goRegionView}>filter by region</Button>
 			</div>
 			)}
 		</div>

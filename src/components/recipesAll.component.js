@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import recipeDataService from "../services/recipe.service";
 import { Link } from "react-router-dom";
-import { Autocomplete, TextField, Pagination, Box, List, ListItem, ListItemButton,
-  ListItemIcon, ListItemText, Divider } from '@mui/material';
+import { Autocomplete, Button, TextField, Pagination, Box, List, ListItem, ListItemButton,
+  ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
 import usePagination from "../utils/pagination.util";
 import { useNavigate } from 'react-router-dom';
+import RecipesAllPage from "../pages/recipesAll.page";
 
 
 const RecipesAll = ()=> {
@@ -26,8 +27,19 @@ const RecipesAll = ()=> {
   const retrieveRecipes = () => {
     recipeDataService.getAll()
     .then(response => {
-      setRecipes(response.data);
-      console.log(response.data);
+      const sortRecipe = response.data
+      
+      sortRecipe.sort((a, b) => {
+        if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
+      setRecipes(sortRecipe);
     })
     .catch(e => {
       console.log(e);
@@ -77,18 +89,38 @@ const RecipesAll = ()=> {
 
   return (
   <div>
-    <h1>All Recipes</h1>
-    <div>
-      <h2>Search Recipes By Title</h2>
+    <Typography variant="h4" gutterBottom>
+      All Recipes
+    </Typography>
+    <Typography variant="h5" gutterBottom>
+      Search Recipes By Title
+    </Typography>
       {searchActive ? (
+        <Box>
+          <Button variant="contained" onClick={resetAll}>Return to all recipes</Button>
+          <List p="10" pt="3" spacing={2}>
+            {_DATA &&
+              _DATA.currentData().map(recipe => {
+              return (
+                <>
+                  <ListItemButton 
+                  onClick={() => handleListItemClick(recipe)}>
+                    <ListItem key={recipe.id} listStyleType="disc">
+                      <ListItemText
+                        primary={recipe.title}
+                        secondary={recipe.description}
+                        />
+                    </ListItem>
+                  </ListItemButton>
+                  <Divider />
+                </>
+              );
+            })}
+          </List>
+        </Box>
+        ):(
         <div>
-          <div className="col-md-8">
-            <button onClick={resetAll}>Return to all recipes</button>
-          </div>
-        </div>
-      ):(
-        <div>
-          <div className="col-md-8">
+          <Box m={3} sx={{ display: 'flex' }}>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -98,52 +130,61 @@ const RecipesAll = ()=> {
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
             />
-            <button onClick={findByTitle}>Search</button>
-            <br></br>
-            <br></br>
-          </div>
+            <Box mx={3} mt={1}>
+              <Button variant="contained" onClick={findByTitle}>Search</Button>
+            </Box>
+          </Box>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Browse Recipes
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              Click to See Full Recipe
+            </Typography>
+            <Box m={3}>
+              <Button variant="outlined" onClick={RecipesAllPage.goRegionView}>filter by region</Button>
+              <Button variant="outlined"  onClick={RecipesAllPage.CreatorView}>filter by creator</Button>
+            </Box>
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
+            />
+            <List p="10" pt="3" spacing={2}>
+              {_DATA &&
+                _DATA.currentData().map(recipe => {
+                  return (
+                  <>
+                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                      <ListItem key={recipe.id} listStyleType="disc">
+                        <ListItemText
+                          primary={recipe.title}
+                          secondary={recipe.description}
+                        />
+                      </ListItem>
+                    </ListItemButton>
+                    <Divider />
+                  </>
+                );
+              })}
+            </List>
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
+            />
+          {/* <Button variant="outlined" onClick={goRegionView}>filter by region</Button>
+					<Button variant="outlined" onClick={goCreatorView}>filter by creator</Button> */}
+          </Box>
         </div>
       )}
     </div>
-    <Box p="5">
-      <h2>Browse Recipes</h2>
-      <h3>Click to See Full Recipe</h3>
-      <Pagination
-        count={count}
-        size="large"
-        page={page}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChange}
-      />
-
-      <List p="10" pt="3" spacing={2}>
-        {_DATA &&
-          _DATA.currentData().map(recipe => {
-          return (
-          <>
-            <ListItemButton 
-          onClick={() => handleListItemClick(recipe)}>
-              <ListItem key={recipe.id} listStyleType="disc">
-                <strong>{recipe.title}:&nbsp;</strong>{" "}
-                <span> {recipe.description}</span>{" "}
-              </ListItem>
-            </ListItemButton>
-            <Divider />
-          </>
-          );
-        })}
-      </List>
-      <Pagination
-        count={count}
-        size="large"
-        page={page}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChange}
-      />
-    </Box>
-  </div>
   )
 }
 

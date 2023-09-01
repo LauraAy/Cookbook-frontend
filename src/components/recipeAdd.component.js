@@ -274,7 +274,7 @@ const newRecipe = () => {
                 placeholder="Recipe Source"
                 fullWidth
                 margin="dense"
-                {...register('directions')}
+                {...register('source')}
               />
               <Box mt={3}>
                 <Button

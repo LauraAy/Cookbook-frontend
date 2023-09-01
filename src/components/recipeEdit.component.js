@@ -1,9 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
@@ -23,36 +21,76 @@ const RecipeEdit = props => {
     userId: undefined
   };
   const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
-  const [message, setMessage] = useState("");
-  const [type, setType] = useState(null);
-  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [recipes, setRecipes] = useState ([]);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
   const [deleteMessage, setDeleteMessage] = useState(null);
+  const [deleteText, setDeleteText] = useState(null);
+
+  const filter = createFilterOptions();
 
   //get recipe
   const getRecipe = id => {
     RecipeDataService.get(id)
-      .then(response => {
-        setCurrentRecipe(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    .then(response => {
+      setCurrentRecipe(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
   };
-
+  
   useEffect(() => {
     if(id)
     getRecipe(id);
   }, [id]);
 
-
-  //set form input to currentRecipe
-  const handleInputChange = (event, option) => {
-    const { name, value } = event.target;
-    setCurrentRecipe({ ...currentRecipe, [name]: value });
+  //get all recipes
+  const retrieveRecipes = () => {
+    RecipeDataService.getAll()
+    .then(response => {
+      setRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
   };
- 
 
+  useEffect(() => {
+    retrieveRecipes();
+  }, []);
+
+  //filters for recipeType options
+  const filRecipes = recipes.filter((recipes) => recipes.recipeType !== '')
+  const filAlphaRecipes = filRecipes.sort()
+  const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => filAlphaRecipe.recipeType)))
+    .map((option) => (option))
+  const typeOptions = cleanRecipes.sort()
+
+  //Dialog functions
+  const handleClickOpen = () => {
+    setDeleteMessage('Are you sure you want to delete the recipe?');
+    setDeleteText('Confirming delete will permanently delete this recipe from the database.')
+  
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //react-hook-form functions
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
+      ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
+  });
+ 
   //update recipe
   const updateRecipe = (formData) => {
     var data = {
@@ -75,37 +113,6 @@ const RecipeEdit = props => {
       });
   };
 
-  //validation functions
-  const validationSchema = Yup.object().shape({
-    // title: Yup.string()
-    //   .required('title is required')
-    });
-  
-    const {
-      register,
-      handleSubmit,
-      formState: { errors }
-    } = useForm({
-      values: { title: currentRecipe.title, description: currentRecipe.description, "servingSize": null, "recipeType": ""},
-      resolver: yupResolver(validationSchema)
-    });
-
-  //Display delete confirmation modal based on type
-  const showDeleteModal = (type) => {
-    setType(type);
-
-    if (type === "recipe") {
-      setDeleteMessage('Are you sure you want to delete the recipe?');
-    }
-
-    setDisplayConfirmationModal(true);
-  };
-
-  //Hide delete confirmation modal
-  const hideConfirmationModal = () => {
-    setDisplayConfirmationModal(false);
-  };
-
   //Delete Recipe
   const submitDelete = () => {
     RecipeDataService.destroy(currentRecipe.id)
@@ -117,10 +124,6 @@ const RecipeEdit = props => {
         console.log(e);
       });
   };
-
-  const runTest = (formData) => {
-    console.log(formData)
-  }
 
   return (
   <div>
@@ -157,13 +160,128 @@ const RecipeEdit = props => {
               InputLabelProps={{
                 shrink: true,
               }}
-              defaultValue={currentRecipe.description}
               fullWidth
               margin="dense"
               multiline
               rows={2}
               {...register('description')}
-            />  
+            />
+            <Autocomplete
+              value={currentRecipe.recipeType}
+              defaultValue=""
+              {...register('recipeType')}
+              onChange={(event, newValue) => {
+                if (typeof newValue === 'string') {
+                  const updatedValue = newValue.replace("Add ", "");
+                  setValue(updatedValue);
+                } else if (newValue && newValue.inputValue) {
+				        // Create a new value from the user input
+                  setValue(newValue.inputValue);
+                } else {
+                  setValue(newValue);
+                }
+              }}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+                const { inputValue } = params;
+                // Suggest the creation of a new value
+                const isExisting = options.some((option) => inputValue === option);
+                if (inputValue !== "" && !isExisting) {
+                  filtered.push(`Add ${inputValue}`);
+                }
+                return filtered;
+              }}
+              selectOnFocus
+              clearOnBlur
+              handleHomeEndKeys
+              id="recipeType"
+              options={typeOptions}
+              getOptionLabel= {(option) => {
+              // Value selected with enter, right from the input
+                if (typeof option === 'string') {
+                  const updatedOption = option.replace("Add ", "");
+                  return updatedOption;
+                }
+                // Add "xxx" option created dynamically
+                if (option.inputValue) {
+                  return option.inputValue;
+                }
+                // Regular option
+                return option.toString();
+              }}
+              renderOption={(props, option) => <li {...props}>{option}</li>}
+              freeSolo
+              fullWidth
+              renderInput={(option) => (
+                <TextField   
+                  {...option}
+                  label="RecipeType" 
+                  placeholder={currentRecipe.recipeType}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  {...register('recipeType')}
+                />
+              )}
+            />
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="servingSize"
+              type="{number}"
+              name="servingSize"
+              label="Serving Size"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              {...register('servingSize')}
+            />
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
+              name="ingredients"
+              label="Ingredients"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={4}
+              {...register('ingredients')}
+            />
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
+              name="directions"
+              label="Directions"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={4}
+              {...register('directions')}
+            />
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="source"
+              // defaultValue=""
+              name="source"
+              label="Recipe Source"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={1}
+              {...register('source')}
+            />
           </FormControl>
           <Box 
             sx={{ 
@@ -180,28 +298,19 @@ const RecipeEdit = props => {
               Update
             </Button>  
             <Button 
-              onClick={() => showDeleteModal("recipe")}
+              onClick={handleClickOpen}
               sx={{my: 2, ml: 2}}
               variant="contained"
               color="error"
             >
               Delete
-            </Button> 
-            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
+            </Button>
+            <DeleteConfirmation openDialog={open} closeDialog={handleClose} confirmDialog={submitDelete} message={deleteMessage} text={deleteText}  />
           </Box>   
         </Box>
       </Paper>
     </Fragment>
-
-
-        {/* <Button className="badge badge-danger mr-2" onClick={() => showDeleteModal("recipe")} >
-          Delete
-        </Button> */}
-    
-        {/* <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  /> */}
-      </div>
-  
-
+  </div>
   );
 };
 
