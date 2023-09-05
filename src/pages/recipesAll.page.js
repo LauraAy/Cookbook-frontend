@@ -4,7 +4,7 @@ import RegionRecipesAll from "../components/regionRecipesAll.component.js"
 import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
 import { Button } from '@mui/material';
 
-const RecipesAllPage = () => { 
+const RecipesAllPage = ({clickTest}) => { 
 	const [allView, setAllView] = useState(true)
 	const [regionView, setRegionView] = useState(false)
 	const [creatorView, setCreatorView] = useState(false)
@@ -48,38 +48,34 @@ const RecipesAllPage = () => {
 		}
 	}
 
+	const testFunction = () => {
+		console.log("what ho!")
+	}
+
   return (
 	<>
+	
     <div>
 			{ allView && (
+			<>
 				<div>
-					<RecipesAll />
-					<Button onClick={goRegionView}>filter by region</Button>
-					<Button onClick={goCreatorView}>filter by creator</Button>
-					
-				</div>	
+					<RecipesAll  clickRegion={goRegionView} clickCreator={goCreatorView} />
+				</div>
+			</>
 			)}
     </div>
 		<div>
 			{ regionView && (
-			<div>	
 				<div>
-					<RegionRecipesAll />
+					<RegionRecipesAll clickTitle={goRecipeView} clickCreator={goCreatorView}/>
 				</div>
-				<Button onClick={goRecipeView}>filter by recipe title</Button>
-				<Button onClick={goCreatorView}>filter by creator</Button>
-			</div>
 			)}
 		</div>
 		<div>
 			{ creatorView && (
-			<div>
 				<div>
-					<CreatorRecipesAll />
+					<CreatorRecipesAll clickTitle={goRecipeView} clickRegion={goRegionView}/>
 				</div>
-				<Button onClick={goRecipeView}>filter by recipe title</Button>
-				<Button onClick={goRegionView}>filter by region</Button>
-			</div>
 			)}
 		</div>
 	</>

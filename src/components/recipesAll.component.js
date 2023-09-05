@@ -5,10 +5,9 @@ import { Autocomplete, Button, TextField, Pagination, Box, List, ListItem, ListI
   ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
 import usePagination from "../utils/pagination.util";
 import { useNavigate } from 'react-router-dom';
-import RecipesAllPage from "../pages/recipesAll.page";
 
 
-const RecipesAll = ()=> {
+const RecipesAll = ({clickRegion, clickCreator})=> {
   //variables for set data and search status
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
@@ -18,7 +17,6 @@ const RecipesAll = ()=> {
 
   const navigate = useNavigate()
 
-  
   //retrieve recipe function and useEffect to run retrieve recipes on load
     useEffect(() => {
     retrieveRecipes();
@@ -145,8 +143,8 @@ const RecipesAll = ()=> {
               Click to See Full Recipe
             </Typography>
             <Box m={3}>
-              <Button variant="outlined" onClick={RecipesAllPage.goRegionView}>filter by region</Button>
-              <Button variant="outlined"  onClick={RecipesAllPage.CreatorView}>filter by creator</Button>
+              <Button variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
+              <Button variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
             </Box>
             <Pagination
               count={count}
