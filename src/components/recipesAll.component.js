@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 const RecipesAll = ({clickRegion, clickCreator})=> {
-  //variables for set data and search status
+
+  //setup for data and search status
   const [recipes, setRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
 
@@ -51,7 +51,7 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
   const _DATA = usePagination(recipes, PER_PAGE);
 
   //pagination function 
-    const handleChange = (e, p) => {
+  const handleChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
   };
@@ -86,7 +86,7 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
   }
 
   return (
-  <div>
+    <div>
       {searchActive ? (
         <Box>
           <Typography variant="h4" gutterBottom>
@@ -121,7 +121,7 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
           <Typography variant="h5" gutterBottom>
             Search Recipes By Title
           </Typography>
-          <Box m={3} sx={{ display: 'flex' }}>
+          <Box m={4} sx={{ display: 'flex' }}>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -131,7 +131,7 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Search Recipe Titles" />}
             />
-            <Box mx={3} mt={1}>
+            <Box mx={2} mt={1}>
               <Button variant="contained" onClick={findByTitle}>Search</Button>
             </Box>
           </Box>
@@ -142,9 +142,9 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
             <Typography variant="subtitle1" gutterBottom>
               Click to See Full Recipe
             </Typography>
-            <Box m={3}>
-              <Button variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
-              <Button variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+            <Box m={2}>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
             </Box>
             <Pagination
               count={count}
@@ -180,8 +180,10 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
               shape="rounded"
               onChange={handleChange}
             />
-          {/* <Button variant="outlined" onClick={goRegionView}>filter by region</Button>
-					<Button variant="outlined" onClick={goCreatorView}>filter by creator</Button> */}
+            <Box m={2}>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+            </Box>
           </Box>
         </div>
       )}
