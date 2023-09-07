@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
 
@@ -18,39 +21,89 @@ const RecipeEdit = props => {
     userId: undefined
   };
   const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
-  const [message, setMessage] = useState("");
-  const [type, setType] = useState(null);
-  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [recipes, setRecipes] = useState ([]);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
   const [deleteMessage, setDeleteMessage] = useState(null);
+  const [deleteText, setDeleteText] = useState(null);
+
+  const filter = createFilterOptions();
 
   //get recipe
   const getRecipe = id => {
     RecipeDataService.get(id)
-      .then(response => {
-        setCurrentRecipe(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    .then(response => {
+      setCurrentRecipe(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
   };
-
+  
   useEffect(() => {
     if(id)
     getRecipe(id);
   }, [id]);
 
-
-  //set form input to currentRecipe
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setCurrentRecipe({ ...currentRecipe, [name]: value });
+  //get all recipes
+  const retrieveRecipes = () => {
+    RecipeDataService.getAll()
+    .then(response => {
+      setRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
   };
- 
 
+  useEffect(() => {
+    retrieveRecipes();
+  }, []);
+
+  //filters for recipeType options
+  const filRecipes = recipes.filter((recipes) => recipes.recipeType !== '')
+  const filAlphaRecipes = filRecipes.sort()
+  const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => filAlphaRecipe.recipeType)))
+    .map((option) => (option))
+  const typeOptions = cleanRecipes.sort()
+
+  //Dialog functions
+  const handleClickOpen = () => {
+    setDeleteMessage('Are you sure you want to delete the recipe?');
+    setDeleteText('Confirming delete will permanently delete this recipe from the database.')
+  
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //react-hook-form functions
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
+      ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
+  });
+ 
   //update recipe
-  const updateRecipe = () => {
-    RecipeDataService.update(currentRecipe.id, currentRecipe)
+  const updateRecipe = (formData) => {
+    var data = {
+      title: formData.title,
+      description: formData.description,
+      recipeType: formData.recipeType,
+      servingSize: formData.servingSize,
+      ingredients: formData.ingredients,
+      directions: formData.directions,
+      source: formData.source
+    };
+
+    RecipeDataService.update(currentRecipe.id, data)
       .then(response => {
         console.log(response.data);
         navigate("/recipes/" + currentRecipe.id)
@@ -58,22 +111,6 @@ const RecipeEdit = props => {
       .catch(e => {
         console.log(e);
       });
-  };
-
-  //Display delete confirmation modal based on type
-  const showDeleteModal = (type) => {
-    setType(type);
-
-    if (type === "recipe") {
-      setDeleteMessage('Are you sure you want to delete the recipe?');
-    }
-
-    setDisplayConfirmationModal(true);
-  };
-
-  //Hide delete confirmation modal
-  const hideConfirmationModal = () => {
-    setDisplayConfirmationModal(false);
   };
 
   //Delete Recipe
@@ -89,136 +126,191 @@ const RecipeEdit = props => {
   };
 
   return (
-    <div>
-    {currentRecipe ? (
-      <div className="edit-form">
-        <h4>Recipe</h4>
-        <form>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
+  <div>
+    <Fragment>
+      <Paper>
+        <Typography variant="h6" align="center" margin="dense">
+          Edit {currentRecipe.title}
+        </Typography>
+        <Box sx={{ ml: "10%", mr: "10%" }}>
+          <FormControl fullWidth>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
               id="title"
               name="title"
-              value={currentRecipe.title}
-              onChange={handleInputChange}
+              label="Title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={1}
+              {...register('title')}
+              error={errors.title ? true : false}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              className="form-control"
+            <Typography variant="inherit" color="textSecondary">
+              {errors.username?.message}
+            </Typography>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
               id="description"
               name="description"
-              value={currentRecipe.description}
-              onChange={handleInputChange}
+              label="Recipe Description"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={2}
+              {...register('description')}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="recipeType">Recipe Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="recipeType"
-              name="recipeType"
+            <Autocomplete
               value={currentRecipe.recipeType}
-              onChange={handleInputChange}
+              defaultValue=""
+              {...register('recipeType')}
+              onChange={(event, newValue) => {
+                if (typeof newValue === 'string') {
+                  const updatedValue = newValue.replace("Add ", "");
+                  setValue(updatedValue);
+                } else if (newValue && newValue.inputValue) {
+				        // Create a new value from the user input
+                  setValue(newValue.inputValue);
+                } else {
+                  setValue(newValue);
+                }
+              }}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+                const { inputValue } = params;
+                // Suggest the creation of a new value
+                const isExisting = options.some((option) => inputValue === option);
+                if (inputValue !== "" && !isExisting) {
+                  filtered.push(`Add ${inputValue}`);
+                }
+                return filtered;
+              }}
+              selectOnFocus
+              clearOnBlur
+              handleHomeEndKeys
+              id="recipeType"
+              options={typeOptions}
+              getOptionLabel= {(option) => {
+              // Value selected with enter, right from the input
+                if (typeof option === 'string') {
+                  const updatedOption = option.replace("Add ", "");
+                  return updatedOption;
+                }
+                // Add "xxx" option created dynamically
+                if (option.inputValue) {
+                  return option.inputValue;
+                }
+                // Regular option
+                return option.toString();
+              }}
+              renderOption={(props, option) => <li {...props}>{option}</li>}
+              freeSolo
+              fullWidth
+              renderInput={(option) => (
+                <TextField   
+                  {...option}
+                  label="RecipeType" 
+                  placeholder={currentRecipe.recipeType}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  {...register('recipeType')}
+                />
+              )}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="servingSize">ServingSize</label>
-            <input
-              type="text"
-              className="form-control"
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
               id="servingSize"
+              type="{number}"
               name="servingSize"
-              value={currentRecipe.servingSize}
-              onChange={handleInputChange}
+              label="Serving Size"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              {...register('servingSize')}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredients"
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
               name="ingredients"
-              value={currentRecipe.ingredients}
-              onChange={handleInputChange}
+              label="Ingredients"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={4}
+              {...register('ingredients')}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="directions">Directions</label>
-            <input
-              type="text"
-              className="form-control"
-              id="directions"
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
               name="directions"
-              value={currentRecipe.directions}
-              onChange={handleInputChange}
+              label="Directions"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={4}
+              {...register('directions')}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="source">Source</label>
-            <input
-              type="text"
-              className="form-control"
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
               id="source"
+              // defaultValue=""
               name="source"
-              value={currentRecipe.source}
-              onChange={handleInputChange}
+              label="Recipe Source"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              margin="dense"
+              multiline
+              rows={1}
+              {...register('source')}
             />
-          </div>
-          <div className="form-group">
-            <label>
-              <strong>Status:</strong>
-            </label>
-            {currentRecipe.published ? "Published" : "Pending"}
-          </div>
-        </form>
-
-        {/* {currentRecipe.published ? (
-          <button
-            className="badge badge-primary mr-2"
-            onClick={() => updatePublished(false)}
+          </FormControl>
+          <Box 
+            sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 10 
+            }}
           >
-            UnPublish
-          </button>
-        ) : (
-          <button
-            className="badge badge-primary mr-2"
-            onClick={() => updatePublished(true)}
-          >
-            Publish
-          </button>
-        )} */}
-
-        <button
-          type="submit"
-          className="badge badge-success"
-          onClick={updateRecipe}
-        >
-          Update
-        </button>
-
-        <button className="badge badge-danger mr-2" onClick={() => showDeleteModal("recipe")} >
-          Delete
-        </button>
-    
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
-      </div>
-    ) : (
-      <div>
-        <br />
-        <p>Please click on a Recipe...</p>
-      </div>
-    )}
+            <Button
+              onClick={handleSubmit(updateRecipe)}
+              sx={{my: 2}}
+              variant="contained"
+            >
+              Update
+            </Button>  
+            <Button 
+              onClick={handleClickOpen}
+              sx={{my: 2, ml: 2}}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button>
+            <DeleteConfirmation openDialog={open} closeDialog={handleClose} confirmDialog={submitDelete} message={deleteMessage} text={deleteText}  />
+          </Box>   
+        </Box>
+      </Paper>
+    </Fragment>
   </div>
-
-
-
   );
 };
 

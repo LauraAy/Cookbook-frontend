@@ -1,25 +1,33 @@
-import React from 'react'
-import { Modal, Button } from "react-bootstrap";
+import React, { useState, Fragment, useEffect } from "react";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-const DeleteConfirmation = ({ showModal, hideModal, confirmModal, id, type, message }) => {
-    return (
-        <Modal show={showModal} onHide={hideModal}>
-        <Modal.Header closeButton>
-            <Modal.Title>Delete Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <div className="alert alert-danger">{message}</div>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="default" onClick={hideModal}>
-                Cancel
-            </Button>
-            <Button variant="danger" onClick={() => confirmModal(type, id)}>
-                Delete
-            </Button>
-        </Modal.Footer>
-    </Modal>
-    )
+const DeleteConfirmation = ({ openDialog, closeDialog, confirmDialog, type, message, text}) => {
+	return (
+		<Box>
+			<Dialog
+				open={openDialog}
+				onClose={closeDialog}
+				type={type}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{message}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						{text}
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={closeDialog}>Cancel</Button>
+					<Button onClick={confirmDialog} autoFocus>
+						Confirm Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</Box>
+	)
 }
 
 export default DeleteConfirmation
