@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import RecipesAll from "../components/recipesAll.component.js";
 import RegionRecipesAll from "../components/regionRecipesAll.component.js"
 import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
+
 import { Button } from '@mui/material';
 
 const RecipesAllPage = ({clickTest}) => { 

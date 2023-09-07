@@ -1,196 +1,227 @@
 import React, { useState, useEffect } from "react";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import { Link } from "react-router-dom";
-import { Autocomplete, TextField} from '@mui/material';
+import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
+  ListItemText, Pagination, TextField, Typography, } from '@mui/material';
+import usePagination from "../utils/pagination.util";
+import { useNavigate } from 'react-router-dom';
 
 
-const CreatorRecipesAll = ()=> {
+const CreatorRecipesAll = ({clickTitle, clickRegion})=> {
   const [creatorRecipes, setCreatorRecipes] = useState ([]);
+  const [creatorRecipesName, setCreatorRecipesName] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedCreator, setSelectedCreator] = useState("")
   const [searchActive, setSearchActive] = useState(false);
+  const [currentCreatorName, setCurrentCreatorName] = useState("")
+
+  const navigate = useNavigate()
 
   useEffect(() => {
-  retrieveCreatorRecipes();
-}, []);
+    retrieveCreatorRecipes();
+  }, []);
 
-const retrieveCreatorRecipes = () => {
-	CreatorRecipeDataService.getAllCreatorRecipes()
-  .then(response => {
-    setCreatorRecipes(response.data);
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+  const retrieveCreatorRecipes = () => {
+	  CreatorRecipeDataService.getAllCreatorRecipes()
+    .then(response => {
+      setCreatorRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
 
-// const refreshList = () => {
-//   retrieveRegions();
-//   setCurrentRegion(null);
-//   setCurrentIndex(-1);
-// };
+  //pagination functions for creatorRecipes
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 5;
+  const count = Math.ceil(creatorRecipes.length / PER_PAGE);
+  const _DATA = usePagination(creatorRecipes, PER_PAGE);
+  
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+  
+  //search function for creatorName
+  const findByCreatorName = () => {
+    const searchCreatorName = selectedCreator.creatorName
+    console.log(selectedCreator.creatorName)
+    
+    CreatorRecipeDataService.findByCreatorName(searchCreatorName)
+    .then (response => {
+      setCreatorRecipesName(response.data);
+      setSearchActive(true)
+      setCurrentRecipe(null)
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
 
-const setActiveRecipe = (recipe, index) => {
-  setCurrentRecipe(recipe);
-  setCurrentIndex(index);
-};
+  //List select function
+  const handleListItemClick = (recipe) => {
+    const recipeId = recipe.id
+    
+    navigate("/recipes/" + recipeId)
+  };
 
-const findByCreatorName = () => {
-  const searchCreatorName = selectedCreator.creatorName
-  console.log(selectedCreator.creatorName)
-  CreatorRecipeDataService.findByCreatorName(searchCreatorName)
-  .then (response => {
-    setCreatorRecipes(response.data);
-    setSearchActive(true)
-	// setCountrySearch(true)
-    setCurrentRecipe(null)
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
-
-const resetAll = () => {
-  retrieveCreatorRecipes()
-  setSearchActive(false)
-}
+  //reset to initial state
+  const resetAll = () => {
+    retrieveCreatorRecipes()
+    setSearchActive(false)
+  }
 
 return (
-  <div className="list row">
-    <div>
-      {searchActive ? (
-        <div>
-          <div className="col-md-8">
-            <button onClick={resetAll}>Return to all recipes</button>
-          </div>
-        </div>
-      ):(
-        <div>
-          <div className="col-md-8">
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options = {creatorRecipes.map((creatorRecipe) => creatorRecipe)}
-              getOptionLabel={(creatorRecipe) => creatorRecipe.creatorName }
-              onChange={(event, value) => setSelectedCreator(value)}
-              sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Search By Recipe Creator Name" />}
+  <>
+    {searchActive ? (
+    <>
+      <Box p="10" pt="3" spacing={2}>
+        <Typography variant="h5">Recipes from {selectedCreator.creatorName}</Typography>
+        <Typography variant="subtitle1">
+          Scroll to see all recipes for this country. 
+          Click on a title to see full recipe.
+        </Typography>
+        <List
+          sx={{
+            width: '100%',
+            maxWidth: 480,
+            bgcolor: 'background.paper',
+            position: 'relative',
+            overflow: 'auto',
+            maxHeight: 500, 
+            '& ul': { padding: 0 }
+          }}
+        >
+          {creatorRecipesName &&
+            creatorRecipesName.map(creatorRecipe => {
+            return (
+            <>
+              {creatorRecipe.recipe &&
+                creatorRecipe.recipe.map((recipe, index) => (
+                <>
+                  <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                    <ListItem key={recipe.id} >
+                      <ListItemText
+                        primary={recipe.title}
+                        secondary={recipe.description}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </ListItemButton>
+                </>
+                )
+              )} 
+            </>
+            )}
+          )}
+        </List>
+      </Box>
+      <Box m={4}>
+        <Button variant="outlined" onClick={resetAll}>Return to all recipes</Button>
+      </Box>
+    </>
+    ):(
+    <>
+      <Box p="10" pt="3" spacing={2}>
+        <Typography variant="h4" gutterBottom>
+          Recipes by Recipe Creator
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          Search Recipes By Creator Name
+        </Typography>
+        <Box m={4} sx={{ display: 'flex' }}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options = {creatorRecipes.map((creatorRecipe) => creatorRecipe)}
+            getOptionLabel={(creatorRecipe) => creatorRecipe.creatorName }
+            onChange={(event, value) => setSelectedCreator(value)}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Search By Creator Name" />}
+          />
+          <Box mx={2} mt={1}>
+            <Button variant="contained" onClick={findByCreatorName}>Search</Button>
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            Browse Recipes
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            Click to See Full Recipe
+          </Typography>
+          <Box m={2}>
+            <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
+            <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
+          </Box>
+          <Pagination
+            count={count}
+            size="large"
+            page={page}
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChange}
+          />
+          <Box p="10" pt="3" spacing={2}>
+            {_DATA &&
+              _DATA.currentData().map(creatorRecipe => {
+                return (
+                <>
+                  <Typography variant="h6">{creatorRecipe.creatorName}</Typography>
+                  <Typography variant="subtitle1">
+                    Scroll to see all recipes for this creator. 
+                    Click on a title to see full recipe.
+                  </Typography>
+                  <List
+                    sx={{
+                      width: '100%',
+                      maxWidth: 480,
+                      bgcolor: 'background.paper',
+                      position: 'relative',
+                      overflow: 'auto',
+                      maxHeight: 300, 
+                      '& ul': { padding: 0 }
+                    }}
+                  >
+                    {creatorRecipe.recipe &&
+                      creatorRecipe.recipe.map((recipe, index) => (    
+                        <ListItemButton onClick={() => handleListItemClick(creatorRecipe)}>
+                          <ListItem key={creatorRecipe.id} >
+                            <ListItemText
+                              primary={recipe.title}
+                              secondary={recipe.description}
+                            />
+                          </ListItem>
+                          <Divider />
+                        </ListItemButton>
+                      )
+                    )}
+                  </List>
+                </>
+                );
+              })}
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
             />
-            <button onClick={findByCreatorName}>Search</button>
-            <br></br>
-            <br></br>
-          </div>
-        </div> 
-      )} 
-    </div>
-    <div className="col-md-6">
-        <div>
-				<h4>Recipes by Creator</h4>
-			</div>
-    <div>
-      {creatorRecipes &&
-      creatorRecipes.map((creatorRecipe) => (
-      <div  key={creatorRecipe.id}>
-        <div>
-          <h4>{creatorRecipe.creatorName}</h4>
-        </div>
-        <div>
-          <ul>
-            {creatorRecipe.recipe &&
-            creatorRecipe.recipe.map((recipe, index) => (
-              <li
-                className={
-                  "list-group-item" + (index === currentIndex ? "active" : "")
-                }
-                onClick={() => setActiveRecipe(recipe, index)}
-                key={index}
-              >
-                {recipe.title}
-              </li>
-            ))}	
-          </ul>
-        </div>
-      </div>
-      ))}
-
-      </div>
-    </div>
-
-    <div className="col-md-6">
-      {currentRecipe ? (
-        <div>
-          <h4>Recipe</h4>
-          <div>
-            <label>
-              <strong>Title:</strong>
-            </label>{" "}
-            {currentRecipe.title}
-          </div>
-          <div>
-            <label>
-              <strong>Description:</strong>
-            </label>{" "}
-            {currentRecipe.description}
-          </div>
-          <div>
-            <label>
-              <strong>Recipe Type:</strong>
-            </label>{" "}
-            {currentRecipe.recipeType}
-            </div>
-          <div>
-            <label>
-              <strong>ServingSize:</strong>
-            </label>{" "}
-            {currentRecipe.servingSize}
-          </div>
-          <div>
-            <label>
-              <strong>Ingredients:</strong>
-            </label>{" "}
-            {currentRecipe.ingredients}
-          </div>
-          <div>
-            <label>
-              <strong>Directions:</strong>
-            </label>{" "}
-            {currentRecipe.directions}
-          </div>
-          <div>
-            <label>
-              <strong>Contributed by:</strong>
-            </label>{" "}
-             ?
-          </div>
-
-          <Link
-            to={"/recipes/" + currentRecipe.id}
-          >
-            <button>
-            View Full Recipe
-            </button>
-          </Link>
-          <Link
-            to={"/recipes/edit/" + currentRecipe.id}
-            className="badge badge-warning"
-          >
-            <button>
-            Edit
-            </button>
-          </Link>
-        </div>
-        ) : (
-        <div>
-          <br />
-            <p>Please click on a recipe...</p>
-        </div>
-        )}
-      </div>
-    </div>
+            <Box m={2}>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </>
+    )} 
+  </>
   );
 }
 
-  export default CreatorRecipesAll;
+export default CreatorRecipesAll;
