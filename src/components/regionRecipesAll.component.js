@@ -12,6 +12,8 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
   
   //setup for data and search status
   const [regionRecipes, setRegionRecipes] = useState ([]);
+  const [regionRecipesCountry, setRegionRecipesCountry] = useState([]);
+  const [regionRecipesRegion, setRegionRecipesRegion] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRegion, setSelectedRegion] = useState("")
@@ -43,7 +45,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
   // };
 
 
-  //pagination functions
+  //pagination functions for regionRecipes
   let [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const count = Math.ceil(regionRecipes.length / PER_PAGE);
@@ -61,7 +63,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
 
     RegionRecipeDataService.findByCountry(searchCountry)
     .then (response => {
-      setRegionRecipes(response.data);
+      setRegionRecipesCountry(response.data);
       setSearchActive(true)
       setCountrySearch(true)
       setCurrentRecipe(null)
@@ -78,7 +80,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
     
     RegionRecipeDataService.findByRegionName(searchRegionName)
     .then (response => {
-      setRegionRecipes(response.data);
+      setRegionRecipesRegion(response.data);
       setSearchActive(true)
       setCurrentRecipe(null)
       console.log(response.data.recipe);
@@ -111,8 +113,8 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
       {countrySearch ? (
       <Box>
         <Box p="10" pt="3" spacing={2}>
-          {_DATA &&
-            _DATA.currentData().map(regionRecipe => {
+          {regionRecipesCountry &&
+            regionRecipesCountry.map(regionRecipe => {
             return (
             <>
               <Typography variant="h5">Recipes from {regionRecipe.country}</Typography>
@@ -175,8 +177,8 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                     '& ul': { padding: 0 }
                   }}
                 >
-           {regionRecipes &&
-            regionRecipes.map(regionRecipe => {
+           {regionRecipesRegion &&
+            regionRecipesRegion.map(regionRecipe => {
             return (
             <>
           
