@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import UserRecipeDataService from "../services/userRecipe.service";
 import { Link } from "react-router-dom";
-import { Autocomplete, TextField, Options} from '@mui/material';
+import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
+  ListItemText, Pagination, TextField, Typography, } from '@mui/material';
+import usePagination from "../utils/pagination.util";
+import { useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service";
 
 
-const UserRegionRecipesAll = ()=> {
+const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
   const [userRegionRecipes, setUserRegionRecipes] = useState ([]);
+  const [userRecipesCountry, setUserRecipesCountry] = useState([]);
+  const [userRecipesRegion, setUserRecipesRegion] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRegion, setSelectedRegion] = useState("")
@@ -17,226 +22,304 @@ const UserRegionRecipesAll = ()=> {
   const currentUser = AuthService.getCurrentUser();
   const userId = currentUser.id
 
+  const navigate = useNavigate()
+
   useEffect(() => {
-  retrieveUserRegionRecipes(userId);
-}, []);
+    retrieveUserRegionRecipes(userId);
+  }, []);
 
-const retrieveUserRegionRecipes = (id) => {
-  UserRecipeDataService.findUserRecipeRegions(id)
-  .then(response => {
-    setUserRegionRecipes(response.data);
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+  const retrieveUserRegionRecipes = (id) => {
+    UserRecipeDataService.findUserRecipeRegions(id)
+    .then(response => {
+      setUserRegionRecipes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
 
-// const refreshList = () => {
-//   retrieveRegions();
-//   setCurrentRegion(null);
-//   setCurrentIndex(-1);
-// };
+  // const setActiveRecipe = (recipe, index) => {
+  //   setCurrentRecipe(recipe);
+  //   setCurrentIndex(index);
+  // };
 
-const setActiveRecipe = (recipe, index) => {
-  setCurrentRecipe(recipe);
-  setCurrentIndex(index);
-};
+  //pagination functions for regionRecipes
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 5;
+  const count = Math.ceil(userRegionRecipes.length / PER_PAGE);
+  const _DATA = usePagination(userRegionRecipes, PER_PAGE);
 
-const findByCountry = () => {
-  const searchCountry = selectedRegion.country
-  console.log(selectedRegion.country)
-  UserRecipeDataService.findByCountry(userId, searchCountry)
-  .then (response => {
-    setUserRegionRecipes(response.data);
-    setSearchActive(true)
-		setCountrySearch(true)
-    setCurrentRecipe(null)
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
 
-const findByRegionName = () => {
-  const searchRegionName = selectedRegion.regionName
-  console.log(selectedRegion.regionName)
-  UserRecipeDataService.findByRegionName(userId, searchRegionName)
-  .then (response => {
-    setUserRegionRecipes(response.data);
-    setSearchActive(true)
-    setCurrentRecipe(null)
-    console.log(response.data);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-};
 
-const resetAll = () => {
-  retrieveUserRegionRecipes(userId)
-  setSearchActive(false)
-	if ( countrySearch === true ) {
-		setCountrySearch(false)
-	}
-}
+  const findByCountry = () => {
+    const searchCountry = selectedRegion.country
+    console.log(selectedRegion.country)
+    UserRecipeDataService.findByCountry(userId, searchCountry)
+    .then (response => {
+      setUserRecipesCountry(response.data);
+      setSearchActive(true)
+      setCountrySearch(true)
+      setCurrentRecipe(null)
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
 
-return (
-  <div className="list row">
-    <div>
-      {searchActive ? (
-        <div>
-          <div className="col-md-8">
-            <button onClick={resetAll}>Return to all recipes</button>
-          </div>
-        </div>
+  const findByRegion = () => {
+    const searchRegionName = currentRegionName
+    console.log(currentRegionName)
+    UserRecipeDataService.findByRegionName(userId, searchRegionName)
+    .then (response => {
+      setUserRecipesRegion(response.data);
+      setSearchActive(true)
+      setCurrentRecipe(null)
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
+
+  //List select function
+  const handleListItemClick = (recipe) => {
+    const recipeId = recipe.id
+      
+    navigate("/recipes/" + recipeId)
+  };
+
+  //reset to initial state
+  const resetAll = () => {
+    retrieveUserRegionRecipes(userId)
+    setSearchActive(false)
+    if ( countrySearch === true ) {
+      setCountrySearch(false)
+    }
+  }
+
+  return (
+    <>
+    {searchActive ? (
+    <>
+      {countrySearch ? (
+      <>
+        <Box p="10" pt="3" spacing={2}>
+          {userRecipesCountry &&
+            userRecipesCountry.map(regionRecipe => {
+            return (
+            <>
+              <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
+              <Typography variant="subtitle1">
+                Scroll to see all recipes for this country. 
+                Click on a title to see full recipe.
+              </Typography>
+              <List
+                sx={{
+                  width: '100%',
+                  maxWidth: 480,
+                  bgcolor: 'background.paper',
+                  position: 'relative',
+                  overflow: 'auto',
+                  maxHeight: 500, 
+                  '& ul': { padding: 0 }
+                }}
+              >
+                {regionRecipe.recipe &&
+                  regionRecipe.recipe.map((recipe, index) => (
+                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                      <ListItem key={recipe.id} >
+                        <ListItemText
+                          primary={recipe.title}
+                          secondary={recipe.description}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </ListItemButton>
+                  )
+                )}
+              </List>
+            </>
+            );
+          })}
+        </Box>
+        <Box m={4}>
+          <Button variant="outlined" onClick={resetAll}>Return to your recipes</Button>
+        </Box>
+      </>
       ):(
-        <div>
-          <div className="col-md-8">
+      <>
+        <Box p="10" pt="3" spacing={2}>
+          <Typography variant="h5">Recipes from {currentRegionName}</Typography>
+          <Typography variant="subtitle1">
+            Scroll to see all recipes for this country. 
+            Click on a title to see full recipe.
+          </Typography>
+          <List
+            sx={{
+              width: '100%',
+              maxWidth: 480,
+              bgcolor: 'background.paper',
+              position: 'relative',
+              overflow: 'auto',
+              maxHeight: 500, 
+              '& ul': { padding: 0 }
+            }}
+          >
+            {userRecipesRegion &&
+              userRecipesRegion.map(regionRecipe => {
+              return (
+              <>
+                {regionRecipe.recipe &&
+                  regionRecipe.recipe.map((recipe, index) => (
+                  <>
+                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                      <ListItem key={recipe.id} >
+                        <ListItemText
+                          primary={recipe.title}
+                          secondary={recipe.description}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </ListItemButton>
+                  </>
+                  )
+                )} 
+              </>
+              );
+            })}
+          </List>
+        </Box>
+        <Box m={4}>
+          <Button variant="outlined" onClick={resetAll}>Return to your recipes</Button>
+        </Box>
+      </>
+      )}
+    </>
+    ):(
+    <>
+      <Box p="10" pt="3" spacing={2}>
+        <Typography variant="h4" gutterBottom>
+          {currentUser.username}'s Recipes by Country 
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          Search Recipes By Country Name
+        </Typography>
+        <Box m={4} sx={{ display: 'flex' }}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options = {userRegionRecipes.map((regionRecipe) => regionRecipe)}
+            getOptionLabel={(regionRecipe) => regionRecipe.country }
+            onChange={(event, value) => setSelectedRegion(value)}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Search By Country" />}
+          />
+          <Box mx={2} mt={1}>
+            <Button variant="contained" onClick={findByCountry}>Search</Button>
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            Search Recipes By Region Name
+          </Typography>
+          <Box m={4} sx={{ display: 'flex' }}>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options = {userRegionRecipes.map((regionRecipe) => regionRecipe)}
-              getOptionLabel={(regionRecipe) => regionRecipe.country }
-              onChange={(event, value) => setSelectedRegion(value)}
+              options = {Array.from(new Set(userRegionRecipes.map((regionRecipe) => regionRecipe.regionName)))
+                .map((regionName) => regionName)}
+              getOptionLabel={(regionName) => regionName }
+              onChange={(event, value) => setCurrentRegionName(value)}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Search By Country" />}
+              renderInput={(params) => <TextField {...params} label="Search By RegionName" />}
             />
-            <button onClick={findByCountry}>Search</button>
-            <br></br>
-            <br></br>
-          </div>
-          <div>
-            <div className="col-md-8">
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options = {Array.from(new Set(userRegionRecipes.map((regionRecipe) => regionRecipe.regionName)))
-									.map((regionName) => regionName)}
-                getOptionLabel={(regionName) => regionName }
-                onChange={(event, value) => setCurrentRegionName(value)}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Search By RegionName" />}
+            <Box mx={2} mt={1}>
+              <Button variant="contained" onClick={findByRegion}>Search</Button>
+            </Box>
+          </Box>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Browse Recipes
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              Click to See Full Recipe
+            </Typography>
+            <Box m={2}>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
+              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+            </Box>
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
+            />
+            <Box p="10" pt="3" spacing={2}>
+              {_DATA &&
+                _DATA.currentData().map(regionRecipe => {
+                  return (
+                  <>
+                    <Typography variant="h6">{regionRecipe.country}</Typography>
+                    <Typography variant="subtitle1">
+                      Scroll to see all recipes for this country. 
+                      Click on a title to see full recipe.
+                    </Typography>
+                    <List
+                      sx={{
+                        width: '100%',
+                        maxWidth: 480,
+                        bgcolor: 'background.paper',
+                        position: 'relative',
+                        overflow: 'auto',
+                        maxHeight: 300, 
+                        '& ul': { padding: 0 }
+                      }}
+                    >
+                      {regionRecipe.recipe &&
+                        regionRecipe.recipe.map((recipe, index) => (    
+                          <ListItemButton onClick={() => handleListItemClick(regionRecipe)}>
+                            <ListItem key={regionRecipe.id} >
+                              <ListItemText
+                                primary={recipe.title}
+                                secondary={recipe.description}
+                              />
+                            </ListItem>
+                            <Divider />
+                          </ListItemButton>
+                        )
+                      )}
+                    </List>
+                  </>
+                  );
+                })}
+              </Box>
+              <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChange}
               />
-              <button onClick={findByRegionName}>Search</button>
-              <br></br>
-              <br></br>
-            </div>
-          </div>
-        </div> 
-      )} 
-    </div>
-    <div className="col-md-6">
-			{countrySearch? (<h4>Recipes by Country</h4>)
-			:(
-			<div>
-				<h4>Recipes by Region</h4>
-				<h4>{currentRegionName}</h4>
-				<br></br>
-			</div>
-			)}
+              <Box m={2}>
+                <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
+                <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+              </Box>
+            </Box>
+          </Box>
+      </Box>
+    </>  
+    )}
+  </>
   
-    <div>
-      {userRegionRecipes &&
-      userRegionRecipes.map((regionRecipe) => (
-      <div  key={regionRecipe.id}>
-        <div>
-          <h4>{regionRecipe.country}</h4>
-        </div>
-        <div>
-          <ul>
-            {regionRecipe.recipe &&
-            regionRecipe.recipe.map((recipe, index) => (
-              <li
-                className={
-                  "list-group-item" + (index === currentIndex ? "active" : "")
-                }
-                onClick={() => setActiveRecipe(recipe, index)}
-                key={index}
-              >
-                {recipe.title}
-              </li>
-            ))}	
-          </ul>
-        </div>
-      </div>
-      ))}
-
-      </div>
-    </div>
-
-    <div className="col-md-6">
-      {currentRecipe ? (
-        <div>
-          <h4>Recipe</h4>
-          <div>
-            <label>
-              <strong>Title:</strong>
-            </label>{" "}
-            {currentRecipe.title}
-          </div>
-          <div>
-            <label>
-              <strong>Description:</strong>
-            </label>{" "}
-            {currentRecipe.description}
-          </div>
-          <div>
-            <label>
-              <strong>Recipe Type:</strong>
-            </label>{" "}
-            {currentRecipe.recipeType}
-            </div>
-          <div>
-            <label>
-              <strong>ServingSize:</strong>
-            </label>{" "}
-            {currentRecipe.servingSize}
-          </div>
-          <div>
-            <label>
-              <strong>Ingredients:</strong>
-            </label>{" "}
-            {currentRecipe.ingredients}
-          </div>
-          <div>
-            <label>
-              <strong>Directions:</strong>
-            </label>{" "}
-            {currentRecipe.directions}
-          </div>
-          <div>
-            <label>
-              <strong>Contributed by:</strong>
-            </label>{" "}
-            ?
-          </div>
-
-          <Link
-            to={"/recipes/" + currentRecipe.id}
-          >
-            <button>
-            View Full Recipe
-            </button>
-          </Link>
-          <Link
-            to={"/recipes/edit/" + currentRecipe.id}
-            className="badge badge-warning"
-          >
-            <button>
-            Edit
-            </button>
-          </Link>
-        </div>
-        ) : (
-        <div>
-          <br />
-            <p>Please click on a recipe...</p>
-        </div>
-        )}
-      </div>
-    </div>
   );
 }
 

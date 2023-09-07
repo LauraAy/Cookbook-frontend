@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import UserRecipeDataService from "../services/userRecipe.service"
-import { Link } from "react-router-dom";
 import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
   ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 import usePagination from "../utils/pagination.util";
@@ -10,7 +9,6 @@ import AuthService from "../services/auth.service";
 const UserRecipesAll = ({clickRegion, clickCreator})=> {
   const [userRecipes, setUserRecipes] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
 

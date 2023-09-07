@@ -150,7 +150,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
         <Box p="10" pt="3" spacing={2}>
           <Typography variant="h5">Recipes from {currentRegionName}</Typography>
           <Typography variant="subtitle1">
-            Scroll to see all recipes for this country. 
+            Scroll to see all recipes for this region. 
             Click on a title to see full recipe.
           </Typography>
           <List
