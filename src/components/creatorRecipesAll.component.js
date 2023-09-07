@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
-import { Link } from "react-router-dom";
 import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
   ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 import usePagination from "../utils/pagination.util";
@@ -14,7 +13,6 @@ const CreatorRecipesAll = ({clickTitle, clickRegion})=> {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedCreator, setSelectedCreator] = useState("")
   const [searchActive, setSearchActive] = useState(false);
-  const [currentCreatorName, setCurrentCreatorName] = useState("")
 
   const navigate = useNavigate()
 
@@ -81,7 +79,7 @@ return (
       <Box p="10" pt="3" spacing={2}>
         <Typography variant="h5">Recipes from {selectedCreator.creatorName}</Typography>
         <Typography variant="subtitle1">
-          Scroll to see all recipes for this country. 
+          Scroll to see all recipes for this creator. 
           Click on a title to see full recipe.
         </Typography>
         <List
