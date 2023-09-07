@@ -8,7 +8,7 @@ const UserRecipesPage = () => {
 	const [userRegionView, setUserRegionView] = useState(false)
   const [userCreatorView, setUserCreatorView] = useState(false)
 
-	const goUserRecipesView = () => {
+	const goUserRecipeView = () => {
 		console.log("hi recipe")
 		if ( userRecipesView === false ) {
 			setUserRecipesView(true)
@@ -51,27 +51,21 @@ const UserRecipesPage = () => {
     <div>
 			{ userRecipesView && (
 				<div>
-					<UserRecipesAll />
-					<button onClick={goUserRegionView}>filter by region</button>
-					<button onClick={goUserCreatorView}>filter by creator</button>
+					<UserRecipesAll clickRegion={goUserRegionView} clickCreator={goUserCreatorView}/>
 				</div>	
 			)}
     </div>
 		<div>
 			{ userRegionView && (
 				<div>	
-					<UserRegionRecipesAll />
-					<button onClick={goUserRecipesView}>filter by recipe title</button>
-					<button onClick={goUserCreatorView}>filter by creator</button>
+					<UserRegionRecipesAll clickTitle={goUserRecipeView} clickCreator={goUserCreatorView}/>
 				</div>
 			)}
 		</div>
 		<div>
 			{ userCreatorView && (
 				<div>	
-					<UserCreatorRecipesAll />
-					<button onClick={goUserRecipesView}>filter by recipe title</button>
-					<button onClick={goUserRegionView}>filter by region</button>
+					<UserCreatorRecipesAll clickTitle={goUserRecipeView} clickRegion={goUserRegionView}/>
 				</div>
 			)}
 		</div>

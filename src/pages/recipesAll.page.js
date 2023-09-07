@@ -3,9 +3,7 @@ import RecipesAll from "../components/recipesAll.component.js";
 import RegionRecipesAll from "../components/regionRecipesAll.component.js"
 import CreatorRecipesAll from "../components/creatorRecipesAll.component.js"
 
-import { Button } from '@mui/material';
-
-const RecipesAllPage = ({clickTest}) => { 
+const RecipesAllPage = () => { 
 	const [allView, setAllView] = useState(true)
 	const [regionView, setRegionView] = useState(false)
 	const [creatorView, setCreatorView] = useState(false)
@@ -49,13 +47,9 @@ const RecipesAllPage = ({clickTest}) => {
 		}
 	}
 
-	const testFunction = () => {
-		console.log("what ho!")
-	}
 
-  return (
+	return (
 	<>
-	
     <div>
 			{ allView && (
 			<>
@@ -80,7 +74,7 @@ const RecipesAllPage = ({clickTest}) => {
 			)}
 		</div>
 	</>
-  )
+	)
 }
     
 export default RecipesAllPage
