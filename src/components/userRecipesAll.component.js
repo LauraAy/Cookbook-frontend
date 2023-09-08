@@ -8,6 +8,7 @@ import AuthService from "../services/auth.service";
 
 const UserRecipesAll = ({clickRegion, clickCreator})=> {
   const [userRecipes, setUserRecipes] = useState ([]);
+  const [userRecipesTitle, setUserRecipesTitle] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
@@ -43,18 +44,12 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
     _DATA.jump(p);
   };
 
-// const setActiveRecipe = (recipe, index) => {
-//   setCurrentRecipe(recipe);
-//   setCurrentIndex(index);
-// };
-
-
   const findByTitle = () => {
     const searchTitle = selectedRecipe.title
     console.log(selectedRecipe.title)
     UserRecipeDataService.findByTitle(userId, searchTitle)
     .then (response => {
-      setUserRecipes(response.data);
+      setUserRecipesTitle(response.data);
       setSearchActive(true)
       setCurrentRecipe(null)
       console.log(response.data);
@@ -87,17 +82,24 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
           Click to view full recipe.
         </Typography>
         <List p="10" pt="3" spacing={2}>
-          {_DATA &&
-            _DATA.currentData().map(recipe => {
+          {userRecipesTitle &&
+            userRecipesTitle.map(recipe => {
             return (
             <>
               <ListItemButton 
                 onClick={() => handleListItemClick(recipe)}
               >
-                <ListItem key={recipe.id} listStyleType="disc">
+                <ListItem key={recipe.id}>
                   <ListItemText
                     primary={recipe.title}
                     secondary={recipe.description}
+                    secondaryTypographyProps={{ 
+                      style: {
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                      }
+                    }}
                   />
                 </ListItem>
               </ListItemButton>
@@ -163,6 +165,13 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
                       <ListItemText
                         primary={recipe.title}
                         secondary={recipe.description}
+                        secondaryTypographyProps={{ 
+                          style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                          }
+                        }}
                       />
                     </ListItem>
                   </ListItemButton>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import UserRecipeDataService from "../services/userRecipe.service";
-import { Link } from "react-router-dom";
 import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
   ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 import usePagination from "../utils/pagination.util";
@@ -10,10 +9,8 @@ import AuthService from "../services/auth.service";
 
 const UserRegionRecipesAll = ({clickTitle, clickRegion})=> {
   const [userCreatorRecipes, setUserCreatorRecipes] = useState ([]);
-	const [userRecipes, setUserRecipes] = useState ([])
   const [userRecipesCreatorName, setUserRecipesCreatorName] = useState ([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedCreator, setSelectedCreator] = useState("")
   const [searchActive, setSearchActive] = useState(false);
 
@@ -47,28 +44,6 @@ const handleChange = (e, p) => {
   setPage(p);
   _DATA.jump(p);
 };
-
-// const retrieveUserRecipes = (id) => {
-//   UserRecipeDataService.findUserRecipes(id)
-//   .then(response => {
-//     setUserRecipes(response.data);
-//     console.log(response.data);
-//   })
-//   .catch(e => {
-//     console.log(e);
-//   });
-// };
-
-// const refreshList = () => {
-//   retrieveRegions();
-//   setCurrentRegion(null);
-//   setCurrentIndex(-1);
-// };
-
-// const setActiveRecipe = (recipe, index) => {
-//   setCurrentRecipe(recipe);
-//   setCurrentIndex(index);
-// };
 
 //search function for creatorName
 const findByCreatorName = () => {
@@ -106,7 +81,6 @@ return (
       <Box p="10" pt="3" spacing={2}>
         <Typography variant="h5">Recipes from {selectedCreator.creatorName}</Typography>
         <Typography variant="subtitle1">
-          Scroll to see all recipes for this creator. 
           Click on a title to see full recipe.
         </Typography>
         <List
@@ -124,6 +98,11 @@ return (
             userRecipesCreatorName.map(creatorRecipe => {
             return (
             <>
+              {creatorRecipe.recipe.length > 6 && 
+                <Typography>
+                  Scroll to see all recipes for this creator. 
+                </Typography>
+              }
               {creatorRecipe.recipe &&
                 creatorRecipe.recipe.map((recipe, index) => (
                 <>
@@ -132,6 +111,13 @@ return (
                       <ListItemText
                         primary={recipe.title}
                         secondary={recipe.description}
+                        secondaryTypographyProps={{ 
+                          style: {
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }
+                        }}
                       />
                     </ListItem>
                     <Divider />
@@ -196,10 +182,14 @@ return (
                 return (
                 <>
                   <Typography variant="h6">{creatorRecipe.creatorName}</Typography>
-                  <Typography variant="subtitle1">
-                    Scroll to see all recipes for this creator. 
+                  <Typography variant="subtitle1"> 
                     Click on a title to see full recipe.
                   </Typography>
+                  {creatorRecipe.recipe.length > 6 && 
+                    <Typography>
+                      Scroll to see all recipes for this creator. 
+                    </Typography>
+                  }
                   <List
                     sx={{
                       width: '100%',
@@ -211,13 +201,20 @@ return (
                       '& ul': { padding: 0 }
                     }}
                   >
-                    {creatorRecipe.recipe &&
+                      {creatorRecipe.recipe &&
                       creatorRecipe.recipe.map((recipe, index) => (    
                         <ListItemButton onClick={() => handleListItemClick(creatorRecipe)}>
                           <ListItem key={creatorRecipe.id} >
                             <ListItemText
                               primary={recipe.title}
                               secondary={recipe.description}
+                              secondaryTypographyProps={{ 
+                                style: {
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }
+                              }}
                             />
                           </ListItem>
                           <Divider />

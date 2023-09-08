@@ -103,6 +103,13 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
                   <ListItemText
                     primary={recipe.title}
                     secondary={recipe.description}
+                    secondaryTypographyProps={{ 
+                      style: {
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }
+                    }}
                   />
                 </ListItem>
               </ListItemButton>
@@ -168,6 +175,13 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
                       <ListItemText
                         primary={recipe.title}
                         secondary={recipe.description}
+                        secondaryTypographyProps={{ 
+                          style: {
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }
+                        }}
                       />
                     </ListItem>
                   </ListItemButton>

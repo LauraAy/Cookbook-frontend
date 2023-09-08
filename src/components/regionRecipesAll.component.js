@@ -109,9 +109,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
             <>
               <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
               <Typography variant="subtitle1">
-                Scroll to see all recipes for this country. 
                 Click on a title to see full recipe.
               </Typography>
+              {regionRecipe.recipe.length > 6 && 
+                <Typography>
+                  Scroll to see all recipes for this country. 
+                </Typography>
+              }
               <List
                 sx={{
                   width: '100%',
@@ -130,6 +134,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                         <ListItemText
                           primary={recipe.title}
                           secondary={recipe.description}
+                          secondaryTypographyProps={{ 
+                            style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }
+                          }}
                         />
                       </ListItem>
                       <Divider />
@@ -150,7 +161,6 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
         <Box p="10" pt="3" spacing={2}>
           <Typography variant="h5">Recipes from {currentRegionName}</Typography>
           <Typography variant="subtitle1">
-            Scroll to see all recipes for this region. 
             Click on a title to see full recipe.
           </Typography>
           <List
@@ -168,6 +178,11 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
               regionRecipesRegion.map(regionRecipe => {
               return (
               <>
+                {regionRecipe.recipe.length > 6 && 
+                  <Typography>
+                    Scroll to see all recipes for this region. 
+                  </Typography>
+                }
                 {regionRecipe.recipe &&
                   regionRecipe.recipe.map((recipe, index) => (
                   <>
@@ -176,6 +191,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                         <ListItemText
                           primary={recipe.title}
                           secondary={recipe.description}
+                          secondaryTypographyProps={{ 
+                            style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }
+                          }}
                         />
                       </ListItem>
                       <Divider />
@@ -262,9 +284,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                   <>
                     <Typography variant="h6">{regionRecipe.country}</Typography>
                     <Typography variant="subtitle1">
-                      Scroll to see all recipes for this country. 
                       Click on a title to see full recipe.
                     </Typography>
+                    {regionRecipe.recipe.length > 4 && 
+                      <Typography>
+                        Scroll to see all recipes for this country. 
+                      </Typography>
+                    }
                     <List
                       sx={{
                         width: '100%',
@@ -283,6 +309,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                               <ListItemText
                                 primary={recipe.title}
                                 secondary={recipe.description}
+                                secondaryTypographyProps={{ 
+                                  style: {
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                  }
+                                }}
                               />
                             </ListItem>
                             <Divider />

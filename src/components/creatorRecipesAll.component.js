@@ -79,7 +79,6 @@ return (
       <Box p="10" pt="3" spacing={2}>
         <Typography variant="h5">Recipes from {selectedCreator.creatorName}</Typography>
         <Typography variant="subtitle1">
-          Scroll to see all recipes for this creator. 
           Click on a title to see full recipe.
         </Typography>
         <List
@@ -97,6 +96,11 @@ return (
             creatorRecipesName.map(creatorRecipe => {
             return (
             <>
+              {creatorRecipe.recipe.length > 6 && 
+                <Typography>
+                  Scroll to see all recipes for this creator. 
+                </Typography>
+              }
               {creatorRecipe.recipe &&
                 creatorRecipe.recipe.map((recipe, index) => (
                 <>
@@ -105,6 +109,13 @@ return (
                       <ListItemText
                         primary={recipe.title}
                         secondary={recipe.description}
+                        secondaryTypographyProps={{ 
+                          style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                          }
+                        }}
                       />
                     </ListItem>
                     <Divider />
@@ -169,10 +180,14 @@ return (
                 return (
                 <>
                   <Typography variant="h6">{creatorRecipe.creatorName}</Typography>
-                  <Typography variant="subtitle1">
-                    Scroll to see all recipes for this creator. 
+                  <Typography variant="subtitle1"> 
                     Click on a title to see full recipe.
                   </Typography>
+                  {creatorRecipe.recipe.length > 6 && 
+                    <Typography>
+                      Scroll to see all recipes for this creator. 
+                    </Typography>
+                  }
                   <List
                     sx={{
                       width: '100%',
@@ -191,6 +206,13 @@ return (
                             <ListItemText
                               primary={recipe.title}
                               secondary={recipe.description}
+                              secondaryTypographyProps={{ 
+                                style: {
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }
+                              }}
                             />
                           </ListItem>
                           <Divider />
