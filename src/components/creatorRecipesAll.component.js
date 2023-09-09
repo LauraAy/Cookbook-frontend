@@ -199,7 +199,7 @@ return (
                       '& ul': { padding: 0 }
                     }}
                   >
-                    {creatorRecipe.recipe &&
+                {creatorRecipe.recipe &&
                       creatorRecipe.recipe.map((recipe, index) => (    
                         <ListItemButton onClick={() => handleListItemClick(creatorRecipe)}>
                           <ListItem key={creatorRecipe.id} >
