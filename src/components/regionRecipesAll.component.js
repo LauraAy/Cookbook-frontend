@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import RegionRecipeDataService from "../services/regionRecipe.service";
-import { Link } from "react-router-dom";
-import { Accordion, AccordionSummary, AccordionDetails, Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
-  ListItemIcon, ListItemText, Pagination, TextField,Typography, } from '@mui/material';
-import {ExpandMore, unfoldMore} from '@mui/icons-material';
+import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
+  ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 import usePagination from "../utils/pagination.util";
 import { useNavigate } from 'react-router-dom';
-import { FixedSizeList } from 'react-window';
 
 const RegionRecipesAll = ({clickTitle, clickCreator})=> {
   
   //setup for data and search status
   const [regionRecipes, setRegionRecipes] = useState ([]);
+  const [regionRecipesCountry, setRegionRecipesCountry] = useState([]);
+  const [regionRecipesRegion, setRegionRecipesRegion] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedRegion, setSelectedRegion] = useState("")
   const [searchActive, setSearchActive] = useState(false);
 	const [countrySearch, setCountrySearch] = useState(false)
@@ -37,13 +35,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
     });
   };
 
-  // const setActiveRecipe = (recipe, index) => {
-  //   setCurrentRecipe(recipe);
-  //   setCurrentIndex(index);
-  // };
-
-
-  //pagination functions
+  //pagination functions for regionRecipes
   let [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const count = Math.ceil(regionRecipes.length / PER_PAGE);
@@ -61,7 +53,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
 
     RegionRecipeDataService.findByCountry(searchCountry)
     .then (response => {
-      setRegionRecipes(response.data);
+      setRegionRecipesCountry(response.data);
       setSearchActive(true)
       setCountrySearch(true)
       setCurrentRecipe(null)
@@ -78,7 +70,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
     
     RegionRecipeDataService.findByRegionName(searchRegionName)
     .then (response => {
-      setRegionRecipes(response.data);
+      setRegionRecipesRegion(response.data);
       setSearchActive(true)
       setCurrentRecipe(null)
       console.log(response.data.recipe);
@@ -105,113 +97,128 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
   }
 
   return (
-    <div>
+  <>
     {searchActive ? (
-      <>
+    <>
       {countrySearch ? (
-      <Box>
+      <>
         <Box p="10" pt="3" spacing={2}>
-          {_DATA &&
-            _DATA.currentData().map(regionRecipe => {
+          {regionRecipesCountry &&
+            regionRecipesCountry.map(regionRecipe => {
             return (
             <>
-              <Typography variant="h5">Recipes from {regionRecipe.country}</Typography>
+              <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
               <Typography variant="subtitle1">
-                Scroll to see all recipes for this country. 
                 Click on a title to see full recipe.
               </Typography>
-                <List
-                  sx={{
-                    width: '100%',
-                    maxWidth: 480,
-                    bgcolor: 'background.paper',
-                    position: 'relative',
-                    overflow: 'auto',
-                    maxHeight: 500, 
-                    '& ul': { padding: 0 }
-                  }}
-                >
-                {regionRecipe.recipe &&
-                  regionRecipe.recipe.map((recipe, index) => (
-                  <>
-                      <ListItemButton onClick={() => handleListItemClick(recipe)}>
-                        <ListItem key={recipe.id} >
-                          <ListItemText
-                            primary={recipe.title}
-                            secondary={recipe.description}
-                          />
-                        </ListItem>
-                        <Divider />
-                      </ListItemButton>
-                  </>
-                  )
-                )}
-                </List>
-              </>
-            );
-          })}
-        </Box>
-        <Box m={4}>
-          <Button variant="outlined" onClick={resetAll}>Return to all recipes</Button>
-        </Box>
-      </Box>
-      ):(
-      <Box>
-        <Box p="10" pt="3" spacing={2}>
-        <Typography variant="h5">Recipes from {currentRegionName}</Typography>
-            <>
-              <Typography variant="subtitle1">
-                Scroll to see all recipes for this country. 
-                Click on a title to see full recipe.
-              </Typography>
+              {regionRecipe.recipe.length > 6 && 
+                <Typography>
+                  Scroll to see all recipes for this country. 
+                </Typography>
+              }
               <List
-                  sx={{
-                    width: '100%',
-                    maxWidth: 480,
-                    bgcolor: 'background.paper',
-                    position: 'relative',
-                    overflow: 'auto',
-                    maxHeight: 500, 
-                    '& ul': { padding: 0 }
-                  }}
-                >
-           {regionRecipes &&
-            regionRecipes.map(regionRecipe => {
-            return (
-            <>
-          
+                sx={{
+                  width: '100%',
+                  maxWidth: 480,
+                  bgcolor: 'background.paper',
+                  position: 'relative',
+                  overflow: 'auto',
+                  maxHeight: 500, 
+                  '& ul': { padding: 0 }
+                }}
+              >
                 {regionRecipe.recipe &&
                   regionRecipe.recipe.map((recipe, index) => (
-                  <>
-                      <ListItemButton onClick={() => handleListItemClick(recipe)}>
-                        <ListItem key={recipe.id} >
-                          <ListItemText
-                            primary={recipe.title}
-                            secondary={recipe.description}
-                          />
-                        </ListItem>
-                        <Divider />
-                      </ListItemButton>
-                  </>
+                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                      <ListItem key={recipe.id} >
+                        <ListItemText
+                          primary={recipe.title}
+                          secondary={recipe.description}
+                          secondaryTypographyProps={{ 
+                            style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }
+                          }}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </ListItemButton>
                   )
                 )}
-              
-              </>
+              </List>
+            </>
             );
           })}
-            </List>
-              </>
-            {/* );
-          })} */}
         </Box>
         <Box m={4}>
           <Button variant="outlined" onClick={resetAll}>Return to all recipes</Button>
         </Box>
-        </Box>
-      )}
       </>
       ):(
-      <div>
+      <>
+        <Box p="10" pt="3" spacing={2}>
+          <Typography variant="h5">Recipes from {currentRegionName}</Typography>
+          <Typography variant="subtitle1">
+            Click on a title to see full recipe.
+          </Typography>
+          <List
+            sx={{
+              width: '100%',
+              maxWidth: 480,
+              bgcolor: 'background.paper',
+              position: 'relative',
+              overflow: 'auto',
+              maxHeight: 500, 
+              '& ul': { padding: 0 }
+            }}
+          >
+            {regionRecipesRegion &&
+              regionRecipesRegion.map(regionRecipe => {
+              return (
+              <>
+                {regionRecipe.recipe.length > 6 && 
+                  <Typography>
+                    Scroll to see all recipes for this region. 
+                  </Typography>
+                }
+                {regionRecipe.recipe &&
+                  regionRecipe.recipe.map((recipe, index) => (
+                  <>
+                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                      <ListItem key={recipe.id} >
+                        <ListItemText
+                          primary={recipe.title}
+                          secondary={recipe.description}
+                          secondaryTypographyProps={{ 
+                            style: {
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }
+                          }}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </ListItemButton>
+                  </>
+                  )
+                )} 
+              </>
+              );
+            })}
+          </List>
+        </Box>
+        <Box m={4}>
+          <Button variant="outlined" onClick={resetAll}>Return to all recipes</Button>
+        </Box>
+      </>
+      )}
+    </>
+    ):(
+    <>
+      <Box p="10" pt="3" spacing={2}>
         <Typography variant="h4" gutterBottom>
           Recipes by Country 
         </Typography>
@@ -277,9 +284,13 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                   <>
                     <Typography variant="h6">{regionRecipe.country}</Typography>
                     <Typography variant="subtitle1">
-                      Scroll to see all recipes for this country. 
                       Click on a title to see full recipe.
                     </Typography>
+                    {regionRecipe.recipe.length > 4 && 
+                      <Typography>
+                        Scroll to see all recipes for this country. 
+                      </Typography>
+                    }
                     <List
                       sx={{
                         width: '100%',
@@ -289,14 +300,22 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                         overflow: 'auto',
                         maxHeight: 300, 
                         '& ul': { padding: 0 }
-                      }}>
-                        {regionRecipe.recipe &&
-                          regionRecipe.recipe.map((recipe, index) => (    
+                      }}
+                    >
+                      {regionRecipe.recipe &&
+                        regionRecipe.recipe.map((recipe, index) => (    
                           <ListItemButton onClick={() => handleListItemClick(regionRecipe)}>
                             <ListItem key={regionRecipe.id} >
                               <ListItemText
                                 primary={recipe.title}
                                 secondary={recipe.description}
+                                secondaryTypographyProps={{ 
+                                  style: {
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                  }
+                                }}
                               />
                             </ListItem>
                             <Divider />
@@ -305,27 +324,27 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                       )}
                     </List>
                   </>
-                );
-              })}
-            </Box>
-            <Pagination
-              count={count}
-              size="large"
-              page={page}
-              variant="outlined"
-              shape="rounded"
-              onChange={handleChange}
-            />
-            <Box m={2}>
-              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
-              <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+                  );
+                })}
+              </Box>
+              <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChange}
+              />
+              <Box m={2}>
+                <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
+                <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </div>
-      )
-    }
-    </div>
+      </Box>
+    </>  
+    )}
+  </>
   )
 }
 
