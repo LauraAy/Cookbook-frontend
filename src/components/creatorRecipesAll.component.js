@@ -102,7 +102,17 @@ return (
                 </Typography>
               }
               {creatorRecipe.recipe &&
-                creatorRecipe.recipe.map((recipe, index) => (
+                Array.from(
+                  creatorRecipe.recipe.sort((a, b) => {
+                    if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                      return -1;
+                    }
+                    if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                      return 1;
+                    }
+                    return 0; 
+                  })
+                ).map((recipe, index) => (
                 <>
                   <ListItemButton onClick={() => handleListItemClick(recipe)}>
                     <ListItem key={recipe.id} >

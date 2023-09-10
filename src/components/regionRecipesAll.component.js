@@ -73,7 +73,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
       setRegionRecipesRegion(response.data);
       setSearchActive(true)
       setCurrentRecipe(null)
-      console.log(response.data.recipe);
+      console.log(response.data);
     })
     .catch(e => {
       console.log(e);
@@ -128,7 +128,17 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                 }}
               >
                 {regionRecipe.recipe &&
-                  regionRecipe.recipe.map((recipe, index) => (
+                  Array.from(
+                    regionRecipe.recipe.sort((a, b) => {
+                      if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                        return -1;
+                      }
+                      if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                        return 1;
+                      }
+                      return 0; 
+                    })
+                  ).map((recipe, index) => (
                     <ListItemButton onClick={() => handleListItemClick(recipe)}>
                       <ListItem key={recipe.id} >
                         <ListItemText
@@ -183,8 +193,18 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                     Scroll to see all recipes for this region. 
                   </Typography>
                 }
-                {regionRecipe.recipe &&
-                  regionRecipe.recipe.map((recipe, index) => (
+                 {regionRecipe.recipe &&
+                  Array.from(
+                    regionRecipe.recipe.sort((a, b) => {
+                      if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                        return -1;
+                      }
+                      if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                        return 1;
+                      }
+                      return 0; 
+                    })
+                  ).map((recipe, index) => (
                   <>
                     <ListItemButton onClick={() => handleListItemClick(recipe)}>
                       <ListItem key={recipe.id} >
@@ -303,7 +323,17 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                       }}
                     >
                       {regionRecipe.recipe &&
-                        regionRecipe.recipe.map((recipe, index) => (    
+                          Array.from(
+                            regionRecipe.recipe.sort((a, b) => {
+                              if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                                return -1;
+                              }
+                              if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                                return 1;
+                              }
+                              return 0; 
+                            })
+                          ).map((recipe, index) => (   
                           <ListItemButton onClick={() => handleListItemClick(regionRecipe)}>
                             <ListItem key={regionRecipe.id} >
                               <ListItemText
