@@ -183,7 +183,7 @@ return (
                   <Typography variant="subtitle1"> 
                     Click on a title to see full recipe.
                   </Typography>
-                  {creatorRecipe.recipe.length > 6 && 
+                  {creatorRecipe.recipe.length > 4 && 
                     <Typography>
                       Scroll to see all recipes for this creator. 
                     </Typography>
@@ -199,29 +199,40 @@ return (
                       '& ul': { padding: 0 }
                     }}
                   >
-                {creatorRecipe.recipe &&
-                      creatorRecipe.recipe.map((recipe, index) => (    
+                    {creatorRecipe.recipe &&
+                      Array.from(
+                        creatorRecipe.recipe.sort((a, b) => {
+                          if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                            return -1;
+                          }
+                          if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                            return 1;
+                          }
+                          return 0; 
+                        })
+                      ).map((recipe, index) => (
                         <ListItemButton onClick={() => handleListItemClick(creatorRecipe)}>
-                          <ListItem key={creatorRecipe.id} >
-                            <ListItemText
-                              primary={recipe.title}
-                              secondary={recipe.description}
-                              secondaryTypographyProps={{ 
-                                style: {
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis'
-                                }
-                              }}
-                            />
-                          </ListItem>
-                          <Divider />
-                        </ListItemButton>
-                      )
-                    )}
+                        <ListItem key={creatorRecipe.id} >
+                          <ListItemText
+                            primary={recipe.title}
+                            secondary={recipe.description}
+                            secondaryTypographyProps={{ 
+                              style: {
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                              }
+                            }}
+                          />
+                        </ListItem>
+                        <Divider />
+                      </ListItemButton>
+                      ))
+                    }
                   </List>
                 </>
                 );
+            
               })}
             <Pagination
               count={count}
