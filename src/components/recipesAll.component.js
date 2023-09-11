@@ -168,6 +168,8 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
           <List p="10" pt="3" spacing={2}>
             {_DATA &&
               _DATA.currentData().map(recipe => {
+                
+               
                 return (
                 <>
                   <ListItemButton onClick={() => handleListItemClick(recipe)}>
