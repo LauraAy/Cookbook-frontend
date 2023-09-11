@@ -66,19 +66,22 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
 
   const findByRegion = () => {
     const searchRegionName = currentRegionName
-    console.log(selectedRegion.regionName)
-    
+  
     RegionRecipeDataService.findByRegionName(searchRegionName)
     .then (response => {
       setRegionRecipesRegion(response.data);
       setSearchActive(true)
       setCurrentRecipe(null)
-      console.log(response.data);
+      console.log(response.data)
     })
     .catch(e => {
       console.log(e);
     });
   };
+
+  let sortRegionRecipes = regionRecipesRegion.map(({ recipe }) => [].concat(recipe)).flat();
+
+  console.log (sortRegionRecipes)
 
   //List select function
   const handleListItemClick = (recipe) => {
@@ -184,50 +187,43 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
               '& ul': { padding: 0 }
             }}
           >
-            {regionRecipesRegion &&
-              regionRecipesRegion.map(regionRecipe => {
-              return (
+            {sortRegionRecipes &&
+              Array.from(
+                sortRegionRecipes.sort((a, b) => {
+                  if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+                    return -1;
+                  }
+                  if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                    return 1;
+                  }
+                    return 0; 
+                })
+              ).map((recipe) => (
               <>
-                {regionRecipe.recipe.length > 6 && 
+                {/* {recipe.length > 6 && 
                   <Typography>
                     Scroll to see all recipes for this region. 
                   </Typography>
-                }
-                 {regionRecipe.recipe &&
-                  Array.from(
-                    regionRecipe.recipe.sort((a, b) => {
-                      if (a.title.toLowerCase ()< b.title.toLowerCase()) {
-                        return -1;
-                      }
-                      if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                        return 1;
-                      }
-                      return 0; 
-                    })
-                  ).map((recipe, index) => (
-                  <>
-                    <ListItemButton onClick={() => handleListItemClick(recipe)}>
-                      <ListItem key={recipe.id} >
-                        <ListItemText
-                          primary={recipe.title}
-                          secondary={recipe.description}
-                          secondaryTypographyProps={{ 
-                            style: {
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis'
-                            }
-                          }}
-                        />
-                      </ListItem>
-                      <Divider />
-                    </ListItemButton>
-                  </>
-                  )
-                )} 
+                } */}
+                <ListItemButton onClick={() => handleListItemClick(recipe)}>
+                  <ListItem key={recipe.id} >
+                    <ListItemText
+                      primary={recipe.title}
+                      secondary={recipe.description}
+                      secondaryTypographyProps={{ 
+                        style: {
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }
+                      }}
+                    />
+                  </ListItem>
+                  <Divider />
+                </ListItemButton>
               </>
-              );
-            })}
+              ))
+            }                
           </List>
         </Box>
         <Box m={4}>
@@ -245,6 +241,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
         <Typography variant="h5" gutterBottom>
           Search Recipes By Country Name
         </Typography>
+        {regionRecipes &&
         <Box m={4} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
@@ -259,6 +256,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
             <Button variant="contained" onClick={findByCountry}>Search</Button>
           </Box>
         </Box>
+        }           
         <Box>
           <Typography variant="h5" gutterBottom>
             Search Recipes By Region Name
