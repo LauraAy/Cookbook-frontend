@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import EverythingDataService from "../services/everything.service";
-import Accordion from 'react-bootstrap/Accordion';
+// import Accordion from 'react-bootstrap/Accordion';
 import RecipeViewComponent from '../components/recipeView.component.js'
 import RegionViewComponent from '../components/regionView.component.js'
 import CreatorViewComponent from "../components/creatorView.component";
 import PairingViewComponent from "../components/pairingView.component";
+import { Accordion, AccordionSummary, AccordionDetails, Box, Typography} from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 
 const RecipeViewPage = params => {
   const { id } = useParams();
   const [currentRecipe, setCurrentRecipe] = useState ([]);
 
-const getRecipeEverything = id => {
+  const getRecipeEverything = id => {
     EverythingDataService.getRecipeEverything(id)
     .then(response => {
       setCurrentRecipe(response.data);
@@ -27,49 +29,92 @@ const getRecipeEverything = id => {
     getRecipeEverything(id);
   }, [id]);
 
-return (
-  <div>
-    <h2>{currentRecipe.title}</h2>
-    <div><strong>Description: </strong>{currentRecipe.description}</div>
-    <div>
-      <strong>Region: </strong>
-      {currentRecipe.region &&
-        currentRecipe.region.map((region) => (
-          <>
-            {region.regionName}&nbsp;&nbsp;
-          </>
-        ) 
-      )}
-      <br></br>
-      <strong>Country: </strong>
+  return (
+  <>
+    <Box>
+      <Typography variant="h4" sx={{ m: 1 }} >{currentRecipe.title}</Typography>
+      <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
+      <Typography variant="body1" sx={{ m: 1 }} >
+        <strong>Region: </strong>
         {currentRecipe.region &&
           currentRecipe.region.map((region) => (
             <>
-              {region.country}&nbsp;&nbsp;
+              {region.regionName}&nbsp;&nbsp;
             </>
           ) 
         )}
-        <br></br>
-        <strong>Recipe Creator: </strong>
-        {currentRecipe.creator &&
-          currentRecipe.creator.map((creator) => (
-            <>
-              {creator.creatorName}&nbsp;&nbsp;
-            </>
-          )
-        )}
-        <br></br>
-        <br></br>
-    </div>
+      </Typography>
+      <Typography variant="body1" sx={{ m: 1 }} >
+        <strong>Country: </strong>
+          {currentRecipe.region &&
+            currentRecipe.region.map((region) => (
+              <>
+                {region.country}&nbsp;&nbsp;
+              </>
+            ) 
+          )}
+        </Typography>
+        <Typography variant="body1" sx={{ m: 1 }} >
+          <strong>Recipe Creator: </strong>
+          {currentRecipe.creator &&
+            currentRecipe.creator.map((creator) => (
+              <>
+                {creator.creatorName}&nbsp;&nbsp;
+              </>
+            )
+          )}
+        </Typography>
 
-    <Accordion defaultActiveKey="0">
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Full Recipe</Accordion.Header>
-        <Accordion.Body>
-          <RecipeViewComponent />
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography variant="h5">Full Recipe</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <RecipeViewComponent />
+      </AccordionDetails>
+    </Accordion>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography variant="h5" textAlign="center">Region Details</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <RegionViewComponent />
+      </AccordionDetails>
+    </Accordion>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography variant="h5">Recipe Creator Details</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <CreatorViewComponent />
+      </AccordionDetails>
+    </Accordion>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography variant="h5">Recipe Pairing Details</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <PairingViewComponent />
+      </AccordionDetails>
+    </Accordion>
+
+      {/* <Accordion.Item eventKey="1">
         <Accordion.Header>Region</Accordion.Header>
         <Accordion.Body>
           <RegionViewComponent />
@@ -87,7 +132,7 @@ return (
           <PairingViewComponent />
         </Accordion.Body>
       </Accordion.Item>
-    </Accordion>
+    </Accordion> */}
 
   
     <Link
@@ -106,7 +151,8 @@ return (
       View all recipes.
       </button>
     </Link>
-  </div>
+  </Box>
+</>
 )}
 
 export default RecipeViewPage

@@ -114,7 +114,7 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
             userRecipesCountry.map(regionRecipe => {
             return (
             <>
-              <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
+              <Typography variant="h4">Recipes from {selectedRegion.country}</Typography>
               <Typography variant="subtitle1">
                 Click on a title to see full recipe.
               </Typography>
@@ -166,7 +166,7 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
       ):(
       <>
         <Box p="10" pt="3" spacing={2}>
-          <Typography variant="h5">Recipes from {currentRegionName}</Typography>
+          <Typography variant="h4">Recipes from {currentRegionName}</Typography>
           <Typography variant="subtitle1">
             Click on a title to see full recipe.
           </Typography>

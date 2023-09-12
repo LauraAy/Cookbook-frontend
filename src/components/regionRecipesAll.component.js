@@ -110,7 +110,7 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
             regionRecipesCountry.map(regionRecipe => {
             return (
             <>
-              <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
+              <Typography variant="h4">Recipes from {selectedRegion.country}</Typography>
               <Typography variant="subtitle1">
                 Click on a title to see full recipe.
               </Typography>
@@ -172,10 +172,15 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
       ):(
       <>
         <Box p="10" pt="3" spacing={2}>
-          <Typography variant="h5">Recipes from {currentRegionName}</Typography>
+          <Typography variant="h4">Recipes from {currentRegionName}</Typography>
           <Typography variant="subtitle1">
             Click on a title to see full recipe.
           </Typography>
+          {sortRegionRecipes.length > 6 && 
+            <Typography>
+              Scroll to see all recipes for this region. 
+            </Typography>
+          }
           <List
             sx={{
               width: '100%',
@@ -200,11 +205,6 @@ const RegionRecipesAll = ({clickTitle, clickCreator})=> {
                 })
               ).map((recipe) => (
               <>
-                {/* {recipe.length > 6 && 
-                  <Typography>
-                    Scroll to see all recipes for this region. 
-                  </Typography>
-                } */}
                 <ListItemButton onClick={() => handleListItemClick(recipe)}>
                   <ListItem key={recipe.id} >
                     <ListItemText

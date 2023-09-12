@@ -79,7 +79,7 @@ return (
     {searchActive ? (
     <>
       <Box p="10" pt="3" spacing={2}>
-        <Typography variant="h5">Recipes from {selectedCreator.creatorName}</Typography>
+        <Typography variant="h4">Recipes from {selectedCreator.creatorName}</Typography>
         <Typography variant="subtitle1">
           Click on a title to see full recipe.
         </Typography>

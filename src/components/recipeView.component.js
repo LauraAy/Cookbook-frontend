@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
-import RegionRecipeService from "../services/regionRecipe.service";
+import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
+  ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 
 const RecipeViewComponent = props => {
     const { id } = useParams();
