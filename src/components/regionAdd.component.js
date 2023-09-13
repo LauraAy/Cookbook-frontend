@@ -64,7 +64,7 @@ useEffect(() => {
         console.log(currentRecipe.id);
       })
       .catch(e => {
-       
+        console.log(e)
       });
   };
 
@@ -75,7 +75,7 @@ useEffect(() => {
         console.log(response.data);
       })
       .catch(e => {
-       
+        console.log(e)
       });
   };
 

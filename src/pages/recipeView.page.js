@@ -29,41 +29,63 @@ const RecipeViewPage = params => {
     getRecipeEverything(id);
   }, [id]);
 
+  let filteredMap = currentRecipe.region.map((region) => (region))
+  // const filteredRegion = Array.from(new Set(currentRecipe.region.map((currentRecipeFil) => currentRecipeFil.region)))
+  // .map((filRecipe) => (filRecipe))
+
+  console.log([filteredMap])
+  // console.log([filteredRegion])
+
   return (
   <>
     <Box>
       <Typography variant="h4" sx={{ m: 1 }} >{currentRecipe.title}</Typography>
-      <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
-      <Typography variant="body1" sx={{ m: 1 }} >
-        <strong>Region: </strong>
+      <Box mx={4} my={2} >
+      <Typography variant="h6" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
+      <Typography variant="h6" sx={{ m: 1 }} >
+        <strong>From: </strong>
         {currentRecipe.region &&
-          currentRecipe.region.map((region) => (
+        <>
+          {currentRecipe.region.length > 1 ? (
             <>
-              {region.regionName}&nbsp;&nbsp;
+             {/* filteredRegion.map((region) =>
+               <>
+                 {region.regionName}, 
+             </>
+            ) */}
             </>
-          ) 
-        )}
+          ):(
+            currentRecipe.region.map((region) =>
+              <>
+                {region.regionName}
+              </>
+            )
+          )}
+        </>
+        }
+       
       </Typography>
-      <Typography variant="body1" sx={{ m: 1 }} >
+      <Typography variant="h6" sx={{ m: 1 }} >
         <strong>Country: </strong>
           {currentRecipe.region &&
             currentRecipe.region.map((region) => (
               <>
-                {region.country}&nbsp;&nbsp;
+                {region.country}
               </>
             ) 
           )}
         </Typography>
-        <Typography variant="body1" sx={{ m: 1 }} >
+        <Typography variant="h6" sx={{ m: 1 }} >
           <strong>Recipe Creator: </strong>
           {currentRecipe.creator &&
             currentRecipe.creator.map((creator) => (
               <>
-                {creator.creatorName}&nbsp;&nbsp;
+                {creator.creatorName}
               </>
             )
           )}
         </Typography>
+        </Box>
 
     <Accordion>
       <AccordionSummary
