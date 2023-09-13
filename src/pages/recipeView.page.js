@@ -29,63 +29,96 @@ const RecipeViewPage = params => {
     getRecipeEverything(id);
   }, [id]);
 
-  let filteredMap = currentRecipe.region.map((region) => (region))
-  // const filteredRegion = Array.from(new Set(currentRecipe.region.map((currentRecipeFil) => currentRecipeFil.region)))
+  var regionMap = currentRecipe.region?.map ((region) => region.regionName)
+  var regionFil = regionMap?.filter(elements => {
+    return elements !== null;
+   });
+
+
+  // let filteredMap = currentRecipe.region.map((region) => (region))
+  // const filteredRegion = Array.from(new Set(currentRecipe.region.map((currentRecipeFil) => currentRecipeFil.regionName)))
   // .map((filRecipe) => (filRecipe))
 
-  console.log([filteredMap])
+  // console.log([filteredMap])
   // console.log([filteredRegion])
+  
+  console.log(regionFil)
 
   return (
   <>
     <Box>
       <Typography variant="h4" sx={{ m: 1 }} >{currentRecipe.title}</Typography>
       <Box mx={4} my={2} >
-      <Typography variant="h6" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
-      <Typography variant="h6" sx={{ m: 1 }} >
-        <strong>From: </strong>
-        {currentRecipe.region &&
+      <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
+      <Typography variant="body1" sx={{ m: 1 }} >
+        {regionFil &&
         <>
-          {currentRecipe.region.length > 1 ? (
+          {regionFil.length > 1 ? (
+          <>
+            <strong>Regions: </strong>
+            {regionFil.map((regionName, index) =>
             <>
-             {/* filteredRegion.map((region) =>
-               <>
-                 {region.regionName}, 
-             </>
-            ) */}
+              {regionName && (
+              <>
+                {(index ? ', ' : '') + regionName }
+              </>
+              )} 
             </>
+            )}
+          </>
           ):(
-            currentRecipe.region.map((region) =>
+          <>
+            <strong>Region: </strong>
+            {currentRecipe.region.map((region) =>
               <>
                 {region.regionName}
               </>
-            )
+            )}
+          </>
           )}
         </>
         }
-       
       </Typography>
-      <Typography variant="h6" sx={{ m: 1 }} >
-        <strong>Country: </strong>
-          {currentRecipe.region &&
-            currentRecipe.region.map((region) => (
+      <Typography variant="body1" sx={{ m: 1 }} >
+        {currentRecipe.region &&
+        <>
+          {currentRecipe.region.length > 1 ? (
+          <>
+            <strong>Countries: </strong>
+            {currentRecipe.region.map((region, index) => 
+            <>
+              {region.country && (
+              <>
+                {(index ? ', ' : '') + region.country}
+              </>
+              )} 
+            </>
+            )}
+          </>
+          ):(
+          <>
+            <strong>Country: </strong>
+            {currentRecipe.region.map((region, index) => 
               <>
                 {region.country}
               </>
-            ) 
+            )} 
+          </>
           )}
-        </Typography>
-        <Typography variant="h6" sx={{ m: 1 }} >
-          <strong>Recipe Creator: </strong>
-          {currentRecipe.creator &&
-            currentRecipe.creator.map((creator) => (
-              <>
-                {creator.creatorName}
-              </>
-            )
-          )}
-        </Typography>
-        </Box>
+        </>
+        }
+      </Typography>
+      <Typography variant="body1" sx={{ m: 1 }} >
+        <strong>Recipe Creator: </strong>
+        {currentRecipe.creator &&
+          currentRecipe.creator.map((creator) => (
+            <>
+              {creator.creatorName}
+            </>
+          )
+        )}
+      </Typography>
+    </Box>
 
     <Accordion>
       <AccordionSummary
@@ -134,29 +167,7 @@ const RecipeViewPage = params => {
       <AccordionDetails>
         <PairingViewComponent />
       </AccordionDetails>
-    </Accordion>
-
-      {/* <Accordion.Item eventKey="1">
-        <Accordion.Header>Region</Accordion.Header>
-        <Accordion.Body>
-          <RegionViewComponent />
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="2">
-        <Accordion.Header>Recipe Creator</Accordion.Header>
-        <Accordion.Body>
-          <CreatorViewComponent />
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="3">
-        <Accordion.Header>Recipe Pairings</Accordion.Header>
-        <Accordion.Body>
-          <PairingViewComponent />
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion> */}
-
-  
+    </Accordion>  
     <Link
       to={"/user/recipes/" }
       className="badge badge-warning"

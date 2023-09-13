@@ -25,8 +25,19 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
   const retrieveUserRecipes = (id) => {
     UserRecipeDataService.findUserRecipes(id)
     .then(response => {
-      setUserRecipes(response.data);
-      console.log(response.data);
+      const sortRecipe = response.data
+      
+      sortRecipe.sort((a, b) => {
+        if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
+      setUserRecipes(sortRecipe)
     })
     .catch(e => {
       console.log(e);
