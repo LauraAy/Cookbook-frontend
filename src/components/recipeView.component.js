@@ -5,22 +5,24 @@ import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,
   ListItemText, Pagination, TextField, Typography, } from '@mui/material';
 
 const RecipeViewComponent = props => {
-    const { id } = useParams();
-    const initialRecipeState = {
-        id: null,
-        title: "",
-        description: "",
-        recipeType: "",
-        servingSize: null,
-        ingredients: "",
-        directions: "",
-        source: "",
-        userId: undefined
-      };
+  let navigate = useNavigate();
+
+  const { id } = useParams();
+  const initialRecipeState = {
+    id: null,
+    title: "",
+    description: "",
+    recipeType: "",
+    servingSize: null,
+    ingredients: "",
+    directions: "",
+    source: "",
+    userId: undefined
+  };
     
-    const [currentRecipe, setCurrentRecipe] = useState ([]);
-  
-  
+  const [currentRecipe, setCurrentRecipe] = useState ([]);
+
+  //get current recipe
   const getRecipe = id => {
     RecipeDataService.get(id)
     .then(response => {
@@ -37,72 +39,61 @@ const RecipeViewComponent = props => {
     getRecipe(id);
   }, [id]);
 
-return (
-<>
-  <div>
-    <label>
-      <strong>Title:</strong>
-    </label>{" "}
-    {currentRecipe.title}
-  </div>
-  {currentRecipe.description && (
-  <div>
-    <label>
-      <strong>Description:</strong>
-    </label>{" "}
-    {currentRecipe.description}
-  </div>
-  )}
-  {currentRecipe.recipeType && (
-  <div>
-    <label>
-      <strong>Recipe Type:</strong>
-    </label>{" "}
-    {currentRecipe.recipeType}
-  </div>
-  )}
-   {currentRecipe.servingSize && (
-    <div>
-      <label>
-        <strong>ServingSize:</strong>
-      </label>{" "}
-      {currentRecipe.servingSize}
-    </div>
-   )}
-  {currentRecipe.description && (
-  <div>
-    <label>
-      <strong>Ingredients:</strong>
-    </label>{" "}
-    {currentRecipe.ingredients}
-  </div>
-  )}
-  {currentRecipe.directions && (
-  <div>
-    <label>
-      <strong>Directions:</strong>
-    </label>{" "}
-    {currentRecipe.directions}
-  </div>
-  )}
-  {currentRecipe.source && (
-  <div>
-    <label>
-      <strong>Source:</strong>
-    </label>{" "}
-    {currentRecipe.source}
-  </div>
-  )}
+  //navigate to edit recipe
+  const editRecipe = () => {
+    navigate("/recipes/edit/" + currentRecipe.id)
+  }
 
-  <Link
-    to={"/recipes/edit/" + currentRecipe.id}
-    className="badge badge-warning"
-  >
-    <button>
-    Edit
-    </button>
-  </Link>
-</>
+  return (
+  <>
+    <Box mx={4}>
+      <Typography variant="h6">{currentRecipe.title}</Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.recipeType && (
+        <>
+          <strong>RecipeType: </strong>
+          {currentRecipe.recipeType}
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.servingSize && (
+        <>
+          <strong>Serving Size: </strong>
+          {currentRecipe.servingSize}
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.ingredients && (
+        <>
+          <strong>Ingredients: </strong>
+          <Box>
+            {currentRecipe.ingredients}
+          </Box>
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.directions && (
+        <>
+          <strong>Directions: </strong>
+          <Box>
+            {currentRecipe.directions}
+          </Box>
+        </>
+        )}
+      </Typography>
+    </Box>
+    
+    <Button
+      onClick={editRecipe}
+      sx={{my: 2, mx: 4}}
+      variant="contained"
+    >
+      Edit Recipe
+    </Button>
+  </>
 )}
 
 export default RecipeViewComponent

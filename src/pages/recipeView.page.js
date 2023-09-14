@@ -118,6 +118,14 @@ const RecipeViewPage = params => {
           )
         )}
       </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.source && (
+        <>
+          <strong>Recipe Source: </strong>
+          {currentRecipe.source}
+        </>
+        )}
+      </Typography>
     </Box>
 
     <Accordion>
