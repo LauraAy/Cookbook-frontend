@@ -7,6 +7,7 @@ import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/mat
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
+import ReactQuill from 'react-quill';
 
 const filter = createFilterOptions();
 
@@ -55,6 +56,7 @@ const RecipeAddComponent = () => {
     const {
       register,
       handleSubmit,
+      watch,
       formState: { errors }
     } = useForm({
       defaultValues: { "servingSize": null, "recipeType": ""},
@@ -112,6 +114,20 @@ const newRecipe = () => {
     window.location.reload(false);
   };
 
+  useEffect(() => {
+    register('ingredients');
+  }, [register]);
+
+  const onIngredientStateChange = (ingredientState) => {
+    setValue("ingredients", ingredientState);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const ingredientContent = watch("ingredients");
+
   return (
   <div>
     {submitted ? (
@@ -155,6 +171,15 @@ const newRecipe = () => {
                   {errors.username?.message}
                 </Typography>
               </FormControl>
+            
+              <ReactQuill
+                theme="snow"
+                name="ingredients"
+                value={ingredientContent}
+                onChange={onIngredientStateChange}
+              // {...register('ingredients')}
+              />
+  <input type="submit" onClick={handleSubmit(onSubmit)} />
               <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
@@ -239,7 +264,7 @@ const newRecipe = () => {
                 margin="dense"
                 {...register('servingSize')}
               />
-              <TextField
+              {/* <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
                 defaultValue=""
@@ -251,7 +276,7 @@ const newRecipe = () => {
                 multiline
                 rows={4}
                 {...register('ingredients')}
-              />
+              /> */}
               <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
