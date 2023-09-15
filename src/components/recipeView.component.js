@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
-import { Autocomplete, Box, Button, Divider,  List, ListItem, ListItemButton,  
-  ListItemText, Pagination, TextField, Typography, } from '@mui/material';
+import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
 
 const RecipeViewComponent = props => {
   let navigate = useNavigate();
@@ -84,15 +83,18 @@ const RecipeViewComponent = props => {
         </>
         )}
       </Typography>
+      <Divider></Divider>
     </Box>
-    
-    <Button
-      onClick={editRecipe}
-      sx={{my: 2, mx: 4}}
-      variant="contained"
-    >
-      Edit Recipe
-    </Button>
+
+    <Tooltip title="Edit this recipe.">
+      <Button
+        onClick={editRecipe}
+        sx={{my: 2, mx: 4}}
+        variant="outlined"
+      >
+        Edit Recipe
+      </Button>
+    </Tooltip>
   </>
 )}
 

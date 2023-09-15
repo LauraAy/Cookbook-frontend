@@ -6,8 +6,10 @@ import RecipeViewComponent from '../components/recipeView.component.js'
 import RegionViewComponent from '../components/regionView.component.js'
 import CreatorViewComponent from "../components/creatorView.component";
 import PairingViewComponent from "../components/pairingView.component";
-import { Accordion, AccordionSummary, AccordionDetails, Box, Typography} from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography} from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
+// import { makeStyles } from "@material-ui/core/styles";
+
 
 const RecipeViewPage = params => {
   const { id } = useParams();
@@ -41,14 +43,15 @@ const RecipeViewPage = params => {
 
   // console.log([filteredMap])
   // console.log([filteredRegion])
+
+ 
   
   console.log(regionFil)
 
   return (
   <>
-    <Box>
-      <Typography variant="h4" sx={{ m: 1 }} >{currentRecipe.title}</Typography>
-      <Box mx={4} my={2} >
+    <Typography variant="h4" sx={{ m: 1 }} >{currentRecipe.title}</Typography>
+    <Box mx={4} mt={2} mb={4}>
       <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
       <Typography variant="body1" sx={{ m: 1 }} >
         {regionFil &&
@@ -99,9 +102,9 @@ const RecipeViewPage = params => {
           <>
             <strong>Country: </strong>
             {currentRecipe.region.map((region, index) => 
-              <>
-                {region.country}
-              </>
+            <>
+              {region.country}
+            </>
             )} 
           </>
           )}
@@ -127,14 +130,13 @@ const RecipeViewPage = params => {
         )}
       </Typography>
     </Box>
-
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
-        id="panel1a-header"
+        id="panel1a-header"   
       >
-        <Typography variant="h5">Full Recipe</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%'}} >Full Recipe</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <RecipeViewComponent />
@@ -146,7 +148,7 @@ const RecipeViewPage = params => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5" textAlign="center">Region Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%'}}>Region Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <RegionViewComponent />
@@ -158,7 +160,7 @@ const RecipeViewPage = params => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5">Recipe Creator Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%'}} >Recipe Creator Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <CreatorViewComponent />
@@ -170,7 +172,7 @@ const RecipeViewPage = params => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5">Recipe Pairing Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%'}}>Recipe Pairing Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <PairingViewComponent />
@@ -180,19 +182,25 @@ const RecipeViewPage = params => {
       to={"/user/recipes/" }
       className="badge badge-warning"
     >
-      <button>
-      View your recipes.
-      </button>
+      <Button 
+        variant="outlined"
+        sx={{ mx: 2, my: 4 }}
+      >
+        View your recipes.
+      </Button>
     </Link>
     <Link
       to={"/recipes/"}
       className="badge badge-warning"
     >
-      <button>
-      View all recipes.
-      </button>
+      <Button 
+        variant="outlined"
+        sx={{m: 2}}
+      >
+        View all recipes.
+      </Button>
     </Link>
-  </Box>
+  
 </>
 )}
 

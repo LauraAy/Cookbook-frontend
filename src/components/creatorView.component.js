@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
+import { Box, Button, Divider, Grid, Tooltip, Typography, } from '@mui/material';
+import { Delete } from  '@mui/icons-material';
 
 const CreatorViewComponent = params => {
   const { id } = useParams();
@@ -9,7 +11,8 @@ const CreatorViewComponent = params => {
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ creator, setCreator] = useState ([])
 
-   const getRecipeCreators = id => {
+  //get creator for current recipe
+  const getRecipeCreators = id => {
     CreatorRecipeDataService.getRecipeCreators(id)
     .then(response => {
       setCurrentRecipe(response.data);
@@ -27,76 +30,120 @@ const CreatorViewComponent = params => {
     getRecipeCreators(id);
   }, [id]);
 
-const goAddCreator = () => {
-  navigate("/creators/add/" + id)
-}
+  //navigation functions
+  const goAddCreator = () => {
+    navigate("/creators/add/" + id)
+  }
 
-const refreshPage = () => {
-  navigate(0);
-}
+  const editCreator = () => {
+    navigate("/creators/edit/" + currentRecipe.id + "/" + creator.id)
+  }
 
-//Remove creator from this recipe
-const removeCreator = currentCreatorId => {
-  const recipeId = currentRecipe.id
-  const creatorId = currentCreatorId
+  const refreshPage = () => {
+    navigate(0);
+  }
 
-  CreatorRecipeDataService.removeCreator(recipeId, creatorId)
-  .then(response => {
-    console.log(response.data)
-    refreshPage()
-  
-  })
-  .catch(e => {
-    console.log(e)
-  })
-}
+  //Remove creator from this recipe
+  const removeCreator = currentCreatorId => {
+    const recipeId = currentRecipe.id
+    const creatorId = currentCreatorId
 
-return (
+    CreatorRecipeDataService.removeCreator(recipeId, creatorId)
+    .then(response => {
+      console.log(response.data)
+      refreshPage()
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
+  return (
+  <>
+    {creator.length ? (
     <>
-      <div>
-        {creator.length ? (
-          <div >
-            {creator.map((creator, index) => (
-              <div key={index}>
-                <h2> {creator.creatorName} </h2>
-                {creator.about && (
-                  <div>
-                    <label>
-                      <strong>About recipe creator:</strong>
-                    </label>{" "}
+      {creator.map((creator) => 
+        <Box mt={2}>
+          <Typography variant="h6" mx={4}>{creator.creatorName}</Typography>
+          <Box mx={4} mb={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={8}>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {creator.about && (
+                  <>
+                    <strong>About: </strong>
+                   
                     {creator.about}
-                  </div>
-                )}
-                {creator.link && (
-                  <div>
-                    <label>
-                      <strong>Link to recipe creator webpage:</strong>
-                    </label>{" "}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {creator.link && (
+                  <>
+                    <strong>Webpage: </strong>
+                   <a href={creator.link}>
                     {creator.link}
-                  </div>
-                )}
-                <Link to={"/creators/edit/" + currentRecipe.id + "/" + creator.id}>
-                  <button>Edit This Recipe Creator</button>
-                </Link>
-                <br></br>
-                <br></br>
-                <button onClick={() => {removeCreator(creator.id)}}>Remove Creator from This Recipe </button>
-                <br></br>
-                <br></br>
-              </div>
-            ))}
-            <h4>Add another recipe creator. </h4>
-            <button onClick={goAddCreator}>Add a recipe creator.</button>
-        </div>
-        ):(  
-          <div> 
-            <h2>Add a Creator now!</h2>
-            <button onClick={goAddCreator}>Add a recipe creator.</button>
-          </div>
-        )}
-      </div>
+                    </a>
+                    
+                  </>
+                  )}
+                </Typography>
+                <Tooltip title="Edit this creator.">
+                  <Button
+                    onClick={editCreator}
+                    variant="outlined"
+                    sx={{ my: 2 }}
+                  >
+                    Edit Creator
+                  </Button>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Tooltip title="Remove this creator from recipe.">
+                  <Button 
+                    onClick={() => {removeCreator(creator.id)}}
+                    variant="outlined"
+                    color="error"
+                    startIcon={<Delete />}
+                  >
+                    Remove
+                  </Button>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider></Divider>
+        </Box>
+      )}
+      <Tooltip title="Add another region to this recipe.">
+        <Button 
+          onClick={goAddCreator}
+          variant="outlined"
+          sx={{ m: 2 }}
+        >
+          Add Another Creator
+        </Button>
+      </Tooltip>
     </>
-)
-}
+    ):(
+    <>
+      <Typography variant="h6">Add a recipe creator for this recipe now!</Typography>
+      <Typography variant="subtitle1">Who is the genius behind this recipe? Add the name of 
+      the person who created it and some info about them.</Typography>
+      <Tooltip title="Add a creator to this recipe.">
+        <Button 
+          onClick={goAddCreator}
+          variant="contained"
+          sx={{ m: 2 }}
+        >
+          Add Creator
+        </Button>
+      </Tooltip>
+    </>
+    )}
+  </>
+  )
+}           
+
 
 export default CreatorViewComponent
