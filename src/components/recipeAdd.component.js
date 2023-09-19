@@ -178,7 +178,7 @@ const newRecipe = () => {
                 </Typography>
               </FormControl>
               <TextField
-                sx={{ mt: 2, mb: 2 }}
+                sx={{ mb: 2 }}
                 id="outlined-multiline-static"
                 defaultValue=""
                 name="description"
@@ -261,48 +261,28 @@ const newRecipe = () => {
                 margin="dense"
                 {...register('servingSize')}
               />
-              <Box>
+              <Box mb={2}>
+              <Typography variant="captionText" color="#1876D1">
+                Ingredients
+              </Typography>
               <ReactQuill
                 theme="snow"
                 value={ingredientContent}
                 onChange={onIngredientStateChange}
+                placeholder="Ingredients"
               />
               </Box>
-             
-              {/* <TextField
-                sx={{ mt: 2, mb: 2 }}
-                id="outlined-multiline-static"
-                defaultValue=""
-                name="ingredients"
-                label="Ingredients"
-                placeholder="ingredients"
-                fullWidth
-                margin="dense"
-                multiline
-                rows={4}
-                {...register('ingredients')}
-              /> */}
               <Box>
+              <Typography variant="captionText" color="#1876D1">
+                Directions
+              </Typography>
               <ReactQuill
                 theme="snow"
                 value={directionsContent}
                 onChange={onDirectionsStateChange}
+                placeholder="Directions"
               />
               </Box>
-             
-              {/* <TextField
-                sx={{ mt: 2, mb: 2 }}
-                id="outlined-multiline-static"
-                defaultValue=""
-                name="directions"
-                label="Directions"
-                placeholder="directions"
-                fullWidth
-                margin="dense"
-                multiline
-                rows={4}
-                {...register('directions')}
-              /> */}
               <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="source"
