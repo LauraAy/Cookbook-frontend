@@ -1,13 +1,14 @@
-import React, { useState, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
-import { useForm } from 'react-hook-form';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
-import ReactQuill from 'react-quill';
 
 const filter = createFilterOptions();
 
@@ -30,8 +31,8 @@ const RecipeAddComponent = () => {
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
-  const [value, setValue] = React.useState(null);
 
+  //get recipes
   useEffect(() => {
     retrieveRecipes();
   }, []);
@@ -47,22 +48,42 @@ const RecipeAddComponent = () => {
     });
   };
 
-   //validation functions
-   const validationSchema = Yup.object().shape({
+  //react-hook-form functions
+  const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required('title is required')
-    });
+  });
   
-    const {
-      register,
-      handleSubmit,
-      watch,
-      formState: { errors }
-    } = useForm({
-      defaultValues: { "servingSize": null, "recipeType": ""},
-      resolver: yupResolver(validationSchema)
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors }
+  } = useForm();
+
+  useEffect(() => {
+    register("title", "description", "servingSize","ingredients", "directions", "source");
+  }, [register]);
   
+  //for ingredients and directions
+  const onIngredientStateChange = (ingredientState) => {
+    setValue("ingredients", ingredientState);
+  };
+
+  const onDirectionsStateChange = (directionState) => {
+    setValue("directions", directionState);
+  };
+
+  const ingredientContent = watch("ingredients");
+  const directionsContent = watch("directions");
+  const recipeTypeContent = watch("recipeType")
+  
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+  
+  //saveRecipe
   const saveRecipe = (formData) => {
   
     var data = {
@@ -114,20 +135,6 @@ const newRecipe = () => {
     window.location.reload(false);
   };
 
-  useEffect(() => {
-    register('ingredients');
-  }, [register]);
-
-  const onIngredientStateChange = (ingredientState) => {
-    setValue("ingredients", ingredientState);
-  };
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-  const ingredientContent = watch("ingredients");
-
   return (
   <div>
     {submitted ? (
@@ -147,7 +154,6 @@ const newRecipe = () => {
       </div>
       ):(
       <div>
-        <Fragment>
           <Paper>
             <Typography variant="h6" align="center" margin="dense">
               Create a New Recipe
@@ -171,15 +177,6 @@ const newRecipe = () => {
                   {errors.username?.message}
                 </Typography>
               </FormControl>
-            
-              <ReactQuill
-                theme="snow"
-                name="ingredients"
-                value={ingredientContent}
-                onChange={onIngredientStateChange}
-              // {...register('ingredients')}
-              />
-  <input type="submit" onClick={handleSubmit(onSubmit)} />
               <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
@@ -194,7 +191,7 @@ const newRecipe = () => {
                 {...register('description')}
               />
               <Autocomplete
-                value={value}
+                value={""}
                 defaultValue=""
                 {...register('recipeType')}
                 onChange={(event, newValue) => {
@@ -264,6 +261,14 @@ const newRecipe = () => {
                 margin="dense"
                 {...register('servingSize')}
               />
+              <Box>
+              <ReactQuill
+                theme="snow"
+                value={ingredientContent}
+                onChange={onIngredientStateChange}
+              />
+              </Box>
+             
               {/* <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
@@ -277,7 +282,15 @@ const newRecipe = () => {
                 rows={4}
                 {...register('ingredients')}
               /> */}
-              <TextField
+              <Box>
+              <ReactQuill
+                theme="snow"
+                value={directionsContent}
+                onChange={onDirectionsStateChange}
+              />
+              </Box>
+             
+              {/* <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="outlined-multiline-static"
                 defaultValue=""
@@ -289,7 +302,7 @@ const newRecipe = () => {
                 multiline
                 rows={4}
                 {...register('directions')}
-              />
+              /> */}
               <TextField
                 sx={{ mt: 2, mb: 2 }}
                 id="source"
@@ -312,7 +325,7 @@ const newRecipe = () => {
               </Box>
             </Box>
           </Paper>
-        </Fragment>
+
       </div>
     )}
   </div>     

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
 import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
 
 const RecipeViewComponent = props => {
   let navigate = useNavigate();
@@ -67,9 +69,13 @@ const RecipeViewComponent = props => {
         {currentRecipe.ingredients && (
         <>
           <strong>Ingredients: </strong>
-          <Box>
-            {currentRecipe.ingredients}
-          </Box>
+          
+          <ReactQuill
+            value={currentRecipe.ingredients}
+            readOnly={true}
+            theme={"bubble"}
+          />
+        
         </>
         )}
       </Typography>
@@ -77,9 +83,11 @@ const RecipeViewComponent = props => {
         {currentRecipe.directions && (
         <>
           <strong>Directions: </strong>
-          <Box>
-            {currentRecipe.directions}
-          </Box>
+          <ReactQuill
+            value={currentRecipe.directions}
+            readOnly={true}
+            theme={"bubble"}
+          />
         </>
         )}
       </Typography>
