@@ -77,7 +77,7 @@ const RecipeAddComponent = () => {
 
   const ingredientContent = watch("ingredients");
   const directionsContent = watch("directions");
-  const recipeTypeContent = watch("recipeType")
+  const recipeTypeContent = watch("recipeType");
   
   const onSubmit = (data) => {
     console.log(data);

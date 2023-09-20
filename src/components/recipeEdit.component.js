@@ -5,6 +5,8 @@ import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/ma
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const RecipeEdit = props => {
   const { id }= useParams();
@@ -84,13 +86,35 @@ const RecipeEdit = props => {
   //react-hook-form functions
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors }
   } = useForm({
     values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
       ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
   });
+
+  useEffect(() => {
+    register("title", "description", "servingSize","ingredients", "directions", "source");
+  }, [register]);
+
+   //for ingredients and directions
+   const onIngredientStateChange = (ingredientState) => {
+    setValue("ingredients", ingredientState);
+  };
+
+  const onDirectionsStateChange = (directionState) => {
+    setValue("directions", directionState);
+  };
+
+  const ingredientContent = watch("ingredients");
+  const directionsContent = watch("directions");
+  const recipeTypeContent = watch("recipeType");
  
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   //update recipe
   const updateRecipe = (formData) => {
     var data = {
@@ -224,6 +248,7 @@ const RecipeEdit = props => {
                 />
               )}
             />
+            
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="servingSize"
@@ -237,7 +262,21 @@ const RecipeEdit = props => {
               margin="dense"
               {...register('servingSize')}
             />
-            <TextField
+            <ReactQuill
+                theme="snow"
+                value={ingredientContent}
+                onChange={onIngredientStateChange}
+                // placeholder={currentRecipe.ingredients}
+  
+              />
+               <ReactQuill
+                theme="snow"
+                value={directionsContent}
+                onChange={onDirectionsStateChange}
+                // placeholder={currentRecipe.directions}
+              
+              />
+            {/* <TextField
               sx={{ mt: 2, mb: 2 }}
               id="outlined-multiline-static"
               defaultValue=""
@@ -251,8 +290,8 @@ const RecipeEdit = props => {
               multiline
               rows={4}
               {...register('ingredients')}
-            />
-            <TextField
+            /> */}
+            {/* <TextField
               sx={{ mt: 2, mb: 2 }}
               id="outlined-multiline-static"
               defaultValue=""
@@ -266,7 +305,7 @@ const RecipeEdit = props => {
               multiline
               rows={4}
               {...register('directions')}
-            />
+            /> */}
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="source"
@@ -291,7 +330,7 @@ const RecipeEdit = props => {
             }}
           >
             <Button
-              onClick={handleSubmit(updateRecipe)}
+              onClick={handleSubmit(onSubmit)}
               sx={{my: 2}}
               variant="contained"
             >
