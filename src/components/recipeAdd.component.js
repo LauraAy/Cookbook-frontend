@@ -61,7 +61,11 @@ const RecipeAddComponent = () => {
     setValue,
     watch,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+    servingSize: null
+    }
+  });
 
   useEffect(() => {
     register("title", "description", "servingSize","ingredients", "directions", "source");
