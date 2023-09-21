@@ -72,12 +72,12 @@ const RecipeAddComponent = () => {
   }, [register]);
   
   //for ingredients and directions
-  const onIngredientStateChange = (ingredientState) => {
-    setValue("ingredients", ingredientState);
+  const onIngredientStateChange = (content, delta, source, editor) => {
+    setValue("ingredients", editor.getContents());
   };
 
-  const onDirectionsStateChange = (directionState) => {
-    setValue("directions", directionState);
+  const onDirectionsStateChange = (content, delta, source, editor) => {
+    setValue("directions", editor.getContents());
   };
 
   const ingredientContent = watch("ingredients");

@@ -9,8 +9,11 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const RecipeEdit = props => {
+  const filter = createFilterOptions();
+
   const { id }= useParams();
   let navigate = useNavigate();
+
   const initialRecipeState = {
     id: null,
     title: "",
@@ -26,10 +29,12 @@ const RecipeEdit = props => {
   const [recipes, setRecipes] = useState ([]);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(null);
+  const [typeValue, setTypeValue] = React.useState(null);
+  // const [ingredientValue, setIngredientValue] = useState(currentRecipe.ingredients)
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [deleteText, setDeleteText] = useState(null);
 
-  const filter = createFilterOptions();
+
 
   //get recipe
   const getRecipe = id => {
@@ -91,20 +96,19 @@ const RecipeEdit = props => {
     formState: { errors }
   } = useForm({
     values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
-      ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
+    ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
   });
 
-
-   //for ingredients and directions
-   const onIngredientStateChange = (newIngredientState) => {
-    console.log (newIngredientState)
-    setValue("ingredients", newIngredientState)
-  };
 
   useEffect(() => {
     register("title", "description", "servingSize","ingredients", "directions", "source");
   }, [register]);
 
+
+   //for ingredients and directions
+   const onIngredientStateChange = (content, delta, source, editor) => {
+    setValue("ingredients", editor.getContents());
+  };
 
   const onDirectionsStateChange = (directionState) => {
     setValue("directions", directionState);
@@ -155,6 +159,16 @@ const RecipeEdit = props => {
       });
   };
 
+
+//   const modules = {
+//     toolbar: [
+//       [{ header: [1, 2, false] }],
+//       ['bold', 'italic', 'underline'],
+//       ['image', 'code-block']
+//     ]
+ 
+// }
+  
   return (
   <div>
     <Fragment>
@@ -270,18 +284,22 @@ const RecipeEdit = props => {
             />
             <ReactQuill
                 theme="snow"
-                value={ingredientContent}
-                onChange={onIngredientStateChange}
+                value={currentRecipe.ingredients}
+                onChange={(event, newValue) => {
+                  setValue("ingredients", newValue)
+                }}
                 placeholder={currentRecipe.ingredients}
+              >
+
+              </ReactQuill>
   
-              />
-              <ReactQuill
+              {/* <ReactQuill
                 theme="snow"
                 value={directionsContent}
                 onChange={onDirectionsStateChange}
                 placeholder={currentRecipe.directions}
               
-              />
+              /> */}
             {/* <TextField
               sx={{ mt: 2, mb: 2 }}
               id="outlined-multiline-static"

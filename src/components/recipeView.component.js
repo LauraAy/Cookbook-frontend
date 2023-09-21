@@ -43,6 +43,7 @@ const RecipeViewComponent = props => {
   //navigate to edit recipe
   const editRecipe = () => {
     navigate("/recipes/edit/" + currentRecipe.id)
+   
   }
 
   return (
