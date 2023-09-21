@@ -94,14 +94,17 @@ const RecipeEdit = props => {
       ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
   });
 
+
+   //for ingredients and directions
+   const onIngredientStateChange = (newIngredientState) => {
+    console.log (newIngredientState)
+    setValue("ingredients", newIngredientState)
+  };
+
   useEffect(() => {
     register("title", "description", "servingSize","ingredients", "directions", "source");
   }, [register]);
 
-   //for ingredients and directions
-   const onIngredientStateChange = (ingredientState) => {
-    setValue("ingredients", ingredientState);
-  };
 
   const onDirectionsStateChange = (directionState) => {
     setValue("directions", directionState);
@@ -109,12 +112,15 @@ const RecipeEdit = props => {
 
   const ingredientContent = watch("ingredients");
   const directionsContent = watch("directions");
-  const recipeTypeContent = watch("recipeType");
  
 
   const onSubmit = (data) => {
+    register("title", "description", "servingSize","ingredients", "directions", "source");
+  
     console.log(data);
   };
+
+
   //update recipe
   const updateRecipe = (formData) => {
     var data = {
@@ -266,14 +272,14 @@ const RecipeEdit = props => {
                 theme="snow"
                 value={ingredientContent}
                 onChange={onIngredientStateChange}
-                // placeholder={currentRecipe.ingredients}
+                placeholder={currentRecipe.ingredients}
   
               />
-               <ReactQuill
+              <ReactQuill
                 theme="snow"
                 value={directionsContent}
                 onChange={onDirectionsStateChange}
-                // placeholder={currentRecipe.directions}
+                placeholder={currentRecipe.directions}
               
               />
             {/* <TextField

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -31,6 +31,7 @@ const RecipeAddComponent = () => {
   const [recipe, setRecipe] = useState(initialRecipeState);
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
+  const [typeValue, setTypeValue] = React.useState(null);
 
   //get recipes
   useEffect(() => {
@@ -135,10 +136,17 @@ const newRecipe = () => {
     window.location.reload(false);
   };
 
-  return (
-  <div>
-    {submitted ? (
-      <div>
+
+  const modules = {
+    // toolbar: [
+     
+    // ]
+  }
+  
+    return (
+    <>
+      {submitted ? (
+      <>
         <h4>Recipe Created!</h4>
         <div>
           {recipe.id}
@@ -151,165 +159,157 @@ const newRecipe = () => {
           <button>View Recipe</button>
         </Link>
         <button onClick={newRecipe}>Add Another Recipe</button>
-      </div>
+      </>
       ):(
-      <div>
-          <Paper>
-            <Typography variant="h6" align="center" margin="dense">
-              Create a New Recipe
+      <Paper>
+        <Typography variant="h6" align="center" margin="dense">
+          Create a New Recipe
+        </Typography>
+        <Box sx={{ ml: "10%", mr: "10%" }}>
+          <FormControl fullWidth>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              required
+              id="title"
+              name="title"
+              label="Title"
+              placeholder="Title"
+              defaultValue=""
+              fullWidth
+              margin="dense"
+              {...register('title')}
+              error={errors.title ? true : false}
+            />
+            <Typography variant="inherit" color="textSecondary">
+              {errors.username?.message}
             </Typography>
-            <Box sx={{ ml: "10%", mr: "10%" }}>
-              <FormControl fullWidth>
-                <TextField
-                  sx={{ mt: 2, mb: 2 }}
-                  required
-                  id="title"
-                  name="title"
-                  label="Title"
-                  placeholder="Title"
-                  defaultValue=""
-                  fullWidth
-                  margin="dense"
-                  {...register('title')}
-                  error={errors.title ? true : false}
-                />
-                <Typography variant="inherit" color="textSecondary">
-                  {errors.username?.message}
-                </Typography>
-              </FormControl>
-              <TextField
-                sx={{ mb: 2 }}
-                id="outlined-multiline-static"
-                defaultValue=""
-                name="description"
-                label="Recipe Description"
-                placeholder="Recipe Description"
-                fullWidth
-                margin="dense"
-                multiline
-                rows={2}
-                {...register('description')}
-              />
-              <Autocomplete
-                value={""}
-                defaultValue=""
+          </FormControl>
+          <TextField
+            sx={{ mb: 2 }}
+            id="outlined-multiline-static"
+            defaultValue=""
+            name="description"
+            label="Recipe Description"
+            placeholder="Recipe Description"
+            fullWidth
+            margin="dense"
+            multiline
+            rows={2}
+            {...register('description')}
+          />
+          <Autocomplete
+            value={typeValue}
+            // {...register('recipeType')}
+            onChange={(event, newValue) => {
+              if (typeof newValue === 'string') {
+                const updatedValue = newValue.replace("Add ", "");
+                setTypeValue(updatedValue);
+              } else if (newValue && newValue.inputValue) {
+				        // Create a new value from the user input
+                setTypeValue(newValue.inputValue);
+              } else {
+                setTypeValue(newValue);
+              }
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+              const { inputValue } = params;
+
+              // Suggest the creation of a new value
+              const isExisting = options.some((option) => inputValue === option);
+              if (inputValue !== "" && !isExisting) {
+                filtered.push(`Add ${inputValue}`);
+              }
+              return filtered;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            id="recipeType"
+            options={typeOptions}
+            getOptionLabel= {(option) => {
+            // Value selected with enter, right from the input
+              if (typeof option === 'string') {
+                const updatedOption = option.replace("Add ", "");
+                return updatedOption;
+              }
+              // Add "xxx" option created dynamically
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              // Regular option
+                return option.toString();
+            }}
+            renderOption={(props, option) => <li {...props}>{option}</li>}
+            freeSolo
+            fullWidth
+            renderInput={(option) => (
+              <TextField   
+                {...option}
+                label="RecipeType" 
+                InputProps={{
+                  ...option.InputProps,
+                  type: 'search',
+                }} 
                 {...register('recipeType')}
-                onChange={(event, newValue) => {
-                  if (typeof newValue === 'string') {
-                    const updatedValue = newValue.replace("Add ", "");
-                    setValue(updatedValue);
-                  } else if (newValue && newValue.inputValue) {
-				            // Create a new value from the user input
-                    setValue(newValue.inputValue);
-                  } else {
-                    setValue(newValue);
-                  }
-                }}
-                filterOptions={(options, params) => {
-                  const filtered = filter(options, params);
-                  const { inputValue } = params;
-
-                  // Suggest the creation of a new value
-                  const isExisting = options.some((option) => inputValue === option);
-                  if (inputValue !== "" && !isExisting) {
-                    filtered.push(`Add ${inputValue}`);
-                  }
-
-                  return filtered;
-                }}
-                selectOnFocus
-                clearOnBlur
-                handleHomeEndKeys
-                id="recipeType"
-                options={typeOptions}
-                getOptionLabel= {(option) => {
-                  // Value selected with enter, right from the input
-                  if (typeof option === 'string') {
-                    const updatedOption = option.replace("Add ", "");
-                    return updatedOption;
-                  }
-                  // Add "xxx" option created dynamically
-                  if (option.inputValue) {
-                    return option.inputValue;
-                  }
-                  // Regular option
-                  return option.toString();
-                }}
-                renderOption={(props, option) => <li {...props}>{option}</li>}
-                freeSolo
-                fullWidth
-                renderInput={(option) => (
-                  <TextField   
-                    {...option}
-                    label="RecipeType" 
-                    InputProps={{
-                      ...option.InputProps,
-                      type: 'search',
-                    }} 
-                    {...register('recipeType')}
-                  />
-                )}
               />
-              <TextField
-                sx={{ mt: 2, mb: 2 }}
-                id="servingSize"
-                type="{number}"
-                name="servingSize"
-                label="Serving Size"
-                placeholder="Serving Size"
-                fullWidth
-                margin="dense"
-                {...register('servingSize')}
-              />
-              <Box mb={2}>
-              <Typography variant="captionText" color="#1876D1">
-                Ingredients
-              </Typography>
-              <ReactQuill
-                theme="snow"
-                value={ingredientContent}
-                onChange={onIngredientStateChange}
-                placeholder="Ingredients"
-              />
-              </Box>
-              <Box>
-              <Typography variant="captionText" color="#1876D1">
-                Directions
-              </Typography>
-              <ReactQuill
-                theme="snow"
-                value={directionsContent}
-                onChange={onDirectionsStateChange}
-                placeholder="Directions"
-              />
-              </Box>
-              <TextField
-                sx={{ mt: 2, mb: 2 }}
-                id="source"
-                defaultValue=""
-                name="source"
-                label="Recipe Source"
-                placeholder="Recipe Source"
-                fullWidth
-                margin="dense"
-                {...register('source')}
-              />
-              <Box mt={3}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit(saveRecipe)}
-                >
-                  Create Recipe
-                </Button>
-              </Box>
-            </Box>
-          </Paper>
-
-      </div>
-    )}
-  </div>     
-  );
-};
+            )}
+          />
+          <TextField
+            sx={{ mt: 2, mb: 2 }}
+            id="servingSize"
+            type="{number}"
+            name="servingSize"
+            label="Serving Size"
+            placeholder="Serving Size"
+            fullWidth
+            margin="dense"
+            {...register('servingSize')}
+          />
+          <Box mb={2}>
+            <ReactQuill 
+              value={ingredientContent}
+              modules={modules} 
+              theme="snow"
+              placeholder="ingredients"
+              onChange={onIngredientStateChange}
+            />
+          </Box>
+          <ReactQuill 
+            value={directionsContent}
+            modules={modules}
+            theme="snow"
+            placeholder="directions"
+            onChange={onDirectionsStateChange}
+          />
+          <TextField
+            sx={{ mt: 2, mb: 2 }}
+            id="source"
+            defaultValue=""
+            name="source"
+            label="Recipe Source"
+            placeholder="Recipe Source"
+            fullWidth
+            margin="dense"
+            {...register('source')}
+          />
+          <Button onClick= {handleSubmit(onSubmit)}>
+            submit
+          </Button>
+          <Box mt={3}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit(saveRecipe)}
+            >
+              Create Recipe
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+      )}
+    </>
+  )
+}
 
 export default RecipeAddComponent;
