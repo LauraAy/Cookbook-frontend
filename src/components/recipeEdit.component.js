@@ -5,8 +5,7 @@ import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/ma
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+
 
 const RecipeEdit = props => {
   const filter = createFilterOptions();
@@ -106,8 +105,9 @@ const RecipeEdit = props => {
 
 
    //for ingredients and directions
-   const onIngredientStateChange = (content, delta, source, editor) => {
+   const onIngredientStateChange = (content, delta, source, editor, newValue) => {
     setValue("ingredients", editor.getContents());
+    setCurrentRecipe.ingredients(editor.getContents())
   };
 
   const onDirectionsStateChange = (directionState) => {
@@ -282,16 +282,17 @@ const RecipeEdit = props => {
               margin="dense"
               {...register('servingSize')}
             />
-            <ReactQuill
+            {/* <ReactQuill
                 theme="snow"
-                value={currentRecipe.ingredients}
+                value={ingredientContent}
+                // value={ingredientContent}
                 onChange={(event, newValue) => {
                   setValue("ingredients", newValue)
                 }}
                 placeholder={currentRecipe.ingredients}
               >
 
-              </ReactQuill>
+              </ReactQuill> */}
   
               {/* <ReactQuill
                 theme="snow"

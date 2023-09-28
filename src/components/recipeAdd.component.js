@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -9,6 +7,8 @@ import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/mat
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
+import IngredientTipTap from "./TiptapIngredientsAdd"
+import DirectionsTipTap from "./TiptapDirectionsAdd"
 
 const filter = createFilterOptions();
 
@@ -32,6 +32,8 @@ const RecipeAddComponent = () => {
   const [submitted, setSubmitted] = useState(false);
   const [userId, setUserId] = useState(currentUser.id);
   const [typeValue, setTypeValue] = React.useState(null);
+  const [ingredients, setIngredients] = useState('')
+  const [directions, setDirections] = useState('')
 
   //get recipes
   useEffect(() => {
@@ -66,26 +68,11 @@ const RecipeAddComponent = () => {
     servingSize: null
     }
   });
-
-  useEffect(() => {
-    register("title", "description", "servingSize","ingredients", "directions", "source");
-  }, [register]);
-  
-  //for ingredients and directions
-  const onIngredientStateChange = (content, delta, source, editor) => {
-    setValue("ingredients", editor.getContents());
-  };
-
-  const onDirectionsStateChange = (content, delta, source, editor) => {
-    setValue("directions", editor.getContents());
-  };
-
-  const ingredientContent = watch("ingredients");
-  const directionsContent = watch("directions");
-  const recipeTypeContent = watch("recipeType");
   
   const onSubmit = (data) => {
     console.log(data);
+    console.log(ingredients)
+    console.log(directions)
   };
   
   //saveRecipe
@@ -125,6 +112,7 @@ const RecipeAddComponent = () => {
     });
 };
 
+//filter recipe options
 const filRecipes = recipes.filter((recipes) => recipes.recipeType !== '')
 
 const filAlphaRecipes = filRecipes.sort()
@@ -139,13 +127,6 @@ const newRecipe = () => {
     setSubmitted(false);
     window.location.reload(false);
   };
-
-
-  const modules = {
-    // toolbar: [
-     
-    // ]
-  }
   
     return (
     <>
@@ -201,64 +182,66 @@ const newRecipe = () => {
             rows={2}
             {...register('description')}
           />
-          <Autocomplete
-            value={typeValue}
-            // {...register('recipeType')}
-            onChange={(event, newValue) => {
-              if (typeof newValue === 'string') {
-                const updatedValue = newValue.replace("Add ", "");
-                setTypeValue(updatedValue);
-              } else if (newValue && newValue.inputValue) {
-				        // Create a new value from the user input
-                setTypeValue(newValue.inputValue);
-              } else {
-                setTypeValue(newValue);
-              }
-            }}
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              const { inputValue } = params;
-
-              // Suggest the creation of a new value
-              const isExisting = options.some((option) => inputValue === option);
-              if (inputValue !== "" && !isExisting) {
-                filtered.push(`Add ${inputValue}`);
-              }
-              return filtered;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            id="recipeType"
-            options={typeOptions}
-            getOptionLabel= {(option) => {
-            // Value selected with enter, right from the input
-              if (typeof option === 'string') {
-                const updatedOption = option.replace("Add ", "");
-                return updatedOption;
-              }
-              // Add "xxx" option created dynamically
-              if (option.inputValue) {
-                return option.inputValue;
-              }
-              // Regular option
-                return option.toString();
-            }}
-            renderOption={(props, option) => <li {...props}>{option}</li>}
-            freeSolo
-            fullWidth
-            renderInput={(option) => (
-              <TextField   
-                {...option}
-                label="RecipeType" 
-                InputProps={{
-                  ...option.InputProps,
-                  type: 'search',
-                }} 
+        <Autocomplete
+                // value={value}
+                defaultValue=""
                 {...register('recipeType')}
+                onChange={(event, newValue) => {
+                  if (typeof newValue === 'string') {
+                    const updatedValue = newValue.replace("Add ", "");
+                    setValue(updatedValue);
+                  } else if (newValue && newValue.inputValue) {
+				            // Create a new value from the user input
+                    setValue(newValue.inputValue);
+                  } else {
+                    setValue(newValue);
+                  }
+                }}
+                filterOptions={(options, params) => {
+                  const filtered = filter(options, params);
+                  const { inputValue } = params;
+
+                  // Suggest the creation of a new value
+                  const isExisting = options.some((option) => inputValue === option);
+                  if (inputValue !== "" && !isExisting) {
+                    filtered.push(`Add ${inputValue}`);
+                  }
+
+                  return filtered;
+                }}
+                selectOnFocus
+                clearOnBlur
+                handleHomeEndKeys
+                id="recipeType"
+                options={typeOptions}
+                getOptionLabel= {(option) => {
+                  // Value selected with enter, right from the input
+                  if (typeof option === 'string') {
+                    const updatedOption = option.replace("Add ", "");
+                    return updatedOption;
+                  }
+                  // Add "xxx" option created dynamically
+                  if (option.inputValue) {
+                    return option.inputValue;
+                  }
+                  // Regular option
+                  return option.toString();
+                }}
+                renderOption={(props, option) => <li {...props}>{option}</li>}
+                freeSolo
+                fullWidth
+                renderInput={(option) => (
+                  <TextField   
+                    {...option}
+                    label="RecipeType" 
+                    InputProps={{
+                      ...option.InputProps,
+                      type: 'search',
+                    }} 
+                    {...register('recipeType')}
+                  />
+                )}
               />
-            )}
-          />
           <TextField
             sx={{ mt: 2, mb: 2 }}
             id="servingSize"
@@ -270,22 +253,8 @@ const newRecipe = () => {
             margin="dense"
             {...register('servingSize')}
           />
-          <Box mb={2}>
-            <ReactQuill 
-              value={ingredientContent}
-              modules={modules} 
-              theme="snow"
-              placeholder="ingredients"
-              onChange={onIngredientStateChange}
-            />
-          </Box>
-          <ReactQuill 
-            value={directionsContent}
-            modules={modules}
-            theme="snow"
-            placeholder="directions"
-            onChange={onDirectionsStateChange}
-          />
+          <IngredientTipTap setIngredients={setIngredients}/>
+          <DirectionsTipTap setDirections={setDirections}/>
           <TextField
             sx={{ mt: 2, mb: 2 }}
             id="source"
