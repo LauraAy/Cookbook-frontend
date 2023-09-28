@@ -1,3 +1,5 @@
+import '../styles.scss'
+
 import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -5,6 +7,8 @@ import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/ma
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
+import IngredientTipTap from "./TiptapIngredientsEdit"
+import DirectionsTipTap from "./TiptapDirectionsEdit"
 
 
 const RecipeEdit = props => {
@@ -28,12 +32,10 @@ const RecipeEdit = props => {
   const [recipes, setRecipes] = useState ([]);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(null);
-  const [typeValue, setTypeValue] = React.useState(null);
-  // const [ingredientValue, setIngredientValue] = useState(currentRecipe.ingredients)
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [deleteText, setDeleteText] = useState(null);
-
-
+  const [ingredients, setIngredients] = useState("");
+  const [directions, setDirections] = useState("");
 
   //get recipe
   const getRecipe = id => {
@@ -75,18 +77,6 @@ const RecipeEdit = props => {
     .map((option) => (option))
   const typeOptions = cleanRecipes.sort()
 
-  //Dialog functions
-  const handleClickOpen = () => {
-    setDeleteMessage('Are you sure you want to delete the recipe?');
-    setDeleteText('Confirming delete will permanently delete this recipe from the database.')
-  
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   //react-hook-form functions
   const {
     register,
@@ -95,33 +85,16 @@ const RecipeEdit = props => {
     formState: { errors }
   } = useForm({
     values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
-    ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
+    source: currentRecipe.source },
   });
-
-
-  useEffect(() => {
-    register("title", "description", "servingSize","ingredients", "directions", "source");
-  }, [register]);
-
-
-   //for ingredients and directions
-   const onIngredientStateChange = (content, delta, source, editor, newValue) => {
-    setValue("ingredients", editor.getContents());
-    setCurrentRecipe.ingredients(editor.getContents())
-  };
-
-  const onDirectionsStateChange = (directionState) => {
-    setValue("directions", directionState);
-  };
-
-  const ingredientContent = watch("ingredients");
-  const directionsContent = watch("directions");
  
 
   const onSubmit = (data) => {
-    register("title", "description", "servingSize","ingredients", "directions", "source");
+    register("title", "description", "servingSize", "source");
   
     console.log(data);
+    console.log(ingredients);
+    console.log(directions);
   };
 
 
@@ -132,8 +105,8 @@ const RecipeEdit = props => {
       description: formData.description,
       recipeType: formData.recipeType,
       servingSize: formData.servingSize,
-      ingredients: formData.ingredients,
-      directions: formData.directions,
+      ingredients: ingredients,
+      directions: directions,
       source: formData.source
     };
 
@@ -147,6 +120,19 @@ const RecipeEdit = props => {
       });
   };
 
+  //Dialog functions
+  const handleClickOpen = () => {
+    setDeleteMessage('Are you sure you want to delete the recipe?');
+    setDeleteText('Confirming delete will permanently delete this recipe from the database.')
+  
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   //Delete Recipe
   const submitDelete = () => {
     RecipeDataService.destroy(currentRecipe.id)
@@ -158,16 +144,6 @@ const RecipeEdit = props => {
         console.log(e);
       });
   };
-
-
-//   const modules = {
-//     toolbar: [
-//       [{ header: [1, 2, false] }],
-//       ['bold', 'italic', 'underline'],
-//       ['image', 'code-block']
-//     ]
- 
-// }
   
   return (
   <div>
@@ -282,55 +258,12 @@ const RecipeEdit = props => {
               margin="dense"
               {...register('servingSize')}
             />
-            {/* <ReactQuill
-                theme="snow"
-                value={ingredientContent}
-                // value={ingredientContent}
-                onChange={(event, newValue) => {
-                  setValue("ingredients", newValue)
-                }}
-                placeholder={currentRecipe.ingredients}
-              >
-
-              </ReactQuill> */}
-  
-              {/* <ReactQuill
-                theme="snow"
-                value={directionsContent}
-                onChange={onDirectionsStateChange}
-                placeholder={currentRecipe.directions}
-              
-              /> */}
-            {/* <TextField
-              sx={{ mt: 2, mb: 2 }}
-              id="outlined-multiline-static"
-              defaultValue=""
-              name="ingredients"
-              label="Ingredients"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              margin="dense"
-              multiline
-              rows={4}
-              {...register('ingredients')}
-            /> */}
-            {/* <TextField
-              sx={{ mt: 2, mb: 2 }}
-              id="outlined-multiline-static"
-              defaultValue=""
-              name="directions"
-              label="Directions"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              margin="dense"
-              multiline
-              rows={4}
-              {...register('directions')}
-            /> */}
+            <Box mb={2}>
+              <IngredientTipTap setIngredients={setIngredients}/>
+            </Box>
+            {/* <Box mb={2}>
+              <DirectionsTipTap setDirections={setDirections}/>
+            </Box> */}
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="source"

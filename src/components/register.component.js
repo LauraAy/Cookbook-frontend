@@ -79,7 +79,7 @@ const RegisterComponent = () => {
     event.preventDefault();
   };
 
-   return (
+  return (
     <Fragment>
       <Paper>
         {!successful && (
@@ -188,9 +188,9 @@ const RegisterComponent = () => {
           </Box>
         </Box>
         )}
-        {message && (
+        {successful && (
         <>
-         <h1>You registered succesfully!</h1>
+          <h1>You registered succesfully!</h1>
         </>
         )}
       </Paper>

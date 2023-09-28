@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
 import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
-// import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.bubble.css";
+import parser from "html-react-parser";
 
 const RecipeViewComponent = props => {
   let navigate = useNavigate();
@@ -43,13 +42,12 @@ const RecipeViewComponent = props => {
   //navigate to edit recipe
   const editRecipe = () => {
     navigate("/recipes/edit/" + currentRecipe.id)
-   
   }
 
   return (
   <>
     <Box mx={4}>
-      <Typography variant="h6">{currentRecipe.title}</Typography>
+      <Typography variant="h5">{currentRecipe.title}</Typography>
       <Typography variant="body1"sx={{ m: 1 }}>
         {currentRecipe.recipeType && (
         <>
@@ -66,32 +64,22 @@ const RecipeViewComponent = props => {
         </>
         )}
       </Typography>
-      {/* <Typography variant="body1"sx={{ m: 1 }}>
+      <Typography variant="body1"sx={{ m: 1 }}>
         {currentRecipe.ingredients && (
         <>
           <strong>Ingredients: </strong>
-          
-          <ReactQuill
-            value={currentRecipe.ingredients}
-            readOnly={true}
-            theme={"bubble"}
-          />
-        
+          {parser(currentRecipe.ingredients)}
         </>
         )}
-      </Typography> */}
-      {/* <Typography variant="body1"sx={{ m: 1 }}>
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
         {currentRecipe.directions && (
         <>
           <strong>Directions: </strong>
-          <ReactQuill
-            value={currentRecipe.directions}
-            readOnly={true}
-            theme={"bubble"}
-          />
+          {parser(currentRecipe.directions)}
         </>
         )}
-      </Typography> */}
+      </Typography>
       <Divider></Divider>
     </Box>
 

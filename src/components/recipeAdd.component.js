@@ -21,6 +21,8 @@ const RecipeAddComponent = () => {
     description: "",
     recipeType: "",
     servingSize: null,
+    prepTime: "",
+    cookTime: "",
     ingredients: "",
     directions: "",
     source: "",
@@ -84,8 +86,10 @@ const RecipeAddComponent = () => {
       description: formData.description,
       recipeType: formData.recipeType,
       servingSize: formData.servingSize,
-      ingredients: formData.ingredients,
-      directions: formData.directions,
+      prepTime: formData.prepTime,
+      cookTime: formData.cookTime,
+      ingredients: ingredients,
+      directions: directions,
       source: formData.source,
       userId: userId,
     };
@@ -98,6 +102,8 @@ const RecipeAddComponent = () => {
         description: response.data.description,
         recipeType: response.data.recipeType,
         servingSize: response.data.servingSize,
+        prepTime: response.data.prepTime,
+        cookTime: response.data.cookTime,
         ingredients: response.data.ingredients,
         directions: response.data.directions,
         source: response.data.source,
@@ -184,7 +190,7 @@ const newRecipe = () => {
             {...register('description')}
           />
         <Autocomplete
-         openOnFocus
+          openOnFocus
                 value={value}
                 defaultValue=""
                 {...register('recipeType')}
@@ -235,6 +241,7 @@ const newRecipe = () => {
                 renderInput={(option) => (
                   <TextField   
                     {...option}
+                    sx={{ mb: 2 }}
                     label="RecipeType" 
                     InputProps={{
                       ...option.InputProps,
@@ -245,7 +252,7 @@ const newRecipe = () => {
                 )}
               />
           <TextField
-            sx={{ mt: 2, mb: 2 }}
+            sx={{ mb: 2 }}
             id="servingSize"
             type="{number}"
             name="servingSize"
@@ -255,10 +262,37 @@ const newRecipe = () => {
             margin="dense"
             {...register('servingSize')}
           />
-          <IngredientTipTap setIngredients={setIngredients}/>
-          <DirectionsTipTap setDirections={setDirections}/>
+           <TextField
+            sx={{ mb: 2 }}
+            id="prepTime"
+            name="prepTime"
+            label="Prep Time"
+            placeholder="Prep Time"
+            fullWidth
+            margin="dense"
+            rows={2}
+            {...register('prepTime')}
+          />
+           <TextField
+            sx={{ mb: 2 }}
+            id="cookTime"
+            defaultValue=""
+            name="cookTime"
+            label="Cook Time"
+            placeholder="Cook Time"
+            fullWidth
+            margin="dense"
+            rows={2}
+            {...register('cookTime')}
+          />
+          <Box mb={2}>
+            <IngredientTipTap setIngredients={setIngredients}/>
+          </Box>
+          <Box mb={2}>
+            <DirectionsTipTap setDirections={setDirections}/>
+          </Box>
           <TextField
-            sx={{ mt: 2, mb: 2 }}
+            sx={{ mb: 2 }}
             id="source"
             defaultValue=""
             name="source"

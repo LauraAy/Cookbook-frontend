@@ -27,6 +27,7 @@
     "draft-js": "^0.11.7",
     "framer-motion": "^10.15.2",
     "fsevents": "^2.3.2",
+    "html-react-parser": "^4.2.2",
     "install": "^0.13.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
