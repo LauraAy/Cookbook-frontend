@@ -1,9 +1,17 @@
 /* Basic editor styles */
 .ProseMirror{
-    padding: 10px;
-    border-top: 1px solid black;
+    padding: 5px;
+    border-top: 1px solid rgb(196, 196, 196);
     border-radius: 5px
+
   }
+
+	.ProseMirror:focus {
+    outline-color: #1876D1;
+  }
+
+
+	
   
   .menu-bar {
     // padding-bottom: 5px;
@@ -17,13 +25,13 @@
       font-size: 26px;
       outline: none;
       border: none;
-      color: purple;
+      color: rgb(90, 90, 90);
       background: none;
     }
   
     button.is-active{
-      color: red;
-      background: rbg(197, 197, 197);
+      color: blue;
+      background: rgb(230, 230, 230);
       padding: 2px 3px;
       border-radius: 2px;
     }
@@ -92,5 +100,7 @@
       float: left;
       height: 0;
       pointer-events: none;
-      color: lightcoral;
+      color: rgb(102, 102, 102);
     }
+
+		

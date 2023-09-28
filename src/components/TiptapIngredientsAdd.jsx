@@ -57,7 +57,7 @@ const TiptapIngredientsAdd = ({setIngredients}) => {
 
   return (
   <>
-    <Box sx={{ mb: "4px", border: 1, borderColor: 'text.primary', borderRadius: '5px'}}>
+    <Box sx={{ mb: "4px", border: 1, borderColor: 'rgb(196, 196, 196)', borderRadius: '5px'}}>
       <MenuBar editor={editor} />
       <EditorContent editor={editor} /> 
     </Box>

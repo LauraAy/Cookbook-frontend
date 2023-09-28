@@ -34,6 +34,7 @@ const RecipeAddComponent = () => {
   const [typeValue, setTypeValue] = React.useState(null);
   const [ingredients, setIngredients] = useState('')
   const [directions, setDirections] = useState('')
+  const [value, setValue] = React.useState(null);
 
   //get recipes
   useEffect(() => {
@@ -60,12 +61,12 @@ const RecipeAddComponent = () => {
   const {
     register,
     handleSubmit,
-    setValue,
+    // setValue,
     watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
-    servingSize: null
+    "servingSize": null, "recipeType": ""
     }
   });
   
@@ -183,7 +184,8 @@ const newRecipe = () => {
             {...register('description')}
           />
         <Autocomplete
-                // value={value}
+         openOnFocus
+                value={value}
                 defaultValue=""
                 {...register('recipeType')}
                 onChange={(event, newValue) => {
