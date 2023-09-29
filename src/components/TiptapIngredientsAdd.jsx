@@ -42,6 +42,8 @@ const extensions = [
 const content = ''
 
 const TiptapIngredientsAdd = ({setIngredients}) => {
+
+
   const editor = useEditor({
     extensions,
     content,

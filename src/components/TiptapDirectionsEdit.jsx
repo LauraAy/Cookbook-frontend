@@ -16,6 +16,9 @@ import MenuBar from './TiptapMenuBar'
 
 import RecipeDataService from "../services/recipe.service";
 
+
+
+  
 // define your extension array
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -30,9 +33,6 @@ const extensions = [
       keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
     }
   }),
-  // Placeholder.configure({
-  //   placeholder: 'Ingredients',
-  // }),
   Underline, 
   TextAlign.configure({
     types: ['heading', 'paragraph'], 
@@ -41,9 +41,11 @@ const extensions = [
   })
 ]
 
+
+
 const TiptapDirectionsEdit = ({setDirections}) => {
 	const { id }= useParams();
-	
+
 	const initialRecipeState = {
     id: null,
     title: "",
@@ -55,13 +57,15 @@ const TiptapDirectionsEdit = ({setDirections}) => {
     source: "",
     userId: undefined
   };
-  const [currentRecipe, setCurrentRecipe] = useState(initialRecipeState);
+
+  const [recipe, setRecipe] = useState(initialRecipeState);
 
 	 //get recipe
 	 const getRecipe = id => {
     RecipeDataService.get(id)
     .then(response => {
-      setCurrentRecipe(response.data);
+      setRecipe(response.data);
+			window.localStorage.setItem('directions-content', response.data.directions)
     })
     .catch(e => {
       console.log(e);
@@ -71,13 +75,15 @@ const TiptapDirectionsEdit = ({setDirections}) => {
   useEffect(() => {
     if(id)
     getRecipe(id);
-  }, [id]);
+  }, [id])
 
-	const editorContent = currentRecipe.directions
+  //
 
-  const editor = useEditor({
+	
+	const editor = useEditor({
+	
     extensions,
-    content: editorContent,
+    content:  window.localStorage.getItem('directions-content'),
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setDirections(html);

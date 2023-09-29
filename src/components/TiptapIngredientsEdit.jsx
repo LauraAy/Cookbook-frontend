@@ -33,9 +33,6 @@ const extensions = [
       keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
     }
   }),
-  // Placeholder.configure({
-  //   placeholder: 'Ingredients',
-  // }),
   Underline, 
   TextAlign.configure({
     types: ['heading', 'paragraph'], 
@@ -60,14 +57,16 @@ const TiptapIngredientsEdit = ({setIngredients}) => {
     source: "",
     userId: undefined
   };
-  const [inRecipe, setInRecipe] = useState(initialRecipeState);
+
+  const [recipe, setRecipe] = useState(initialRecipeState);
 
 	 //get recipe
 	 const getRecipe = id => {
     RecipeDataService.get(id)
     .then(response => {
-      setInRecipe(response.data);
-      console.log(response.data.ingredients);
+      setRecipe(response.data);
+			window.localStorage.setItem('ingredients-content', response.data.ingredients)
+
     })
     .catch(e => {
       console.log(e);
@@ -77,13 +76,12 @@ const TiptapIngredientsEdit = ({setIngredients}) => {
   useEffect(() => {
     if(id)
     getRecipe(id);
-  }, [id]);
-
-	const editorContent = inRecipe.ingredients
-
-  const editor = useEditor({
+  }, [id])
+  
+	const editor = useEditor({
+	
     extensions,
-    content: editorContent,
+    content:  window.localStorage.getItem('ingredients-content'),
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setIngredients(html);

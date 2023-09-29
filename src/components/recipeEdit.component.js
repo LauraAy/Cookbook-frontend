@@ -114,6 +114,8 @@ const RecipeEdit = props => {
       .then(response => {
         console.log(response.data);
         navigate("/recipes/" + currentRecipe.id)
+        localStorage.removeItem('ingredients-content')
+        localStorage.removeItem('directions-content')
       })
       .catch(e => {
         console.log(e);
@@ -261,9 +263,9 @@ const RecipeEdit = props => {
             <Box mb={2}>
               <IngredientTipTap setIngredients={setIngredients}/>
             </Box>
-            {/* <Box mb={2}>
+            <Box mb={2}>
               <DirectionsTipTap setDirections={setDirections}/>
-            </Box> */}
+            </Box>
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="source"
@@ -288,7 +290,7 @@ const RecipeEdit = props => {
             }}
           >
             <Button
-              onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(updateRecipe)}
               sx={{my: 2}}
               variant="contained"
             >
