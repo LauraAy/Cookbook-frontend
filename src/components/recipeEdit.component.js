@@ -80,14 +80,12 @@ const RecipeEdit = props => {
   //react-hook-form functions
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors }
   } = useForm({
     values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
     source: currentRecipe.source },
   });
- 
 
   const onSubmit = (data) => {
     register("title", "description", "servingSize", "source");
@@ -96,7 +94,6 @@ const RecipeEdit = props => {
     console.log(ingredients);
     console.log(directions);
   };
-
 
   //update recipe
   const updateRecipe = (formData) => {
@@ -114,8 +111,8 @@ const RecipeEdit = props => {
       .then(response => {
         console.log(response.data);
         navigate("/recipes/" + currentRecipe.id)
-        localStorage.removeItem('ingredients-content')
-        localStorage.removeItem('directions-content')
+        // localStorage.removeItem('ingredients-content')
+        // localStorage.removeItem('directions-content')
       })
       .catch(e => {
         console.log(e);

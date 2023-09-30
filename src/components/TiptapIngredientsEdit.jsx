@@ -15,9 +15,6 @@ import { Box} from '@mui/material';
 import MenuBar from './TiptapMenuBar'
 
 import RecipeDataService from "../services/recipe.service";
-
-
-
   
 // define your extension array
 const extensions = [
@@ -41,8 +38,6 @@ const extensions = [
   })
 ]
 
-
-
 const TiptapIngredientsEdit = ({setIngredients}) => {
 	const { id }= useParams();
 
@@ -65,8 +60,10 @@ const TiptapIngredientsEdit = ({setIngredients}) => {
     RecipeDataService.get(id)
     .then(response => {
       setRecipe(response.data);
+			setIngredients(response.data.ingredients)
 			window.localStorage.setItem('ingredients-content', response.data.ingredients)
-
+			console.log(response.data.ingredients)
+	
     })
     .catch(e => {
       console.log(e);
@@ -77,14 +74,13 @@ const TiptapIngredientsEdit = ({setIngredients}) => {
     if(id)
     getRecipe(id);
   }, [id])
-  
+ 
 	const editor = useEditor({
-	
     extensions,
-    content:  window.localStorage.getItem('ingredients-content'),
-    onUpdate: ({ editor }) => {
+		content: window.localStorage.getItem('ingredients-content'),
+		onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      setIngredients(html);
+				setIngredients(html);
       console.log(html);
     }
   })

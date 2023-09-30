@@ -16,9 +16,6 @@ import MenuBar from './TiptapMenuBar'
 
 import RecipeDataService from "../services/recipe.service";
 
-
-
-  
 // define your extension array
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -40,8 +37,6 @@ const extensions = [
     defaultAlignment: 'left',
   })
 ]
-
-
 
 const TiptapDirectionsEdit = ({setDirections}) => {
 	const { id }= useParams();
@@ -65,6 +60,7 @@ const TiptapDirectionsEdit = ({setDirections}) => {
     RecipeDataService.get(id)
     .then(response => {
       setRecipe(response.data);
+			setDirections(response.data.directions)
 			window.localStorage.setItem('directions-content', response.data.directions)
     })
     .catch(e => {
@@ -77,9 +73,7 @@ const TiptapDirectionsEdit = ({setDirections}) => {
     getRecipe(id);
   }, [id])
 
-  //
-
-	
+  
 	const editor = useEditor({
 	
     extensions,
