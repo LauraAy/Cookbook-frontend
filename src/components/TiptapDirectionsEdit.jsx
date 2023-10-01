@@ -73,17 +73,21 @@ const TiptapDirectionsEdit = ({setDirections}) => {
     getRecipe(id);
   }, [id])
 
-  
 	const editor = useEditor({
 	
     extensions,
-    content:  window.localStorage.getItem('directions-content'),
+    content: '',
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setDirections(html);
       console.log(html);
-    }
+    },
+    contentEditable: "true"
   })
+
+  useEffect(() => {
+    if (editor && !editor.isDestroyed) editor.commands.setContent(recipe.directions);
+  }, [recipe.directions]);
 
   return (
   <>

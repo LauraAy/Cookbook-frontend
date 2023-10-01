@@ -59,6 +59,7 @@ const App = () => {
         <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
 
         <Route path="/test" element={<Test/>} />
+        <Route path ="/test/:id" element={<Test/>} />
         
         </Routes>
    

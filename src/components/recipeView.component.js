@@ -28,11 +28,15 @@ const RecipeViewComponent = props => {
     .then(response => {
       setCurrentRecipe(response.data);
       console.log(response.data);
+      localStorage.removeItem('ingredients-content')
+      localStorage.removeItem('directions-content')
     })
     .catch(e => {
       console.log(e);
     });
   };
+
+console.log(localStorage.getItem('ingredients'))
   
   useEffect(() => {
     if(id)
@@ -41,6 +45,7 @@ const RecipeViewComponent = props => {
 
   //navigate to edit recipe
   const editRecipe = () => {
+    
     navigate("/recipes/edit/" + currentRecipe.id)
   }
 

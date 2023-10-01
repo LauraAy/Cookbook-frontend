@@ -54,6 +54,10 @@ const RecipeEdit = props => {
     getRecipe(id);
   }, [id]);
 
+  // useEffect(() => {
+  // localStorage.setItem('ingredients-content', currentRecipe.ingredients)
+  // })
+
   //get all recipes
   const retrieveRecipes = () => {
     RecipeDataService.getAll()
@@ -144,6 +148,7 @@ const RecipeEdit = props => {
       });
   };
   
+  console.log (window.localStorage.getItem('ingredients-content'))
   return (
   <div>
     <Fragment>
