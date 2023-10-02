@@ -54,7 +54,7 @@ const RecipeAddComponent = () => {
     });
   };
 
-  //react-hook-form functions
+  //react-hook-form and yup functions
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required('Title is required.'),
@@ -65,7 +65,6 @@ const RecipeAddComponent = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -265,10 +264,10 @@ const newRecipe = () => {
             {...register('servingSize')}
             error={errors.servingSize ? true : false}
           />
-           <Typography variant="inherit" color="textSecondary">
-              {errors.servingSize?.message}
-            </Typography>
-           <TextField
+          <Typography variant="inherit" color="textSecondary">
+            {errors.servingSize?.message}
+          </Typography>
+          <TextField
             sx={{ mb: 2 }}
             id="prepTime"
             name="prepTime"

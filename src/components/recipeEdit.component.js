@@ -3,6 +3,8 @@ import '../styles.scss'
 import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
@@ -54,11 +56,6 @@ const RecipeEdit = props => {
     getRecipe(id);
   }, [id]);
 
-  // useEffect(() => {
-  // localStorage.setItem('ingredients-content', currentRecipe.ingredients)
-  // })
-
-  //get all recipes
   const retrieveRecipes = () => {
     RecipeDataService.getAll()
     .then(response => {
@@ -81,12 +78,20 @@ const RecipeEdit = props => {
     .map((option) => (option))
   const typeOptions = cleanRecipes.sort()
 
-  //react-hook-form functions
+  //react-hook-form and yup functions
+  const validationSchema = Yup.object().shape({
+    title: Yup.string()
+      .required('Title is required.'),
+    servingSize: Yup.number().notRequired().nullable().transform((_, val) => val ? Number(val) : null)
+      .typeError('This field must be a number, like 3 or 42.')
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({
+    resolver: yupResolver(validationSchema),
     values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
     source: currentRecipe.source },
   });
@@ -261,7 +266,11 @@ const RecipeEdit = props => {
               fullWidth
               margin="dense"
               {...register('servingSize')}
+              error={errors.servingSize ? true : false}
             />
+            <Typography variant="inherit" color="textSecondary">
+              {errors.servingSize?.message}
+            </Typography>
             <Box mb={2}>
               <IngredientTipTap setIngredients={setIngredients}/>
             </Box>
