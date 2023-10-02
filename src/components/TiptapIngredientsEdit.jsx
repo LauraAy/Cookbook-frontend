@@ -13,30 +13,12 @@ import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
 import { Box} from '@mui/material';
 import MenuBar from './TiptapMenuBar'
+import extensions from './TiptapExtensions'
 
 import RecipeDataService from "../services/recipe.service";
   
 // define your extension array
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({ types: [ListItem.name] }),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    }
-  }),
-  Underline, 
-  TextAlign.configure({
-    types: ['heading', 'paragraph'], 
-    alignments: ['left', 'right'],
-    defaultAlignment: 'left',
-  })
-]
+< extensions/>
 
 const TiptapIngredientsEdit = ({setIngredients}) => {
 	const { id }= useParams();
