@@ -57,16 +57,18 @@ const RecipeAddComponent = () => {
   //react-hook-form functions
   const validationSchema = Yup.object().shape({
     title: Yup.string()
-      .required('title is required')
+      .required('Title is required.'),
+    servingSize: Yup.number().notRequired().nullable().transform((_, val) => val ? Number(val) : null)
+      .typeError('This field must be a number, like 3 or 42.')
   });
   
   const {
     register,
     handleSubmit,
-    // setValue,
     watch,
     formState: { errors }
   } = useForm({
+    resolver: yupResolver(validationSchema),
     defaultValues: {
     "servingSize": null, "recipeType": ""
     }
@@ -173,7 +175,7 @@ const newRecipe = () => {
               error={errors.title ? true : false}
             />
             <Typography variant="inherit" color="textSecondary">
-              {errors.username?.message}
+              {errors.title?.message}
             </Typography>
           </FormControl>
           <TextField
@@ -261,7 +263,11 @@ const newRecipe = () => {
             fullWidth
             margin="dense"
             {...register('servingSize')}
+            error={errors.servingSize ? true : false}
           />
+           <Typography variant="inherit" color="textSecondary">
+              {errors.servingSize?.message}
+            </Typography>
            <TextField
             sx={{ mb: 2 }}
             id="prepTime"
