@@ -100,6 +100,7 @@ const saveRegionRecipe = () => {
 
   };
 
+  //retrieve regionId from dropdown selection and run retrieveRegion function
   const handleRegionChange = async (event, option) => {
     setRegionId(option.id);
     console.log(option.id)
@@ -108,21 +109,6 @@ const saveRegionRecipe = () => {
     console.log(regionId)
     retrieveRegion(regionId)
   }, [regionId])
-
-   //validation functions
-   const validationSchema = Yup.object().shape({
-    title: Yup.string()
-      .required('title is required')
-    });
-  
-    const {
-      register,
-      handleSubmit,
-      formState: { errors }
-    } = useForm({
-      defaultValues: { "servingSize": null, "recipeType": ""},
-      resolver: yupResolver(validationSchema)
-    });
 
   //nav functions
   const returnRecipe = () => {
@@ -234,7 +220,7 @@ return (
         </div>
         ): (
         <div>
-            <Box mr={'10%'} ml={'10%'} mt={2}>
+        <Box mr={'10%'} ml={'10%'} mt={2}>
           <Typography variant="h6">Please select a country from the dropdown.</Typography>
           <Autocomplete
             fullWidth
