@@ -2,7 +2,7 @@ import '../styles.scss'
 import React from 'react'
 import { FormatBoldOutlined, FormatItalicOutlined, FormatUnderlinedOutlined, StrikethroughSOutlined,
   FormatListBulletedOutlined, FormatListNumberedOutlined, HorizontalRuleOutlined, TitleOutlined,
-  UndoOutlined, RedoOutlined} from '@mui/icons-material'
+  UndoOutlined, RedoOutlined, ChecklistOutlined} from '@mui/icons-material'
 import { Box} from '@mui/material';
 
 
@@ -85,6 +85,13 @@ const MenuBar = ({ editor }) => {
           className={editor.isActive('orderedList') ? 'is-active' : ''}
         >
           <FormatListNumberedOutlined />
+        </button>
+        <button
+        onClick={() => editor.chain().focus().toggleTaskList().run()}
+        className={editor.isActive('taskList') ? 'is-active' : ''}
+        inline
+        >
+          <ChecklistOutlined />
         </button>
         <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
           <HorizontalRuleOutlined />
