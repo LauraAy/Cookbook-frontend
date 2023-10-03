@@ -39,11 +39,22 @@ const [currentRegion, setCurrentRegion] = useState ()
 const [regionRecipe, setRegionRecipe] = useState(initialRegionRecipeState);
 const [submitted, setSubmitted] = useState(false)
 
-
+//retrieve recipe and regions for dropdown
 useEffect(() => {
-    retrieveRegions();
     retrieveRecipe(id);
+    retrieveRegions();
   }, []);
+
+  const retrieveRecipe = id => {
+    RecipeDataService.get(id)
+      .then(response => {
+        setCurrentRecipe(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e)
+      });
+  };
 
   const retrieveRegions = () => {
     RegionDataService.getAll()
@@ -56,18 +67,13 @@ useEffect(() => {
     });
   };
 
-  const retrieveRecipe = id => {
-    RecipeDataService.get(id)
-      .then(response => {
-        setCurrentRecipe(response.data);
-        console.log(response.data);
-        console.log(currentRecipe.id);
-      })
-      .catch(e => {
-        console.log(e)
-      });
-  };
-
+  //react-hook-form functions
+  const {
+    register,
+    formState: { errors }
+  } = useForm();
+  
+  //retrieve region selected from dropdown
   const retrieveRegion = id => {
     RegionDataService.get(id)
       .then(response => {
@@ -79,7 +85,8 @@ useEffect(() => {
       });
   };
 
-const saveRegionRecipe = () => {
+  //save regionId to recipe
+  const saveRegionRecipe = () => {
     var data = {
       regionId: currentRegion.id,
       recipeId: currentRecipe.id
@@ -122,17 +129,17 @@ const saveRegionRecipe = () => {
   }
 
   const addCreator = () => {
-    navigate("/creators/add/:id")
+    navigate("/creators/add/" + id)
   }
 
   const addPairing = () => {
-    navigate("/pairings/add/:id")
+    navigate("/pairings/add/" + id)
   }
 
-return (
-<div>
-  { submitted ? (
-    <Paper>
+  return (
+  <>
+    { submitted ? (
+    <>
       <Box m={2}>
         <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
       </Box>
@@ -142,84 +149,83 @@ return (
       <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addAnotherRegion}>Add Another Region</Button>
       <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
       <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
-    </Paper>
+    </>
     ):(
-    <Paper>
+    <>
       {currentRegion? (
-        <div>
-          <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-            <Typography variant="h4">
-              Selected Region
+      <>
+        <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+          <Typography variant="h4">
+            Selected Region
+          </Typography>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Country:&nbsp;
             </Typography>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Country:&nbsp;
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.country}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Region:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.regionName}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Latitude:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.lat}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Longitude:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.lng}
-              </Typography>
-            </div>
-            <Box mt={3}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={saveRegionRecipe}
-              >
-                Add Region to {currentRecipe.title}
-              </Button>
-            </Box>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.country}
+            </Typography>
           </Box>
-        
-          <Box mr={'10%'} ml={'10%'}>
-            <Typography variant="h6">Or select a different country from the dropdown.</Typography>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              disableClearable
-              onChange={handleRegionChange}
-              id="recipeType"
-              options={regions.map((option) => option)}
-              getOptionLabel={(option) => option.country}
-              renderInput={(option) => (
-                <TextField
-                  {...option}
-                  label="Country"
-                  InputProps={{
-                  ...option.InputProps,
-                  type: 'search',
-                  }}
-                  {...register('region')}
-                />
-              )}
-            />
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Region:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.regionName}
+            </Typography>
           </Box>
-        </div>
-        ): (
-        <div>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Latitude:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.lat}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Longitude:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.lng}
+            </Typography>
+          </Box>
+          <Box mt={3}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={saveRegionRecipe}
+            >
+              Add Region to {currentRecipe.title}
+            </Button>
+          </Box>
+        </Box>
+        <Box mr={'10%'} ml={'10%'}>
+          <Typography variant="h6">Or select a different country from the dropdown.</Typography>
+          <Autocomplete
+            fullWidth
+            disablePortal
+            disableClearable
+            onChange={handleRegionChange}
+            id="recipeType"
+            options={regions.map((option) => option)}
+            getOptionLabel={(option) => option.country}
+            renderInput={(option) => (
+              <TextField
+                {...option}
+                label="Country"
+                InputProps={{
+                ...option.InputProps,
+                type: 'search',
+                }}
+                {...register('region')}
+              />
+            )}
+          />
+        </Box>
+      </>
+      ): (
+      <>
         <Box mr={'10%'} ml={'10%'} mt={2}>
           <Typography variant="h6">Please select a country from the dropdown.</Typography>
           <Autocomplete
@@ -242,12 +248,13 @@ return (
               />
             )}
           /> 
-          </Box>
-        </div>
+        </Box>
+      </>
       )} 
-    </Paper>
-  )}
-</div>
-)}
+    </>
+    )}
+  </>
+  )
+}
 
 export default RegionAddComponent;

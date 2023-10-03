@@ -30,21 +30,21 @@ const CreatorAddComponent = () => {
 
   const [creators, setCreators] = useState([]);  
   const [creator, setCreator] = useState(initialCreatorState);
+  const [added, setAdded] = useState(false);
   const [currentCreator, setCurrentCreator] = useState(initialCreatorState)
   const [currentCreatorId, setCurrentCreatorId] = useState()
   const [currentRecipe, setCurrentRecipe] =useState ([]);
   const [creatorRecipe, setCreatorRecipe] = useState (initialCreatorRecipeState);
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
-  const [added, setAdded] = useState(false);
+ 
   const [createNew, setCreateNew] = useState(false)
   
   //retrieve recipe and creators
   useEffect(() => {
-    retrieveCreators();
     retrieveRecipe(id);
+    retrieveCreators();
   }, []);
-
 
   const retrieveRecipe = id => {
     RecipeDataService.get(id)
@@ -67,8 +67,8 @@ const CreatorAddComponent = () => {
     });
   };
 
-   //react-hook-form and yup functions
-   const validationSchema = Yup.object().shape({
+  //react-hook-form and yup functions
+  const validationSchema = Yup.object().shape({
     creatorName: Yup.string()
       .required('Creator name is required.'),
   });
@@ -85,12 +85,11 @@ const CreatorAddComponent = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-    
-  // //form input to create creator
-  // const handleInputChange = event => {
-  //   const { name, value } = event.target;
-  //   setCreator({ ...creator, [name]: value });
-  // };
+
+  //create new creator set to true
+  const goCreate = () => {
+    setCreateNew(true)
+  }
 
   //save creator from form
   const saveCreator = (formData) => {
@@ -109,7 +108,7 @@ const CreatorAddComponent = () => {
         link: response.data.link
       });
       setSubmitted(true);
-      setCurrentCreatorId(response.data.id)
+      setCreator(response.data)
       console.log(response.data);
     })
     .catch(e => {
@@ -120,7 +119,7 @@ const CreatorAddComponent = () => {
   //attach creator created from form to recipe
   const saveCreatorRecipe = () => {
     var data = {
-      creatorId: currentCreator.id,
+      creatorId: creator.id,
       recipeId: currentRecipe.id
     };
     
@@ -138,27 +137,17 @@ const CreatorAddComponent = () => {
     });
   }
 
-  //retrieve currentCreator from id based on dropdown selection
-  const retrieveCurrentCreator = id => {
+  //retrieve creator from id based on dropdown selection
+  const retrieveCreator = id => {
     CreatorDataService.get(id)
     .then(response => {
-      setCurrentCreator(response.data);
+      setCreator(response.data);
+      setSelected(true)
       console.log(response.data);
     })
     .catch(e => {   
       console.log(e)
     });
-  };
-
-  const retrieveCreator= id => {
-    RegionDataService.get(id)
-      .then(response => {
-        setCurrentCreator(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e)
-      });
   };
 
   //retrieve creatorId from dropdown selection and run retrieveCreator function
@@ -174,7 +163,7 @@ const CreatorAddComponent = () => {
   //attach creator selected from dropdown to recipe
   const saveCreatorRecipeDropdown = () => {
     var data = {
-      creatorId: currentCreator.id,
+      creatorId: creator.id,
       recipeId: currentRecipe.id
     };
     
@@ -191,11 +180,6 @@ const CreatorAddComponent = () => {
       console.log(e);
     });
   }
-
-  //create new creator set to true
-  const goCreate = () => {
-    setCreateNew(true)
-  }
   
   //Reset form for new creator
   const newCreator = () => {
@@ -206,16 +190,12 @@ const CreatorAddComponent = () => {
     setAdded(false);
     setSubmitted(false);
   };
-
+  
   //navigate to recipe page
   const returnRecipe = () => {
     navigate("/recipes/" + id)
   }
 
-  //switch to add a new creator
-  const addAnotherCreator = () => {
-    newCreator()
-  }
 
   //navigate to add a new region
   const addRegion = () => {
@@ -227,137 +207,182 @@ const CreatorAddComponent = () => {
     navigate("/pairings/add/:id")
   }
 
-    return(
-    <div>
-      { added ? (
-        <div>
-          <h4>You've added {creator.creatorName} to {currentRecipe.title}</h4>
-          <br></br>
-          <br></br>
-          <button onClick={returnRecipe}>View Recipe Page</button>
-          <br></br>
-          <br></br>
-          <button onClick={addAnotherCreator}>Add Another Creator</button>
-          <button onClick={addRegion}>Add a Region</button>
-          <button onClick={addPairing}>Add a Recipe Pairing</button>
-        </div>
+  return(
+  <>
+    { added ? (
+    <>
+      <Paper>
+        <Box m={2}>
+          <Typography variant="h4">You've added {creator.creatorName} to {currentRecipe.title}</Typography>
+        </Box>
+        <Box m={2}>
+          <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
+        </Box>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newCreator}>Add Another Creator</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+      </Paper>
+    </>
+    ):(
+    <>
+      { createNew ? (
+      <>
+        {submitted ? (
+        <>
+          <Typography variant="h4">You've created {creator.creatorName}</Typography>
+          <Typography variant="h6">Add this recipe creator to {currentRecipe.title}.</Typography>
+          <Button sx={{my: 1, ml: 2}} variant="contained" color="primary" onClick={saveCreatorRecipe}>
+            Add
+          </Button>
+        </>      
+        ):(
+        <>
+          <Typography variant="h6" align="center" margin="dense">
+            Create a New Recipe Creator
+          </Typography>
+          <Box sx={{ ml: "10%", mr: "10%" }}>
+            <FormControl fullWidth>
+              <TextField
+                sx={{ mt: 2, mb: 2 }}
+                required
+                id="creatorName"
+                name="creatorName"
+                label="creatorName"
+                placeholder="creatorName"
+                defaultValue=""
+                fullWidth
+                margin="dense"
+                {...register('creatorName')}
+                error={errors.creatorName ? true : false}
+              />
+              <Typography variant="inherit" color="textSecondary">
+                {errors.creatorName?.message}
+              </Typography>
+            </FormControl>
+            <TextField
+              sx={{ mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
+              name="about"
+              label="About"
+              placeholder="About"
+              fullWidth
+              margin="dense"
+              multiline
+              rows={2}
+              {...register('about')}
+            />
+            <TextField
+              sx={{ mb: 2 }}
+              id="outlined-multiline-static"
+              defaultValue=""
+              name="link"
+              label="Link"
+              placeholder="Link"
+              fullWidth
+              margin="dense"
+              rows={2}
+              {...register('link')}
+            />
+            <Button onClick= {handleSubmit(onSubmit)}>
+              submit
+            </Button>
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit(saveCreator)}
+              >
+                Create Recipe Creator
+              </Button>
+            </Box>
+          </Box>
+        </>
+        )}
+      </>
       ):(
-        <div>
-          { createNew ? (
-            <div className="submit-form">
-              {submitted ? (
-                <div>
-                  <h2>Success!</h2>
-                  <div>
-                    <h4>{creator.creatorName}</h4>
-                  </div>
-                  <button onClick={saveCreatorRecipe}>Add this recipe creator to {currentRecipe.title}.</button>
-                </div>
-              ):(
-              <>
-                <Typography variant="h6" align="center" margin="dense">
-                  Create a New Recipe
-                </Typography>
-                <Box sx={{ ml: "10%", mr: "10%" }}>
-                  <FormControl fullWidth>
-                    <TextField
-                      sx={{ mt: 2, mb: 2 }}
-                      required
-                      id="creatorName"
-                      name="creatorName"
-                      label="creatorName"
-                      placeholder="creatorName"
-                      defaultValue=""
-                      fullWidth
-                      margin="dense"
-                      {...register('creatorName')}
-                      error={errors.creatorName ? true : false}
-                    />
-                    <Typography variant="inherit" color="textSecondary">
-                      {errors.creatorName?.message}
-                    </Typography>
-                  </FormControl>
-                  <TextField
-                    sx={{ mb: 2 }}
-                    id="outlined-multiline-static"
-                    defaultValue=""
-                    name="about"
-                    label="About"
-                    placeholder="About"
-                    fullWidth
-                    margin="dense"
-                    multiline
-                    rows={2}
-                    {...register('about')}
-                  />
-                  <TextField
-                    sx={{ mb: 2 }}
-                    id="outlined-multiline-static"
-                    defaultValue=""
-                    name="link"
-                    label="Link"
-                    placeholder="Link"
-                    fullWidth
-                    margin="dense"
-                    rows={2}
-                    {...register('link')}
-                  />
-              
-                  <br></br>
-                  <br></br>
-                  <button onClick={saveCreator} className="btn btn-success">
-                    Submit
-                  </button>
-                </Box>
-              </>
-               
+      <>
+        { selected ? (
+        <>
+          <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+            <Typography variant="h4">
+              {creator.creatorName}
+            </Typography>
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveCreatorRecipe}
+              >
+                Add Creator to {currentRecipe.title}
+              </Button>
+            </Box>
+          </Box>
+          <Box mx={'10%'} my={2}>
+            <Typography variant="h6">Or select a different creator from the dropdown.</Typography>
+            <Autocomplete
+              fullWidth
+              disablePortal
+              disableClearable
+              onChange={handleCreatorChange}
+              id="recipeType"
+              options={creators.map((option) => option)}
+              getOptionLabel={(option) => option.creatorName}
+              renderInput={(option) => (
+                <TextField
+                  {...option}
+                  label="Recipe Creator"
+                  InputProps={{
+                  ...option.InputProps,
+                  type: 'search',
+                  }}
+                  {...register('creator')}
+                />
               )}
-            </div>
-          ):(
-            <div>
-              { selected ? (
-                <div>
-                  <h1>{currentCreator.creatorName}</h1>
-                  <button onClick={saveCreatorRecipeDropdown}>Add this creator to recipe</button>
-                </div>
-              ):(
-              <>
-                <Box mr={'10%'} ml={'10%'} mt={2}>
-                  <Typography variant="h6">Please select a country from the dropdown.</Typography>
-                  <Autocomplete
-                    fullWidth
-                    disablePortal
-                    disableClearable
-                    onChange={handleCreatorChange}
-                    id="recipeType"
-                    options={creators.map((option) => option)}
-                    getOptionLabel={(option) => option.creatorName}
-                    renderInput={(option) => (
-                      <TextField
-                        {...option}
-                        label="Country"
-                        InputProps={{
-                          ...option.InputProps,
-                          type: 'search',
-                        }}
-                        {...register('region')}
-                      />
-                    )}
-                  /> 
-                </Box>
-            
-              
-                  <br></br>
-                  <br></br>
-                  <p>Or create a new Recipe Creator</p>
-                  <button onClick={goCreate}>Create New Recipe Creator</button>
-              </>
-              )}
-            </div>
-          )}
-        </div>
+            />
+          </Box>
+        </>
+        ):(
+        <>
+          <Box mr={'10%'} ml={'10%'} mt={2}>
+            <Typography variant="h6">Please select a recipe creator from the dropdown.</Typography>
+            <Box mt={1}>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                disableClearable
+                onChange={handleCreatorChange}
+                id="recipeType"
+                options={creators.map((option) => option)}
+                getOptionLabel={(option) => option.creatorName}
+                renderInput={(option) => (
+                  <TextField
+                    {...option}
+                    label="Recipe Creator"
+                    InputProps={{
+                      ...option.InputProps,
+                      type: 'search',
+                    }}
+                    {...register('region')}
+                  />
+                )}
+              />
+            </Box>
+          </Box>
+          <Box mr={'10%'} ml={'10%'} mt={6}>
+            <Typography variant="h6">Or create a new Recipe Creator.</Typography>
+            <Box mt={1}>
+              <Button variant="contained" color="primary" onClick={goCreate}>New Creator</Button>
+            </Box>
+          </Box>
+        </>
+        )}
+      </>
       )}
-    </div>
-  )}
+    </>
+    )}
+  </>
+  )
+}
 
 export default CreatorAddComponent;

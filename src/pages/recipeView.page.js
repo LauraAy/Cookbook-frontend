@@ -36,16 +36,6 @@ const RecipeViewPage = params => {
     return elements !== null;
    });
 
-
-  // let filteredMap = currentRecipe.region.map((region) => (region))
-  // const filteredRegion = Array.from(new Set(currentRecipe.region.map((currentRecipeFil) => currentRecipeFil.regionName)))
-  // .map((filRecipe) => (filRecipe))
-
-  // console.log([filteredMap])
-  // console.log([filteredRegion])
-
- 
-  
   console.log(regionFil)
 
   return (

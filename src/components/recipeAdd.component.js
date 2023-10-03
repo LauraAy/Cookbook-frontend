@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"
+import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ const filter = createFilterOptions();
 
 const RecipeAddComponent = () => { 
   const currentUser = AuthService.getCurrentUser();
+  let navigate = useNavigate();
 
   const initialRecipeState = {
     id: null,
@@ -130,31 +131,52 @@ const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => 
 
 const typeOptions = cleanRecipes.sort()
 
+//add another recipe
 const newRecipe = () => {
     setRecipe(initialRecipeState);
     setSubmitted(false);
     window.location.reload(false);
   };
+
+  //nav functions
+  const goRecipe = () => {
+    navigate("/recipes/" + recipe.id)
+    setSubmitted(false)
+  }
+
+  const addRegion = () => {
+    navigate("/regions/add/" + recipe.id)
+  }
+
+  const addCreator = () => {
+    navigate("/regions/add/" + recipe.id)
+  }
+
+  const addPairing = () => {
+    navigate("/regions/add/" + recipe.id)
+  }
   
-    return (
+  return (
+  <>
+    {submitted ? (
     <>
-      {submitted ? (
-      <>
-        <h4>Recipe Created!</h4>
-        <div>
-          {recipe.id}
-          <br></br>
-          {recipe.title}
-        </div>
-        <Link
-          to={"/recipes/" + recipe.id}
-        >
-          <button>View Recipe</button>
-        </Link>
-        <button onClick={newRecipe}>Add Another Recipe</button>
+    <Paper>
+      <Typography variant="h4">Recipe Created!</Typography>
+        <Box mx={4} mt={2} mb={4}>
+          <Typography variant="body1" sx={{ m: 1 }} ><strong>Title: </strong>{recipe.title}</Typography>
+          <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{recipe.description}</Typography>
+        </Box>
+        <Box m={2}>
+          <Button variant="contained" onClick={goRecipe}>View Recipe</Button>
+        </Box>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newRecipe}>Add Another Recipe</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
+        <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+      </Paper>
       </>
       ):(
-      <Paper>
+      <> 
         <Typography variant="h6" align="center" margin="dense">
           Create a New Recipe
         </Typography>
@@ -320,7 +342,7 @@ const newRecipe = () => {
             </Button>
           </Box>
         </Box>
-      </Paper>
+      </>
       )}
     </>
   )
