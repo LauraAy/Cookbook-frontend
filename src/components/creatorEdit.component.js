@@ -1,5 +1,3 @@
-import '../styles.scss'
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -9,7 +7,6 @@ import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/ma
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import CreatorDataService from "../services/creator.service";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
-import DeleteConfirmation from "../components/deleteConfirmation.component.js";
 
 const CreatorEdit = props => {
   const filter = createFilterOptions();
@@ -24,9 +21,6 @@ const CreatorEdit = props => {
   };
 
   const [creator, setCreator] = useState(initialCreatorState);
-  const [type, setType] = useState(null);
-  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
-  const [deleteMessage, setDeleteMessage] = useState(null);
 
   //get creator
   const getCreator = creatorId => {
@@ -83,55 +77,6 @@ const CreatorEdit = props => {
       });
   };
 
-  //Dialog functions
-  // const handleClickOpen = () => {
-  //   setDeleteMessage('Are you sure you want to delete the recipe creator?');
-  //   setDeleteText('Confirming delete will permanently delete this creator from the database and remove it from all other recipes it is associated with. If you only want to remove the creator from this recipe, please select "remove from recipe" instead.')
-    
-  //   setOpen(true);
-  // };
-  
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-  
-  // //Display delete confirmation modal based on type
-  // const showDeleteModal = (type) => {
-  //   setType(type);
-  //   if (type === "creator") {
-  //     setDeleteMessage('Are you sure you want to delete the creator?');
-  //   }
-  //   setDisplayConfirmationModal(true);
-  // };
-
-  // //Hide delete confirmation modal
-  // const hideConfirmationModal = () => {
-  //   setDisplayConfirmationModal(false);
-  // };
-
-  //Remove creator from this recipe
-  const removeCreator = () => {
-    CreatorRecipeDataService.removeCreator(recipeId, creatorId)
-    .then(response => {
-      console.log(response.data)
-      navigate("/recipes/" + recipeId)
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
-
-  //Delete Creator
-  const submitDelete = () => {
-    CreatorDataService.destroy(creator.id)
-      .then(response => {
-        console.log(response.data);
-        navigate("/recipes/" + recipeId)
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
 
   return (
   <>

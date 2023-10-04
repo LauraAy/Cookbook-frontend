@@ -39,9 +39,6 @@ const PairingAddComponent = () => {
 	const [selectedRecipeOneId, setSelectedRecipeOneId] = useState ()
 	const [selectedRecipeTwoId, setSelectedRecipeTwoId] = useState ()
 	const [selectedRecipeThreeId, setSelectedRecipeThreeId] = useState ()
-	const [selectedRecipeOne, setSelectedRecipeOne] = useState ([])
-	const [selectedRecipeTwo, setSelectedRecipeTwo] = useState ([])
-	const [selectedRecipeThree, setSelectedRecipeThree] = useState ([])
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
@@ -121,18 +118,6 @@ const PairingAddComponent = () => {
   };
 
 
-	//retrieve first selectedRecipe from id based on dropdown selection
-	const retrieveSelectedRecipeOne = id => {
-		RecipeDataService.get(id)
-		.then(response => {
-			setSelectedRecipeOne(response.data);
-			console.log(response.data);
-		})
-		.catch(e => {   
-			console.log(e)
-		});
-	};
-
 	//retrieve selected recipe from form and save id
 	const handleRecipeOneChange = async (event, option) => {
 		setSelectedRecipeOneId(option.id);
@@ -147,58 +132,6 @@ const PairingAddComponent = () => {
 		console.log(option.id)
 	}
 	
-
-	// useEffect(()=>{
-	// 	retrieveSelectedRecipeOne(selectedRecipeOneId)
-	// 	console.log(selectedRecipeOne)
-	// }, [selectedRecipeOneId])
-
-
-		//  //retrieve second selectedRecipe from id based on dropdown selection
-		//  const retrieveSelectedRecipeTwo = id => {
-		// 	RecipeDataService.get(id)
-		// 	.then(response => {
-		// 		setSelectedRecipeTwo(response.data);
-		// 		console.log(response.data);
-		// 	})
-		// 	.catch(e => {   
-		// 		console.log(e)
-		// 	});
-		// };
-
-	// const handleSelectedRecipeTwoChange = async (event) => {
-	// 	setSelectedRecipeTwoId(event.target.value);
-	// 	// setSelected(true);
-	// 	console.log(selectedRecipeTwoId)
-	// }
-
-	// useEffect(()=>{
-	// 	retrieveSelectedRecipeTwo(selectedRecipeTwoId)
-	// 	console.log(selectedRecipeTwo)
-	// }, [selectedRecipeTwoId])
-
-	// 	 //retrieve third selectedRecipe from id based on dropdown selection
-	// 	 const retrieveSelectedRecipeThree = id => {
-	// 		RecipeDataService.get(id)
-	// 		.then(response => {
-	// 			setSelectedRecipeThree(response.data);
-	// 			console.log(response.data);
-	// 		})
-	// 		.catch(e => {   
-	// 			console.log(e)
-	// 		});
-	// 	};
-
-	// const handleSelectedRecipeThreeChange = async (event) => {
-	// 	setSelectedRecipeThreeId(event.target.value);
-	// 	// setSelected(true);
-	// 	console.log(selectedRecipeThreeId)
-	// }
-
-	// useEffect(()=>{
-	// 	retrieveSelectedRecipeThree(selectedRecipeThreeId)
-	// 	console.log(selectedRecipeTwo)
-	// }, [selectedRecipeTwoId])
 
 	//create new pairing set to true
 	const goCreate = () => {
@@ -302,18 +235,6 @@ const PairingAddComponent = () => {
 			console.log(e);
 		});
   }
-
-	//  //retrieve currentRecipe from id based on dropdown selection
-	//  const retrieveSelectedRecipe = id => {
-	// 	RecipeDataService.get(id)
-	// 	.then(response => {
-	// 		setSelectedRecipe(response.data);
-	// 		console.log(response.data);
-	// 	})
-	// 	.catch(e => {   
-	// 		console.log(e)
-	// 	});
-	// };
   
   //Reset form for new pairing
   const newPairing = () => {
@@ -494,8 +415,11 @@ const PairingAddComponent = () => {
 								rows={2}
 								{...register('more')}
 							/>
+							<Typography variant= "h6">
+								Select a related recipe from the dropdown.
+							</Typography>
 							<Autocomplete
-								mt={1}
+								sx={{ mb: 2 }}
 								fullWidth
 								disablePortal
 								disableClearable
@@ -514,8 +438,11 @@ const PairingAddComponent = () => {
 									/>
 								)}
 							/>
+							<Typography variant= "h6">
+								Select a second related recipe from the dropdown.
+							</Typography>
 							<Autocomplete
-								mt={1}
+								sx={{ mb: 2 }}
 								fullWidth
 								disablePortal
 								disableClearable
@@ -534,8 +461,11 @@ const PairingAddComponent = () => {
 									/>
 								)}
 							/>
+							<Typography variant= "h6">
+								Select a third related recipe from the dropdown.
+							</Typography>
 							<Autocomplete
-								mt={1}
+								sx={{ mb: 2 }}
 								fullWidth
 								disablePortal
 								disableClearable
@@ -660,91 +590,5 @@ const PairingAddComponent = () => {
   </>
   )
 }
-
-
-
-
-
-
-
-// 							<br></br>
-// 							<br></br>
-// 							<p>Please select a Recipe from the dropdown.</p> 
-// 							<Form>
-//                 <select class="form-control" onChange={handleSelectedRecipeTwoChange} >
-//                   <option>Select a Recipe</option>
-//                   {recipes.map((recipes, index) => 
-//                     <option
-//                       value= {recipes.id}
-//                       key={index}
-//                     >
-// 											{recipes.title}
-//                     </option>
-//                   )}
-//                 </select>
-//               </Form>
-// 							<br></br>
-// 							<br></br>
-// 							<p>Please select a Recipe from the dropdown.</p> 
-// 							<Form>
-//                 <select class="form-control" onChange={handleSelectedRecipeThreeChange} >
-//                   <option>Select a Recipe</option>
-//                   {recipes.map((recipes, index) => 
-//                     <option
-//                       value= {recipes.id}
-//                       key={index}
-//                     >
-// 											{recipes.title}
-//                     </option>
-//                   )}
-//                 </select>
-//               </Form>
-// 							<br></br>
-// 							<br></br>
-// 							<button onClick={savePairing} className="btn btn-success">
-// 								Submit
-// 							</button>
-// 						</div>
-// 						)}
-// 					</div>
-// 					):(
-// 						<div>
-// 							{ selected ? (
-// 								<div>
-// 									<h1>{currentPairing.pairingName}</h1>
-// 									<button onClick={savePairingRecipeDropdown}>Add this pairing to recipe</button>
-// 								</div>
-// 							):(
-// 								<div>
-// 									<h1>Attach a pairing to {currentRecipe.title}</h1>
-// 								<div>  
-// 									<p>Please select a pairing from the dropdown.</p> 
-// 									<Form>
-// 										<select class="form-control" onChange={handlePairingChange} >
-// 											<option>Select a pairing</option>
-// 											{pairings.map((pairing, index) => 
-// 												<option
-// 													value= {pairing.id}
-// 													key={index}
-// 												>
-// 													{pairing.pairingName}
-// 												</option>
-// 											)}
-// 										</select>
-// 									</Form>
-// 									<br></br>
-// 									<br></br>
-// 									<p>Or create a new recipe pairing</p>
-// 									<button onClick={goCreate}>Create New Recipe Pairing</button>
-// 								</div>
-// 								</div>
-// 							)}
-// 						</div>
-// 					)}
-// 				</div>
-// 			)}
-// 		</div>
-//   )
-// }
 
 export default PairingAddComponent;
