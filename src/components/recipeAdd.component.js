@@ -216,66 +216,66 @@ const newRecipe = () => {
           />
         <Autocomplete
           openOnFocus
-                value={value}
-                defaultValue=""
+            value={value}
+            defaultValue=""
+            {...register('recipeType')}
+            onChange={(event, newValue) => {
+              if (typeof newValue === 'string') {
+                const updatedValue = newValue.replace("Add ", "");
+                setValue(updatedValue);
+              } else if (newValue && newValue.inputValue) {
+				        // Create a new value from the user input
+                setValue(newValue.inputValue);
+              } else {
+                setValue(newValue);
+              }
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+              const { inputValue } = params;
+
+              // Suggest the creation of a new value
+              const isExisting = options.some((option) => inputValue === option);
+              if (inputValue !== "" && !isExisting) {
+                filtered.push(`Add ${inputValue}`);
+              }
+
+              return filtered;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            id="recipeType"
+            options={typeOptions}
+            getOptionLabel= {(option) => {
+              // Value selected with enter, right from the input
+              if (typeof option === 'string') {
+                const updatedOption = option.replace("Add ", "");
+                return updatedOption;
+              }
+              // Add "xxx" option created dynamically
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              // Regular option
+              return option.toString();
+            }}
+            renderOption={(props, option) => <li {...props}>{option}</li>}
+            freeSolo
+            fullWidth
+            renderInput={(option) => (
+              <TextField   
+                {...option}
+                sx={{ mb: 2 }}
+                label="RecipeType" 
+                InputProps={{
+                  ...option.InputProps,
+                  type: 'search',
+                }} 
                 {...register('recipeType')}
-                onChange={(event, newValue) => {
-                  if (typeof newValue === 'string') {
-                    const updatedValue = newValue.replace("Add ", "");
-                    setValue(updatedValue);
-                  } else if (newValue && newValue.inputValue) {
-				            // Create a new value from the user input
-                    setValue(newValue.inputValue);
-                  } else {
-                    setValue(newValue);
-                  }
-                }}
-                filterOptions={(options, params) => {
-                  const filtered = filter(options, params);
-                  const { inputValue } = params;
-
-                  // Suggest the creation of a new value
-                  const isExisting = options.some((option) => inputValue === option);
-                  if (inputValue !== "" && !isExisting) {
-                    filtered.push(`Add ${inputValue}`);
-                  }
-
-                  return filtered;
-                }}
-                selectOnFocus
-                clearOnBlur
-                handleHomeEndKeys
-                id="recipeType"
-                options={typeOptions}
-                getOptionLabel= {(option) => {
-                  // Value selected with enter, right from the input
-                  if (typeof option === 'string') {
-                    const updatedOption = option.replace("Add ", "");
-                    return updatedOption;
-                  }
-                  // Add "xxx" option created dynamically
-                  if (option.inputValue) {
-                    return option.inputValue;
-                  }
-                  // Regular option
-                  return option.toString();
-                }}
-                renderOption={(props, option) => <li {...props}>{option}</li>}
-                freeSolo
-                fullWidth
-                renderInput={(option) => (
-                  <TextField   
-                    {...option}
-                    sx={{ mb: 2 }}
-                    label="RecipeType" 
-                    InputProps={{
-                      ...option.InputProps,
-                      type: 'search',
-                    }} 
-                    {...register('recipeType')}
-                  />
-                )}
               />
+            )}
+          />
           <TextField
             sx={{ mb: 2 }}
             id="servingSize"

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -213,31 +212,27 @@ const CreatorAddComponent = () => {
 
   //navigate to add a new region
   const addRegion = () => {
-    navigate("/regions/add/:id")
+    navigate("/regions/add/" + id)
   }
 
   //navigate to add a new pairing
   const addPairing = () => {
-    navigate("/pairings/add/:id")
+    navigate("/pairings/add/" + id)
   }
-
-
 
   return(
   <>
     { added ? (
     <>
-      <Paper>
-        <Box m={2}>
-          <Typography variant="h4">You've added {creator.creatorName} to {currentRecipe.title}</Typography>
-        </Box>
-        <Box m={2}>
-          <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
-        </Box>
-        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newCreator}>Add Another Creator</Button>
-        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
-        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
-      </Paper>
+      <Box m={2}>
+        <Typography variant="h4">You've added {creator.creatorName} to {currentRecipe.title}</Typography>
+      </Box>
+      <Box m={2}>
+        <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
+      </Box>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newCreator}>Add Another Creator</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
     </>
     ):(
     <>
@@ -324,9 +319,9 @@ const CreatorAddComponent = () => {
               Selected Creator:
             </Typography>
             <Box mt={2}>
-            <Typography variant="h5">
-              {creator.creatorName}
-            </Typography>
+              <Typography variant="h5">
+                {creator.creatorName}
+              </Typography>
             </Box>
             <Box mt={1}>
               <Button
@@ -346,7 +341,7 @@ const CreatorAddComponent = () => {
               disablePortal
               disableClearable
               onChange={handleCreatorChange}
-              id="recipeType"
+              id="creator"
               options={creatorOptions.map((option) => option)}
               getOptionLabel={(option) => option.creatorName}
               renderInput={(option) => (
@@ -354,8 +349,8 @@ const CreatorAddComponent = () => {
                   {...option}
                   label="Recipe Creator"
                   InputProps={{
-                  ...option.InputProps,
-                  type: 'search',
+                    ...option.InputProps,
+                    type: 'search',
                   }}
                   {...register('creator')}
                 />
