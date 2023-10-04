@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import EverythingDataService from "../services/everything.service";
-// import Accordion from 'react-bootstrap/Accordion';
 import RecipeViewComponent from '../components/recipeView.component.js'
 import RegionViewComponent from '../components/regionView.component.js'
 import CreatorViewComponent from "../components/creatorView.component";
@@ -122,7 +121,7 @@ const RecipeViewPage = params => {
           <>
             {currentRecipe.creator.map((creator, index) =>
             <>
-              <strong>creator: </strong>
+              <strong>Creator: </strong>
               <>
                 {creator.creatorName}
               </>
@@ -185,6 +184,13 @@ const RecipeViewPage = params => {
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+
+        sx={{
+          border: '3px solid purple',
+          borderRadius: '5px',
+          color: 'purple',
+          backgroundColor: '#F5F3C7'
+        }}
       >
         <Typography variant="h5" align="center" sx={{width: '100%'}}>Recipe Pairing Details</Typography>
       </AccordionSummary>

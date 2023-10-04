@@ -187,29 +187,15 @@ const CreatorEdit = props => {
           {...register('link')}
         />
       </FormControl>
-      <Button
-        onClick={handleSubmit(updateCreator)}
-        sx={{my: 2}}
-        variant="contained"
-        color="primary"
-      >
-        Update
-      </Button> 
-      <Button 
-        onClick={() => {removeCreator(creator.id)}}
-        variant="contained"
-        color="error"
-      >
-        Remove from Recipe 
-      </Button>
-  
-
-      
-        {/* <button onClick={() => showDeleteModal("creator")} >
-          Delete
-        </button>
-    
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  /> */}
+      <Box>
+        <Button
+          onClick={handleSubmit(updateCreator)}
+          variant="contained"
+          color="primary"
+        >
+          Update
+        </Button> 
+      </Box>
     </Box>
   
   </>

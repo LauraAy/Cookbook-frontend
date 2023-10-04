@@ -107,7 +107,7 @@ const CreatorViewComponent = params => {
                   <Button 
                     onClick={() => {removeCreator(creator.id)}}
                     variant="outlined"
-                    // color="error"
+                    color="error"
                     startIcon={<Delete />}
                   >
                     Remove
