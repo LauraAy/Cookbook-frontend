@@ -31,12 +31,14 @@ const RecipeViewPage = params => {
     getRecipeEverything(id);
   }, [id]);
 
+  //filters for regionName
   var regionMap = currentRecipe.region?.map ((region) => region.regionName)
   var regionFil = regionMap?.filter(elements => {
     return elements !== null;
    });
 
-  console.log(regionFil)
+  var regionClean = Array.from(new Set(regionFil));
+
 
   return (
   <>
@@ -44,12 +46,12 @@ const RecipeViewPage = params => {
     <Box mx={4} mt={2} mb={4}>
       <Typography variant="body1" sx={{ m: 1 }} ><strong>Description: </strong>{currentRecipe.description}</Typography>
       <Typography variant="body1" sx={{ m: 1 }} >
-        {regionFil &&
+        {regionClean &&
         <>
-          {regionFil.length > 1 ? (
+          {regionClean.length > 1 ? (
           <>
             <strong>Regions: </strong>
-            {regionFil.map((regionName, index) =>
+            {regionClean.map((regionName, index) =>
             <>
               {regionName && (
               <>
@@ -62,11 +64,10 @@ const RecipeViewPage = params => {
           ):(
           <>
             <strong>Region: </strong>
-            {currentRecipe.region.map((region) =>
               <>
-                {region.regionName}
+                {regionClean}
               </>
-            )}
+          
           </>
           )}
         </>
@@ -102,14 +103,37 @@ const RecipeViewPage = params => {
         }
       </Typography>
       <Typography variant="body1" sx={{ m: 1 }} >
-        <strong>Recipe Creator: </strong>
         {currentRecipe.creator &&
-          currentRecipe.creator.map((creator) => (
+        <>
+          {currentRecipe.creator.length > 1 ? (
+          <>
+            <strong>Creators: </strong>
+            {currentRecipe.creator.map((creator, index) =>
             <>
-              {creator.creatorName}
+              {creator.creatorName && (
+              <>
+                {(index ? ', ' : '') + creator.creatorName }
+              </>
+              )} 
             </>
-          )
-        )}
+            )}
+          </>
+          ):(
+          <>
+            {currentRecipe.creator.map((creator, index) =>
+            <>
+              <strong>creator: </strong>
+              <>
+                {creator.creatorName}
+              </>
+            </>
+            )}
+           
+          
+          </>
+          )}
+        </>
+        }
       </Typography>
       <Typography variant="body1"sx={{ m: 1 }}>
         {currentRecipe.source && (

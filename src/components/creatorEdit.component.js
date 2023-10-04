@@ -1,10 +1,18 @@
+import '../styles.scss'
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import CreatorDataService from "../services/creator.service";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js";
 
 const CreatorEdit = props => {
+  const filter = createFilterOptions();
   const { recipeId, creatorId }= useParams();
   let navigate = useNavigate();
 
@@ -21,8 +29,8 @@ const CreatorEdit = props => {
   const [deleteMessage, setDeleteMessage] = useState(null);
 
   //get creator
-  const getCreator = id => {
-    CreatorDataService.get(id)
+  const getCreator = creatorId => {
+    CreatorDataService.get(creatorId)
       .then(response => {
         setCreator(response.data);
         console.log(response.data);
@@ -37,16 +45,35 @@ const CreatorEdit = props => {
     getCreator(creatorId);
   }, [creatorId]);
 
+  //react-hook-form and yup functions
+  const validationSchema = Yup.object().shape({
+    creatorName: Yup.string()
+      .required('Creator name is required.'),
+  });
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+    values: { creatorName: creator.creatorName, about: creator.about, link: creator.link},
+  });
 
-  //set form input to currentCreator
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setCreator({ ...creator, [name]: value });
+  const onSubmit = (data) => {
+    register("creatorName", "about", "link");
+    console.log(data);
   };
 
   //update Creator
-  const updateCreator = () => {
-    CreatorDataService.update(creator.id, creator)
+  const updateCreator = (formData) => {
+    var data = {
+      creatorName: formData.creatorName,
+      about: formData.about,
+      link: formData.link
+    };
+
+    CreatorDataService.update(creator.id, data)
       .then(response => {
         console.log(response.data);
         navigate("/recipes/" + recipeId)
@@ -56,19 +83,31 @@ const CreatorEdit = props => {
       });
   };
 
-  //Display delete confirmation modal based on type
-  const showDeleteModal = (type) => {
-    setType(type);
-    if (type === "creator") {
-      setDeleteMessage('Are you sure you want to delete the creator?');
-    }
-    setDisplayConfirmationModal(true);
-  };
+  //Dialog functions
+  // const handleClickOpen = () => {
+  //   setDeleteMessage('Are you sure you want to delete the recipe creator?');
+  //   setDeleteText('Confirming delete will permanently delete this creator from the database and remove it from all other recipes it is associated with. If you only want to remove the creator from this recipe, please select "remove from recipe" instead.')
+    
+  //   setOpen(true);
+  // };
+  
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  
+  // //Display delete confirmation modal based on type
+  // const showDeleteModal = (type) => {
+  //   setType(type);
+  //   if (type === "creator") {
+  //     setDeleteMessage('Are you sure you want to delete the creator?');
+  //   }
+  //   setDisplayConfirmationModal(true);
+  // };
 
-  //Hide delete confirmation modal
-  const hideConfirmationModal = () => {
-    setDisplayConfirmationModal(false);
-  };
+  // //Hide delete confirmation modal
+  // const hideConfirmationModal = () => {
+  //   setDisplayConfirmationModal(false);
+  // };
 
   //Remove creator from this recipe
   const removeCreator = () => {
@@ -95,68 +134,85 @@ const CreatorEdit = props => {
   };
 
   return (
-    <div>
-    {creator ? (
-      <div className="edit-form">
-        <h4>Creator</h4>
-        <form>
-          <div className="form-group">
-            <label htmlFor="title">Recipe Creator Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="creatorName"
-              name="creatorName"
-              value={creator.creatorName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="about">About Recipe Creator</label>
-            <input
-              type="text"
-              className="form-control"
-              id="about"
-              name="about"
-              value={creator.about}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="link">Link</label>
-            <input
-              type="text"
-              className="form-control"
-              id="link"
-              name="link"
-              value={creator.link}
-              onChange={handleInputChange}
-            />
-          </div>
-        </form>
+  <>
+    <Typography variant="h6" align="center" margin="dense">
+      Edit {creator.creatorName}
+    </Typography>
+    <Box sx={{ ml: "10%", mr: "10%" }}>
+      <FormControl fullWidth>
+        <TextField
+          sx={{ mt: 2, mb: 2 }}
+          id="creatorName"
+          name="creatorName"
+          label="Creator Name"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          margin="dense"
+          multiline
+          rows={1}
+          {...register('creatorName')}
+          error={errors.title ? true : false}
+        />
+        <Typography variant="inherit" color="textSecondary">
+          {errors.creatorName?.message}
+        </Typography>
+        <TextField
+          sx={{ mt: 2, mb: 2 }}
+          id="about"
+          name="about"
+          label="About"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          margin="dense"
+          multiline
+          rows={2}
+          {...register('about')}
+        />
+        <TextField
+          sx={{ mb: 2 }}
+          defaultValue=""
+          name="link"
+          label="Link"
+          placeholder="Link"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          margin="dense"
+          rows={2}
+          {...register('link')}
+        />
+      </FormControl>
+      <Button
+        onClick={handleSubmit(updateCreator)}
+        sx={{my: 2}}
+        variant="contained"
+        color="primary"
+      >
+        Update
+      </Button> 
+      <Button 
+        onClick={() => {removeCreator(creator.id)}}
+        variant="contained"
+        color="error"
+      >
+        Remove from Recipe 
+      </Button>
+  
 
-        <button
-          type="submit"
-          onClick={updateCreator}
-        >
-          Update
-        </button>
-        <button onClick={() => {removeCreator(creator.id)}}>
-          Remove Creator from This Recipe 
-        </button>
-        <button onClick={() => showDeleteModal("creator")} >
+      
+        {/* <button onClick={() => showDeleteModal("creator")} >
           Delete
         </button>
     
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  />
-      </div>
-    ) : (
-      <div>
-        <br />
-        <p>Please click on a Recipe...</p>
-      </div>
-    )}
-  </div>
+        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} message={deleteMessage}  /> */}
+    </Box>
+  
+  </>
   );
 };
 

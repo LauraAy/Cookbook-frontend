@@ -131,6 +131,8 @@ const cleanRecipes = Array.from(new Set(filAlphaRecipes.map((filAlphaRecipe) => 
 
 const typeOptions = cleanRecipes.sort()
 
+
+
 //add another recipe
 const newRecipe = () => {
     setRecipe(initialRecipeState);

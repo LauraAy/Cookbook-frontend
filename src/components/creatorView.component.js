@@ -1,3 +1,5 @@
+import '../styles.scss'
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
@@ -35,8 +37,11 @@ const CreatorViewComponent = params => {
     navigate("/creators/add/" + id)
   }
 
-  const editCreator = () => {
-    navigate("/creators/edit/" + currentRecipe.id + "/" + creator.id)
+  const editCreator = currentCreatorId => {
+    const recipeId = currentRecipe.id
+    const creatorId = currentCreatorId
+
+    navigate("/creators/edit/" + recipeId + "/" + creatorId)
   }
 
   const refreshPage = () => {
@@ -72,7 +77,6 @@ const CreatorViewComponent = params => {
                   {creator.about && (
                   <>
                     <strong>About: </strong>
-                   
                     {creator.about}
                   </>
                   )}
@@ -81,7 +85,7 @@ const CreatorViewComponent = params => {
                   {creator.link && (
                   <>
                     <strong>Webpage: </strong>
-                   <a href={creator.link}>
+                  <a href={creator.link}>
                     {creator.link}
                     </a>
                     
@@ -90,7 +94,7 @@ const CreatorViewComponent = params => {
                 </Typography>
                 <Tooltip title="Edit this creator.">
                   <Button
-                    onClick={editCreator}
+                    onClick={() => {editCreator(creator.id)}}
                     variant="outlined"
                     sx={{ my: 2 }}
                   >
@@ -103,7 +107,7 @@ const CreatorViewComponent = params => {
                   <Button 
                     onClick={() => {removeCreator(creator.id)}}
                     variant="outlined"
-                    color="error"
+                    // color="error"
                     startIcon={<Delete />}
                   >
                     Remove
@@ -134,6 +138,7 @@ const CreatorViewComponent = params => {
         <Button 
           onClick={goAddCreator}
           variant="contained"
+          color="primary"
           sx={{ m: 2 }}
         >
           Add Creator

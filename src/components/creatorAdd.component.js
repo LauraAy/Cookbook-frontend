@@ -67,6 +67,20 @@ const CreatorAddComponent = () => {
     });
   };
 
+  //filter creators options by creatorName
+  function compare( a, b ) {
+    if ( a.creatorName < b.creatorName ){
+      return -1;
+    }
+    if ( a.creatorName > b.creatorName ){
+      return 1;
+    }
+    return 0;
+  }
+  
+  const creatorOptions = creators.sort( compare );
+
+
   //react-hook-form and yup functions
   const validationSchema = Yup.object().shape({
     creatorName: Yup.string()
@@ -207,6 +221,8 @@ const CreatorAddComponent = () => {
     navigate("/pairings/add/:id")
   }
 
+
+
   return(
   <>
     { added ? (
@@ -274,7 +290,6 @@ const CreatorAddComponent = () => {
             />
             <TextField
               sx={{ mb: 2 }}
-              id="outlined-multiline-static"
               defaultValue=""
               name="link"
               label="Link"
@@ -306,9 +321,14 @@ const CreatorAddComponent = () => {
         <>
           <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
             <Typography variant="h4">
+              Selected Creator:
+            </Typography>
+            <Box mt={2}>
+            <Typography variant="h5">
               {creator.creatorName}
             </Typography>
-            <Box mt={3}>
+            </Box>
+            <Box mt={1}>
               <Button
                 variant="contained"
                 color="primary"
@@ -318,15 +338,16 @@ const CreatorAddComponent = () => {
               </Button>
             </Box>
           </Box>
-          <Box mx={'10%'} my={2}>
+          <Box mx={'10%'} my={6}>
             <Typography variant="h6">Or select a different creator from the dropdown.</Typography>
             <Autocomplete
+              mt={1}
               fullWidth
               disablePortal
               disableClearable
               onChange={handleCreatorChange}
               id="recipeType"
-              options={creators.map((option) => option)}
+              options={creatorOptions.map((option) => option)}
               getOptionLabel={(option) => option.creatorName}
               renderInput={(option) => (
                 <TextField
@@ -353,7 +374,7 @@ const CreatorAddComponent = () => {
                 disableClearable
                 onChange={handleCreatorChange}
                 id="recipeType"
-                options={creators.map((option) => option)}
+                options={creatorOptions.map((option) => option)}
                 getOptionLabel={(option) => option.creatorName}
                 renderInput={(option) => (
                   <TextField
@@ -363,7 +384,7 @@ const CreatorAddComponent = () => {
                       ...option.InputProps,
                       type: 'search',
                     }}
-                    {...register('region')}
+                    {...register('creator')}
                   />
                 )}
               />

@@ -153,11 +153,9 @@ const RecipeEdit = props => {
       });
   };
   
-  console.log (window.localStorage.getItem('ingredients-content'))
+
   return (
-  <div>
-    <Fragment>
-      <Paper>
+  <>
         <Typography variant="h6" align="center" margin="dense">
           Edit {currentRecipe.title}
         </Typography>
@@ -318,9 +316,7 @@ const RecipeEdit = props => {
             <DeleteConfirmation openDialog={open} closeDialog={handleClose} confirmDialog={submitDelete} message={deleteMessage} text={deleteText}  />
           </Box>   
         </Box>
-      </Paper>
-    </Fragment>
-  </div>
+  </>
   );
 };
 
