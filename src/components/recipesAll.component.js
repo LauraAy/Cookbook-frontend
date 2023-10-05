@@ -86,7 +86,7 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
   <>
     {searchActive ? (
     <>
-      <Box p="10" pt="3" spacing={2}>
+      <Box sx={{ p: 2 }}>
         <Typography variant="h4">{selectedRecipe.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
           Click to view full recipe.
@@ -125,14 +125,11 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
     </>
     ):(
     <>
-      <Box p="10" pt="3" spacing={2}></Box>
+      <Box sx={{ p: 2 }}>
         <Typography variant="h4" gutterBottom>
           All Recipes
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          Search Recipes By Title
-        </Typography>
-        <Box m={4} sx={{ display: 'flex' }}>
+        <Box m={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -203,9 +200,10 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>
         </Box>
-      </>
-      )}
+      </Box>
     </>
+    )}
+  </>
   )
 }
 

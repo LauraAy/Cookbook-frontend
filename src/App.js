@@ -31,27 +31,32 @@ import Test from "./components/test.js"
     typography: {
       h1: {
         fontFamily:"RachelBrown",
+        color: green[800]
       },
       h2: {
-        fontFamily:"RachelBrown"
+        fontFamily:"RachelBrown",
+        color: green[900]
       },
       h3: {
-        fontFamily:"RachelBrown"
+        fontFamily:"RachelBrown",
+        color: green[900]
       },
       h4: {
         fontFamily:"RachelBrown",
-        color: green[800]
+        color: green[900]
       },
       h5: {
-        fontFamily:"RachelBrown"
+        fontFamily:"RachelBrown",
+        color: green[900]
       },
       h6: {
-        fontFamily:"RachelBrown"
+        fontFamily:"RachelBrown",
+        color: green[900]
       },
     },
     palette: {
       primary: {
-        main: green[800],
+        main: green[900],
       },
       secondary: {
         main: blue[500],
