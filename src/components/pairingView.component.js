@@ -102,22 +102,6 @@ const PairingViewComponent = params => {
 
   }, [recipeOneId, recipeTwoId, recipeThreeId]);
 
-    // useEffect(() => {
-    //   if (recipeTwoId) {
-    //     getRecipeOne(recipeTwoId)
-    //   } else {
-    //     console.log("not there")
-    //   }
-    //   }, [recipeTwoId]);
-
-    //   useEffect(() => {
-    //     if (recipeThreeId) {
-    //       getRecipeOne(recipeThreeId)
-    //     } else {
-    //       console.log("not there")
-    //     }
-    //     }, [recipeThreeId]);
-
   //navigation functions
   const goAddPairing = () => {
     navigate("/pairings/add/" + id)
@@ -229,7 +213,7 @@ const PairingViewComponent = params => {
                   <strong>Related Recipe 1: </strong>
                   {recipeOne.title}
                   <Button
-                   onClick={recipeOneNav}
+                    onClick={recipeOneNav}
                   >
                     View Recipe
                   </Button>
@@ -241,6 +225,11 @@ const PairingViewComponent = params => {
                 <>
                   <strong>Related Recipe 2: </strong>
                   {recipeTwo.title}
+                  <Button
+                    onClick={recipeTwoNav}
+                  >
+                    View Recipe
+                  </Button>
                 </>
                 )}
               </Typography>
@@ -249,6 +238,11 @@ const PairingViewComponent = params => {
                 <>
                   <strong>Related Recipe 3: </strong>
                   {recipeThree.title}
+                  <Button
+                    onClick={recipeThreeNav}
+                  >
+                    View Recipe
+                  </Button>
                 </>
                 )}
               </Typography>
@@ -298,123 +292,5 @@ const PairingViewComponent = params => {
   </>
   )
 }
-    
- 
-
-//       <div>
-//         {pairing.length ? (
-//           <div >
-//             {/* <button onClick={(getRecipes)}>TEST</button> */}
-//             <h2> {pairing.pairingName} </h2>
-//             {pairing.description && (
-//               <div>
-//                 <label>
-//                   <strong>Description:</strong>
-//                 </label>{" "}
-//                 {pairing.description}
-//               </div>
-//             )}
-//             {pairing.drinks && (
-//               <div>
-// 								<label>
-//                   <strong>Drinks:</strong>
-//                 </label>{" "}
-// 								{pairing.drinks}
-//               </div>
-//             )}
-// 						{pairing.shows && (
-//               <div>
-//                 <label>
-//                   <strong>Shows:</strong>
-//                 </label>{" "}
-//                 {pairing.shows}
-//               </div>
-//             )}
-// 						{pairing.books && (
-//               <div>
-//                 <label>
-//                   <strong>Books:</strong>
-//                 </label>{" "}
-//                 {pairing.books}
-//               </div>
-//             )}
-// 						{pairing.music && (
-//               <div>
-//                 <label>
-//                   <strong>Music:</strong>
-//                 </label>{" "}
-//                 {pairing.music}
-//               </div>
-//             )}
-// 						{pairing.decor && (
-//               <div>
-//                 <label>
-//                   <strong>Decor:</strong>
-//                 </label>{" "}
-//                 {pairing.decor}
-//               </div>
-//             )}
-// 						{pairing.recipeOne && (
-//               <div>
-//                 <label>
-//                   <strong>Related Recipe 1:</strong>
-//                 </label>{" "}
-//                  <Link to={"/recipes/" + recipeOne.id}>
-//                   {recipeOne.title}
-//                 </Link>
-//                 <br></br>
-//                 <br></br>
-//               </div>
-//             )}
-//             {pairing.recipeTwo && (
-//               <div>
-//                 <label>
-//                   <strong>Related Recipe 2:</strong>
-//                 </label>{" "}
-//                  <Link to={"/recipes/" + recipeTwo.id}>
-//                   {recipeTwo.title}
-//                 </Link>
-//                 <br></br>
-//                 <br></br>
-//               </div>
-//             )}
-//              {pairing.recipeThree && (
-//               <div>
-//                 <label>
-//                   <strong>Related Recipe 3:</strong>
-//                 </label>{" "}
-//                  <Link to={"/recipes/" + recipeThree.id}>
-//                   {recipeThree.title}
-//                 </Link>
-//                 <br></br>
-//                 <br></br>
-//               </div>
-//             )}
-//             	{pairing.more && (
-//               <div>
-//                 <label>
-//                   <strong>More:</strong>
-//                 </label>{" "}
-//                 {pairing.more}
-//               </div>
-//             )}
-//             <Link to={"/pairings/edit/" + currentRecipe.id + "/" + pairing.id}>
-// 							<button>Edit This Recipe Pairing</button>
-//             </Link>
-//             <br></br>
-//             <br></br>
-//             <button onClick={() => {removePairing(pairing.id)}}>Remove Pairing from This Recipe </button>
-//             <br></br>
-//             <br></br>
-// 					</div>
-//         ):(  
-//           <div> 
-//             <h2>Add a Pairing now!</h2>
-//             <button onClick={goAddPairing}>Add a recipe pairing.</button>
-//           </div>
-//         )}
-//       </div>
-//     </>
-// )}
 
 export default PairingViewComponent

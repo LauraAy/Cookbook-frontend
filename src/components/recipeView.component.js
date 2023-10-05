@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
 import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
 import parser from "html-react-parser";
+import WorldIconTest from '../images/worldIconTest.jpg'
 
 const RecipeViewComponent = props => {
   let navigate = useNavigate();
@@ -52,6 +53,14 @@ console.log(localStorage.getItem('ingredients'))
   return (
   <>
     <Box mx={4}>
+    <Box>
+        <img 
+          src={WorldIconTest} 
+          alt="picture of a world"
+          style={{ maxHeight: '100px' }}
+          sx={{align:'right'}}
+        />
+      </Box>
       <Typography variant="h5">{currentRecipe.title}</Typography>
       <Typography variant="body1"sx={{ m: 1 }}>
         {currentRecipe.recipeType && (

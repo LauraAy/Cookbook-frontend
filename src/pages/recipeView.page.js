@@ -7,6 +7,7 @@ import CreatorViewComponent from "../components/creatorView.component";
 import PairingViewComponent from "../components/pairingView.component";
 import { Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography} from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
+import WorldIconTest from '../images/worldIconTest.jpg'
 // import { makeStyles } from "@material-ui/core/styles";
 
 
@@ -147,7 +148,14 @@ const RecipeViewPage = params => {
       <AccordionSummary
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
-        id="panel1a-header"   
+        id="panel1a-header"  
+        sx={{
+          mb: 1,
+          border: '5px solid darkGreen',
+          borderRadius: '5px',
+          color: 'darkGreen',
+          backgroundColor: ''
+        }}
       >
         <Typography variant="h5" align="center" sx={{width: '100%'}} >Full Recipe</Typography>
       </AccordionSummary>
@@ -160,6 +168,13 @@ const RecipeViewPage = params => {
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        sx={{
+          mb: 1,
+          border: '5px solid darkBlue',
+          borderRadius: '5px',
+          color: 'darkBlue',
+          backgroundColor: ''
+        }}
       >
         <Typography variant="h5" align="center" sx={{width: '100%'}}>Region Details</Typography>
       </AccordionSummary>
@@ -172,6 +187,13 @@ const RecipeViewPage = params => {
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        sx={{
+          mb: 1,
+          border: '5px solid purple',
+          borderRadius: '5px',
+          color: 'purple',
+          backgroundColor: ''
+        }}
       >
         <Typography variant="h5" align="center" sx={{width: '100%'}} >Recipe Creator Details</Typography>
       </AccordionSummary>
@@ -184,12 +206,11 @@ const RecipeViewPage = params => {
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-
         sx={{
-          border: '3px solid purple',
+          border: '5px solid darkRed',
           borderRadius: '5px',
-          color: 'purple',
-          backgroundColor: '#F5F3C7'
+          color: 'darkRed',
+          backgroundColor: ''
         }}
       >
         <Typography variant="h5" align="center" sx={{width: '100%'}}>Recipe Pairing Details</Typography>
