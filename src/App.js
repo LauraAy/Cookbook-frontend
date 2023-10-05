@@ -3,9 +3,8 @@ import { Routes, Route, Link } from "react-router-dom";
 // import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
 // Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./App.css"
-// import AuthService from "./services/auth.service";
+import {createTheme, colors, ThemeProvider} from '@mui/material';
+import { red, purple, blue, green } from '@mui/material/colors';
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
@@ -27,10 +26,47 @@ import PairingEdit from "./pages/pairingEdit.page.js"
 
 import Test from "./components/test.js"
 
+
+  const theme = createTheme({
+    typography: {
+      h1: {
+        fontFamily:"RachelBrown",
+      },
+      h2: {
+        fontFamily:"RachelBrown"
+      },
+      h3: {
+        fontFamily:"RachelBrown"
+      },
+      h4: {
+        fontFamily:"RachelBrown",
+        color: green[800]
+      },
+      h5: {
+        fontFamily:"RachelBrown"
+      },
+      h6: {
+        fontFamily:"RachelBrown"
+      },
+    },
+    palette: {
+      primary: {
+        main: green[800],
+      },
+      secondary: {
+        main: blue[500],
+      },
+      creator: {
+        main: purple[600]
+      }
+    },
+  });
+
+
 const App = () => {
- 
 
   return (
+  <ThemeProvider theme={theme}>
     <>
     <NavbarComponent />
       
@@ -65,6 +101,7 @@ const App = () => {
    
       </div>
     </>
+    </ThemeProvider>
     );
   }
 

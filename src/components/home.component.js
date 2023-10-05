@@ -1,32 +1,42 @@
 import React, { useState, useEffect } from "react";
-
+import {Box, Typography} from '@mui/material';
 import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 
 const HomeComponent = () => {
-  // const [content, setContent] = useState("");
+  const [currentUser, setCurrentUser] = useState(undefined);
 
-  // useEffect(() => {
-  //   UserService.getPublicContent().then(
-  //     (response) => {
-  //       setContent(response.data);
-  //     },
-  //     (error) => {
-  //       const _content =
-  //         (error.response && error.response.data) ||
-  //         error.message ||
-  //         error.toString();
-
-  //       setContent(_content);
-  //     }
-  //   );
-  // }, []);
+  useEffect(() => {
+		const user = AuthService.getCurrentUser();
+		if (user) {
+			setCurrentUser(user);
+			console.log(user)
+			console.log(user.username)
+		    // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+		    // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+		}
+	}, []);
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>Welcome to Your World Cookbook</h3>
-      </header>
-    </div>
+  <>
+    { currentUser ? (
+    <>
+      <Box align='center' mt={2}>
+        <Typography variant='h2' color='primary.main'>
+          Welcome to Your World Cookbook
+        </Typography>
+      </Box>
+    </>
+    ):(
+    <>
+      <Box align='center' mt={2}>
+        <Typography variant='h2' color='primary.main'>
+          Welcome to Your World Cookbook!
+        </Typography>
+      </Box>
+    </>
+    )}
+  </>  
   );
 };
 
