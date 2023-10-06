@@ -62,10 +62,10 @@ import Test from "./components/test.js"
         main: blue[900],
       },
       creator: {
-        main: purple[600]
+        main: purple[900]
       },
       pairing: {
-        main: red[900]
+        main: 'darkRed'
       }
     },
   });

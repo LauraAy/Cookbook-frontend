@@ -4,12 +4,24 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Button, FormControl, Grid, Item, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, FormControl, Grid, Item, Stack, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { red, pink, purple, blue, green } from '@mui/material/colors';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
 import { NavItem } from "react-bootstrap";
+
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    color: blue[900],
+    border: '5px solid',
+  }
+}
 
 const RegionAddComponent = () => { 
 const { id } = useParams();
@@ -154,7 +166,7 @@ useEffect(() => {
     <>
       {currentRegion? (
       <>
-        <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+        <Box style={styles.borderBox}>
           <Typography variant="h4">
             Selected Region
           </Typography>
@@ -200,7 +212,7 @@ useEffect(() => {
             </Button>
           </Box>
         </Box>
-        <Box mr={'10%'} ml={'10%'}>
+        <Box style={styles.borderBox}>
           <Typography variant="h6">Or select a different country from the dropdown.</Typography>
           <Autocomplete
             fullWidth
@@ -226,7 +238,8 @@ useEffect(() => {
       </>
       ): (
       <>
-        <Box mr={'10%'} ml={'10%'} mt={2}>
+        <Typography variant="h4" color="secondary.main">Add a new region</Typography>
+        <Box style={styles.borderBox}>
           <Typography variant="h6">Please select a country from the dropdown.</Typography>
           <Autocomplete
             fullWidth

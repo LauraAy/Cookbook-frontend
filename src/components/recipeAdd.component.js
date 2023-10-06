@@ -3,14 +3,26 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import { Paper, Box, Button, Card, FormControl, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { green } from '@mui/material/colors';
 import RecipeDataService from "../services/recipe.service";
 import AuthService from "../services/auth.service.js";
 import IngredientTipTap from "./TiptapIngredientsAdd"
 import DirectionsTipTap from "./TiptapDirectionsAdd"
 
 const filter = createFilterOptions();
+
+const styles = {
+  card: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    color: green[900],
+    border: '5px solid',
+  }
+}
 
 const RecipeAddComponent = () => { 
   const currentUser = AuthService.getCurrentUser();
@@ -162,7 +174,7 @@ const newRecipe = () => {
   <>
     {submitted ? (
     <>
-    <Paper>
+     <Card style={styles.card}>
       <Typography variant="h4">Recipe Created!</Typography>
         <Box mx={4} mt={2} mb={4}>
           <Typography variant="body1" sx={{ m: 1 }} ><strong>Title: </strong>{recipe.title}</Typography>
@@ -175,14 +187,14 @@ const newRecipe = () => {
         <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
         <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
         <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
-      </Paper>
+      </Card>
       </>
       ):(
       <> 
-        <Typography variant="h6" align="center" margin="dense">
+        <Typography variant="h4" align="center" margin="dense">
           Create a New Recipe
         </Typography>
-        <Box sx={{ ml: "10%", mr: "10%" }}>
+        <Card style={styles.card}>
           <FormControl fullWidth>
             <TextField
               sx={{ mt: 2, mb: 2 }}
@@ -214,8 +226,8 @@ const newRecipe = () => {
             rows={2}
             {...register('description')}
           />
-        <Autocomplete
-          openOnFocus
+          <Autocomplete
+            openOnFocus
             value={value}
             defaultValue=""
             {...register('recipeType')}
@@ -343,7 +355,7 @@ const newRecipe = () => {
               Create Recipe
             </Button>
           </Box>
-        </Box>
+        </Card>
       </>
       )}
     </>

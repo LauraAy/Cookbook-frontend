@@ -128,8 +128,6 @@ const RecipeViewPage = params => {
               </>
             </>
             )}
-           
-          
           </>
           )}
         </>
@@ -153,7 +151,7 @@ const RecipeViewPage = params => {
           mb: 1,
           border: '5px solid darkGreen',
           borderRadius: '5px',
-          color: 'darkGreen',
+          color: 'primary',
           backgroundColor: ''
         }}
       >
@@ -170,13 +168,12 @@ const RecipeViewPage = params => {
         id="panel1a-header"
         sx={{
           mb: 1,
-          border: '5px solid darkBlue',
+          border: '5px solid',
+          color: 'secondary.main',
           borderRadius: '5px',
-          color: 'darkBlue',
-          backgroundColor: ''
         }}
       >
-        <Typography variant="h5" align="center" sx={{width: '100%'}}>Region Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%', color: 'secondary.main'}}>Region Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <RegionViewComponent />
@@ -189,13 +186,13 @@ const RecipeViewPage = params => {
         id="panel1a-header"
         sx={{
           mb: 1,
-          border: '5px solid purple',
+          border: '5px solid',
           borderRadius: '5px',
-          color: 'purple',
+          color: 'creator.main',
           backgroundColor: ''
         }}
       >
-        <Typography variant="h5" align="center" sx={{width: '100%'}} >Recipe Creator Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%', color: 'creator.main'}} >Recipe Creator Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <CreatorViewComponent />
@@ -209,11 +206,11 @@ const RecipeViewPage = params => {
         sx={{
           border: '5px solid darkRed',
           borderRadius: '5px',
-          color: 'darkRed',
+          color: 'pairing.main',
           backgroundColor: ''
         }}
       >
-        <Typography variant="h5" align="center" sx={{width: '100%'}}>Recipe Pairing Details</Typography>
+        <Typography variant="h5" align="center" sx={{width: '100%', color: 'pairing.main'}}>Recipe Pairing Details</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <PairingViewComponent />
