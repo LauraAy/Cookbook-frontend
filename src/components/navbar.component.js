@@ -32,7 +32,7 @@ const NavbarComponent = () => {
 	]
 
 	const loginPages = [
-		{name: 'Register', link: '/register'},
+		{name: 'Sign Up', link: '/register'},
 		{name: 'Sign In', link: '/login'}
 	]
 
@@ -189,7 +189,7 @@ const NavbarComponent = () => {
 									</Link>
                 </MenuItem>
 								<MenuItem onClick={handleCloseUserMenu}>
-									<a href={`/logout`} className="navbar-brand" onClick={logOut}>
+									<a href={`/`} className="navbar-brand" onClick={logOut}>
 										<Typography textAlign="center">Sign Out</Typography>
 									</a>
                 </MenuItem>
