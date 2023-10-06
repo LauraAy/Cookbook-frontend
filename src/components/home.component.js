@@ -162,8 +162,10 @@ const HomeComponent = () => {
 
     <Card style={styles.regionCard} >
       <Typography variant='h6' sx={{color: 'secondary.main'}}>
-        A project rooted in collaboration. 
-        *Button to learn more about the project*
+        Rooted in collaboration. 
+        Read about how Your World Cookbook started with a group of friends separated by hundreds of miles during 
+        the pandemic.
+        *Animated about button to learn more about the project*
       </Typography>
     </Card>
 
