@@ -167,7 +167,7 @@ useEffect(() => {
       {currentRegion? (
       <>
         <Box style={styles.borderBox}>
-          <Typography variant="h4">
+          <Typography variant="h5" sx={{ color: "secondary.main"}}>
             Selected Region
           </Typography>
           <Box>

@@ -9,6 +9,16 @@ import CreatorDataService from "../services/creator.service";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
 
+const styles = {
+	borderBox: {
+		position: 'relative',
+		textAlign: 'left', 
+		margin: '10px',
+		padding: '20px',
+		border: '5px solid #4a148c',
+	}
+}
+
 const filter = createFilterOptions();
 
 const CreatorAddComponent = () => { 
@@ -230,9 +240,9 @@ const CreatorAddComponent = () => {
       <Box m={2}>
         <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
       </Box>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newCreator}>Add Another Creator</Button>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="creator" onClick={newCreator}>Add Another Creator</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary" onClick={addRegion}>Add a Region</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="info" onClick={addPairing}>Add a Recipe Pairing</Button>
     </>
     ):(
     <>
@@ -248,10 +258,10 @@ const CreatorAddComponent = () => {
         </>      
         ):(
         <>
-          <Typography variant="h6" align="center" margin="dense">
-            Create a New Recipe Creator
+          <Typography variant="h4" color="creator.main" align="center" margin="dense">
+            Add a New Recipe Creator
           </Typography>
-          <Box sx={{ ml: "10%", mr: "10%" }}>
+          <Box style={styles.borderBox}>
             <FormControl fullWidth>
               <TextField
                 sx={{ mt: 2, mb: 2 }}
@@ -294,14 +304,11 @@ const CreatorAddComponent = () => {
               rows={2}
               {...register('link')}
             />
-            <Button onClick= {handleSubmit(onSubmit)}>
-              submit
-            </Button>
             <Box mt={3}>
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleSubmit(saveCreator)}
+                sx={{ m: 2, backgroundColor: 'creator.main', borderColor: 'creator.main', ":hover": { backgroundColor: 'creator.light'} }}
               >
                 Create Recipe Creator
               </Button>
@@ -314,26 +321,26 @@ const CreatorAddComponent = () => {
       <>
         { selected ? (
         <>
-          <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-            <Typography variant="h4">
+          <Box style={styles.borderBox}>
+            <Typography variant="h5" sx={{ color: "creator.main"}}>
               Selected Creator:
             </Typography>
             <Box mt={2}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {creator.creatorName}
               </Typography>
             </Box>
             <Box mt={1}>
               <Button
                 variant="contained"
-                color="primary"
+                sx={{ backgroundColor: 'creator.main', borderColor: 'creator.main', ":hover": { backgroundColor: 'creator.light'} }}
                 onClick={saveCreatorRecipe}
               >
-                Add Creator to {currentRecipe.title}
+                Add to {currentRecipe.title}
               </Button>
             </Box>
           </Box>
-          <Box mx={'10%'} my={6}>
+          <Box style={styles.borderBox}>
             <Typography variant="h6">Or select a different creator from the dropdown.</Typography>
             <Autocomplete
               mt={1}
@@ -360,7 +367,7 @@ const CreatorAddComponent = () => {
         </>
         ):(
         <>
-          <Box mr={'10%'} ml={'10%'} mt={2}>
+          <Box style={styles.borderBox}>
             <Typography variant="h6">Please select a recipe creator from the dropdown.</Typography>
             <Box mt={1}>
               <Autocomplete
@@ -385,10 +392,16 @@ const CreatorAddComponent = () => {
               />
             </Box>
           </Box>
-          <Box mr={'10%'} ml={'10%'} mt={6}>
-            <Typography variant="h6">Or create a new Recipe Creator.</Typography>
+          <Box style={styles.borderBox}>
+            <Typography variant="h6">Or add a new Recipe Creator.</Typography>
             <Box mt={1}>
-              <Button variant="contained" color="primary" onClick={goCreate}>New Creator</Button>
+              <Button 
+                variant="contained" 
+                onClick={goCreate}
+                sx={{ backgroundColor: 'creator.main', borderColor: 'creator.main', ":hover": { backgroundColor: 'creator.light'} }}
+              >
+                New Creator
+              </Button>
             </Box>
           </Box>
         </>

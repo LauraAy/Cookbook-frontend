@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 import { Box, Button, Divider, Grid, Tooltip, Typography, } from '@mui/material';
-import { Delete } from  '@mui/icons-material';
+import { Delete, WidthWideTwoTone } from  '@mui/icons-material';
 
 const CreatorViewComponent = params => {
   const { id } = useParams();
@@ -69,7 +69,13 @@ const CreatorViewComponent = params => {
     <>
       {creator.map((creator) => 
         <Box mt={2}>
-          <Typography variant="h6" mx={4}>{creator.creatorName}</Typography>
+          <Typography 
+            variant="h4" 
+            mx={4}
+            sx={{ color: "creator.main"}}
+          >
+            {creator.creatorName}
+          </Typography>
           <Box mx={4} mb={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={8}>
@@ -96,6 +102,7 @@ const CreatorViewComponent = params => {
                   <Button
                     onClick={() => {editCreator(creator.id)}}
                     variant="outlined"
+                    color="creator"
                     sx={{ my: 2 }}
                   >
                     Edit Creator
@@ -123,6 +130,7 @@ const CreatorViewComponent = params => {
         <Button 
           onClick={goAddCreator}
           variant="outlined"
+          color="creator"
           sx={{ m: 2 }}
         >
           Add Another Creator
@@ -131,15 +139,14 @@ const CreatorViewComponent = params => {
     </>
     ):(
     <>
-      <Typography variant="h6">Add a recipe creator for this recipe now!</Typography>
+      <Typography variant="h4" sx={{ color: "creator.main"}}>Add a creator for this recipe now!</Typography>
       <Typography variant="subtitle1">   Was this recipe passed down from a beloved family member or invented by a famous chef you admire?
        Add the names of the person or people who created your recipe, and record some information about them.</Typography>
       <Tooltip title="Add a creator to this recipe.">
         <Button 
           onClick={goAddCreator}
           variant="contained"
-          color="primary"
-          sx={{ m: 2 }}
+          sx={{ m: 2, backgroundColor: 'creator.main', borderColor: 'creator.main', ":hover": { backgroundColor: 'creator.light'} }}
         >
           Add Creator
         </Button>

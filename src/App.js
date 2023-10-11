@@ -4,7 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 // Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
 import {createTheme, colors, createColor, ThemeProvider} from '@mui/material';
-import { red, purple, blue, green, grey, pink, deepOrange } from '@mui/material/colors';
+import { red, purple, blue, green, grey, pink, orange } from '@mui/material/colors';
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
@@ -70,7 +70,11 @@ import { createLocalStorageManager } from "@chakra-ui/react";
       info: {
         main: '#890010'
       },
+      error: {
+        main: red[400]
+      },
       creator: {
+        light: purple[700],
         main: purple[900]
       },
       pairing: {

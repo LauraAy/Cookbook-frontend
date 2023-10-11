@@ -184,9 +184,9 @@ const newRecipe = () => {
           <Button variant="contained" onClick={goRecipe}>View Recipe</Button>
         </Box>
         <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newRecipe}>Add Another Recipe</Button>
-        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
-        <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
-        <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary" onClick={addRegion}>Add a Region</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" color="creator" onClick={addCreator}>Add a Recipe Creator</Button>
+        <Button sx={{my: 2, ml: 2}} variant="outlined" color="pairing" onClick={addPairing}>Add a Recipe Pairing</Button>
       </Card>
       </>
       ):(

@@ -155,7 +155,13 @@ const PairingViewComponent = params => {
     {pairing ? (
     <>
       <Box mt={2}>
-        <Typography variant="h4" mx={4}>{pairing.pairingName}</Typography>
+        <Typography 
+          variant="h4" 
+          mx={4}
+          sx={{color: "pairing.main"}}
+        >
+          {pairing.pairingName}
+        </Typography>
         <Box mx={4} mb={4}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8}>
@@ -276,7 +282,7 @@ const PairingViewComponent = params => {
     </>
     ):(
     <>
-      <Typography variant="h4">Add a pairing for this recipe now!</Typography>
+      <Typography variant="h4" sx={{color: "pairing.main"}}>Add a pairing for this recipe now!</Typography>
       <Typography variant="subtitle1"> Drinks? Music? Decor? Related recipes? Add ideas for all the things that will make your recipe the centerpiece 
         of the perfect meal experience. </Typography>
       <Tooltip title="Add a pairing to this recipe.">

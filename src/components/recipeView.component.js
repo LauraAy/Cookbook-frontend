@@ -55,15 +55,15 @@ console.log(localStorage.getItem('ingredients'))
     <Box mx={4}>
     <Box sx={{ display: 'inline-flex' }}>
     
-        <img 
+        {/* <img 
           src={WorldIconTest} 
           alt="picture of a world"
           style={{ maxHeight: '120px' }}
           sx={{align:'right'}}
-        />
+        /> */}
       
-      <Box m={2}>
-        <Typography variant="h2">{currentRecipe.title}</Typography>
+      <Box>
+        <Typography variant="h4">{currentRecipe.title}</Typography>
       </Box>
       </Box>
 

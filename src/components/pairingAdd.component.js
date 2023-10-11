@@ -8,6 +8,7 @@ import RecipeDataService from "../services/recipe.service";
 import PairingDataService from "../services/pairing.service";
 import { useParams, useNavigate } from 'react-router-dom';
 
+
 const styles = {
   borderBox: {
     position: 'relative',
@@ -298,214 +299,214 @@ const PairingAddComponent = () => {
 				</>
 				):(
 				<>
+					<Typography 
+						variant="h4" 
+						align="center" 
+						margin="dense"
+						sx={{ color: "pairing.main" }}
+					>
+						Create a New Recipe Pairing
+					</Typography>
 					<Box style={styles.borderBox}>
-						<Typography variant="h6" align="center" margin="dense">
-							Create a New Recipe Pairing
+						<FormControl fullWidth>
+							<TextField
+								sx={{ mt: 2, mb: 2 }}
+								required
+								id="pairingName"
+								name="pairingName"
+								label="Pairing Name"
+								placeholder="Pairing Name"
+								defaultValue=""
+								fullWidth
+								margin="dense"
+								{...register('pairingName')}
+								error={errors.pairingName ? true : false}
+							/>
+							<Typography variant="inherit" color="textSecondary">
+								{errors.pairingName?.message}
+							</Typography>
+						</FormControl>
+						<TextField
+							sx={{ mb: 2 }}
+							id="description"
+							defaultValue=""
+							name="description"
+							label="Description"
+							placeholder="Description"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('description')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="drinks"
+							defaultValue=""
+							name="drinks"
+							label="Drinks"
+							placeholder="Drinks"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('drinks')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="shows"
+							defaultValue=""
+							name="shows"
+							label="Shows"
+							placeholder="Shows"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('shows')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="books"
+							defaultValue=""
+							name="books"
+							label="Books"
+							placeholder="Books"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('books')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="games"
+							defaultValue=""
+							name="games"
+							label="Games"
+							placeholder="Games"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('games')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="music"
+							defaultValue=""
+							name="music"
+							label="Music"
+							placeholder="Music"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('music')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="decor"
+							defaultValue=""
+							name="decor"
+							label="Decor"
+							placeholder="Decor"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('decor')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="more"
+							defaultValue=""
+							name="more"
+							label="More"
+							placeholder="More"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('more')}
+						/>
+						<Typography variant= "h6">
+							Select a related recipe from the dropdown.
 						</Typography>
-						<Box sx={{ ml: "10%", mr: "10%" }}>
-							<FormControl fullWidth>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeOneChange}
+							id="recipeOne"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
 								<TextField
-									sx={{ mt: 2, mb: 2 }}
-									required
-									id="pairingName"
-									name="pairingName"
-									label="Pairing Name"
-									placeholder="Pairing Name"
-									defaultValue=""
-									fullWidth
-									margin="dense"
-									{...register('pairingName')}
-									error={errors.pairingName ? true : false}
+								{...option}
+									label="Related Recipe 1"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
 								/>
-								<Typography variant="inherit" color="textSecondary">
-									{errors.pairingName?.message}
-								</Typography>
-							</FormControl>
-							<TextField
-								sx={{ mb: 2 }}
-								id="description"
-								defaultValue=""
-								name="description"
-								label="Description"
-								placeholder="Description"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('description')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="drinks"
-								defaultValue=""
-								name="drinks"
-								label="Drinks"
-								placeholder="Drinks"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('drinks')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="shows"
-								defaultValue=""
-								name="shows"
-								label="Shows"
-								placeholder="Shows"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('shows')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="books"
-								defaultValue=""
-								name="books"
-								label="Books"
-								placeholder="Books"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('books')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="games"
-								defaultValue=""
-								name="games"
-								label="Games"
-								placeholder="Games"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('games')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="music"
-								defaultValue=""
-								name="music"
-								label="Music"
-								placeholder="Music"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('music')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="decor"
-								defaultValue=""
-								name="decor"
-								label="Decor"
-								placeholder="Decor"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('decor')}
-							/>
-							<TextField
-								sx={{ mb: 2 }}
-								id="more"
-								defaultValue=""
-								name="more"
-								label="More"
-								placeholder="More"
-								fullWidth
-								margin="dense"
-								multiline
-								rows={2}
-								{...register('more')}
-							/>
-							<Typography variant= "h6">
-								Select a related recipe from the dropdown.
-							</Typography>
-							<Autocomplete
-								sx={{ mb: 2 }}
-								fullWidth
-								disablePortal
-								disableClearable
-								onChange={handleRecipeOneChange}
-								id="recipeOne"
-								options={recipes.map((option, index) => option)}
-								getOptionLabel={(option) => option.title}
-								renderInput={(option) => (
-									<TextField
+							)}
+						/>
+						<Typography variant= "h6">
+							Select a second related recipe from the dropdown.
+						</Typography>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeTwoChange}
+							id="recipeTwo"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
+								<TextField
 									{...option}
-										label="Related Recipe 1"
-										InputProps={{
-											...option.InputProps,
-											type: 'search',
-										}}
-									/>
-								)}
-							/>
-							<Typography variant= "h6">
-								Select a second related recipe from the dropdown.
-							</Typography>
-							<Autocomplete
-								sx={{ mb: 2 }}
-								fullWidth
-								disablePortal
-								disableClearable
-								onChange={handleRecipeTwoChange}
-								id="recipeTwo"
-								options={recipes.map((option, index) => option)}
-								getOptionLabel={(option) => option.title}
-								renderInput={(option) => (
-									<TextField
-										{...option}
-										label="Related Recipe 2"
-										InputProps={{
-											...option.InputProps,
-											type: 'search',
-										}}
-									/>
-								)}
-							/>
-							<Typography variant= "h6">
-								Select a third related recipe from the dropdown.
-							</Typography>
-							<Autocomplete
-								sx={{ mb: 2 }}
-								fullWidth
-								disablePortal
-								disableClearable
-								onChange={handleRecipeThreeChange}
-								id="recipeThree"
-								options={recipes.map((option, index) => option)}
-								getOptionLabel={(option) => option.title}
-								renderInput={(option) => (
-									<TextField
-										{...option}
-										label="Recipe Pairing"
-										InputProps={{
-											...option.InputProps,
-											type: 'search',
-										}}
-									/>
-								)}
-							/>
-							<Button onClick= {handleSubmit(onSubmit)}>
-								submit
+									label="Related Recipe 2"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+								/>
+							)}
+						/>
+						<Typography variant= "h6">
+							Select a third related recipe from the dropdown.
+						</Typography>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeThreeChange}
+							id="recipeThree"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
+								<TextField
+									{...option}
+									label="Recipe Pairing"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+								/>
+							)}
+						/>
+						<Box mt={3}>
+							<Button
+								variant="contained"
+								color="info"
+								onClick={handleSubmit(savePairing)}
+							>
+								Create Recipe Pairing
 							</Button>
-							<Box mt={3}>
-								<Button
-									variant="contained"
-									color="info"
-									onClick={handleSubmit(savePairing)}
-								>
-									Create Recipe Pairing
-								</Button>
-							</Box>
 						</Box>
 					</Box>
 				</>
@@ -516,59 +517,54 @@ const PairingAddComponent = () => {
 				{ selected ? (
 				<>
 					<Box style={styles.borderBox}>
-						<Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-							<Typography variant="h4">
-								Selected Creator:
+						<Typography variant="h5" sx={{color: "pairing.main"}}>
+							Selected Pairing:
+						</Typography>
+						<Box mt={2}>
+							<Typography variant="body1"  >
+								{pairing.pairingName}
 							</Typography>
-							<Box mt={2}>
-								<Typography variant="h5">
-									{pairing.pairingName}
-								</Typography>
-							</Box>
-							<Box mt={1}>
-								<Button
-									variant="contained"
-									color="info"
-									onClick={savePairingRecipe}
-								>
-									Add Pairing to {currentRecipe.title}
-								</Button>
-							</Box>
+						</Box>
+						<Box mt={1}>
+							<Button
+								variant="contained"
+								color="info"
+								onClick={savePairingRecipe}
+							>
+								Add to {currentRecipe.title}
+							</Button>
 						</Box>
 					</Box>
 					<Box style={styles.borderBox}>
-						<Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-							<Typography variant="h6">
-								Or select a different pairing from the dropdown.
-							</Typography>
-							<Autocomplete
-								mt={1}
-								fullWidth
-								disablePortal
-								disableClearable
-								onChange={handlePairingChange}
-								id="pairing"
-								options={pairingOptions.map((option) => option)}
-								getOptionLabel={(option) => option.pairingName}
-								renderInput={(option) => (
-									<TextField
-										{...option}
-										label="Recipe Pairing"
-										InputProps={{
-											...option.InputProps,
-											type: 'search',
-										}}
-										{...register('pairing')}
-									/>
-								)}
-							/>
-						</Box>
+						<Typography variant="h6">
+							Or select a different pairing from the dropdown.
+						</Typography>
+						<Autocomplete
+							mt={1}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handlePairingChange}
+							id="pairing"
+							options={pairingOptions.map((option) => option)}
+							getOptionLabel={(option) => option.pairingName}
+							renderInput={(option) => (
+								<TextField
+									{...option}
+									label="Recipe Pairing"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+									{...register('pairing')}
+								/>
+							)}
+						/>
 					</Box>
 				</>
         ):(
 				<>
-				 <Box style={styles.borderBox}>
-          <Box mr={'10%'} ml={'10%'} mt={2}>
+					<Box style={styles.borderBox}>
             <Typography variant="h6">Please select a recipe pairing from the dropdown.</Typography>
             <Box mt={1}>
               <Autocomplete
@@ -592,15 +588,12 @@ const PairingAddComponent = () => {
                 )}
               />
             </Box>
-          </Box>
 					</Box>
 					<Box style={styles.borderBox}>
-          {/* <Box mr={'10%'} ml={'10%'} mt={6}> */}
             <Typography variant="h6">Or create a new Pairing.</Typography>
             <Box mt={1}>
               <Button variant="contained" color="info" onClick={goCreate}>New Pairing</Button>
             </Box>
-          {/* </Box> */}
 					</Box>
         </>
         )}

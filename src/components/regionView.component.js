@@ -60,7 +60,13 @@ const RegionViewComponent = params => {
     <>
       {region.map((region) => 
       <Box mt={2}>
-        <Typography variant="h4" mx={4}>{region.country}</Typography>
+        <Typography 
+          variant="h4" 
+          mx={4} 
+          sx={{ color: "secondary.main" }}
+        >
+          {region.country}
+        </Typography>
         <Box mx={4} mb={4}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8}>
@@ -143,11 +149,11 @@ const RegionViewComponent = params => {
     </>
     ):(
     <>
-      <Typography variant="h4">Add a region for this recipe now!</Typography>
+      <Typography variant="h4" sx={{ color: "secondary.main"}}>Add a region for this recipe now!</Typography>
       <Tooltip title="Add a region to this recipe.">
-      <Typography variant="subtitle1">
-      Is this recipe from the place your family comes from? A place you love to visit or dream of traveling too?
-        Add the countries and regions your recipe comes from to help track where your favorite foods originate. 
+        <Typography variant="subtitle1">
+          Is this recipe from the place your family comes from? A place you love to visit or dream of traveling too?
+          Add the countries and regions your recipe comes from to help track where your favorite foods originate. 
        </Typography>
         <Button 
           onClick={goAddRegion}
