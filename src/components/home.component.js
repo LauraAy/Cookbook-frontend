@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Box, Button, Card, CardMedia, Container, ListItemSecondaryAction, Typography} from '@mui/material';
+import {Box, Button, Card, CardMedia, Container, Divider, Grid, ListItemSecondaryAction, Typography} from '@mui/material';
 import AuthService from "../services/auth.service";
 import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
@@ -34,18 +34,28 @@ const HomeComponent = () => {
       height: 0,
       paddingTop: '80%' // 16:9
     },
-    card: {
+    topCard: {
       position: 'relative',
       textAlign: 'center', 
       margin: '10px'
+
+    },
+    card: {
+      position: 'relative',
+      textAlign: 'center', 
+      marginTop: '30px',
+      marginLeft: '10px',
+      marginRight: '10px',
     },
     textCard: {
       position: 'relative',
       textAlign: 'left', 
-      margin: '10px',
       padding: '20px',
       fontStyle: 'italic',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      marginTop: '30px',
+      marginLeft: '10px',
+      marginRight: '10px',
     },
     regionCard: {
       position: 'relative',
@@ -61,7 +71,6 @@ const HomeComponent = () => {
       textAlign: 'left', 
       margin: '10px',
       padding: '20px',
-      // fontStyle: 'italic',
       fontWeight: 'bold',
       color: purple[900],
       border: '5px solid #4527a0',
@@ -72,11 +81,20 @@ const HomeComponent = () => {
       textAlign: 'left', 
       margin: '10px',
       padding: '20px',
-      // fontStyle: 'italic',
       fontWeight: 'bold',
       color: 'darkRed',
       border: '5px solid darkRed',
-      // borderColor: #b71c1c
+    },
+    aboutCard: {
+      position: 'relative',
+      textAlign: 'left', 
+      marginTop: '30px',
+      marginLeft: '10px',
+      marginRight: '10px',
+      padding: '20px',
+      fontWeight: 'bold',
+      color: '#ffffff',
+      backgroundColor: green[900]
     },
     overlay: {
       position: 'absolute',
@@ -101,7 +119,7 @@ const HomeComponent = () => {
   <>
     { currentUser ? (
     <>
-    <Card style={styles.card}>
+    <Card style={styles.topCard}>
       <CardMedia image={cuttingBoard} alt="A cutting board with veggies and other food prep."style={styles.media}/> 
       <Typography variant='h3' color='primary.main' style={styles.overlay} sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }}}>
         Welcome to Your World CookBook {currentUser.username}
@@ -114,7 +132,10 @@ const HomeComponent = () => {
       </Typography>
     </Card>
     <Box style={styles.card}>
-    <Typography variant='h4' sx={{textAlign: 'center'}}>
+    <Typography variant='h4' sx={{ display: { xs: 'none', sm: 'block'}, textAlign: 'center'}}>
+      Add a new recipe now!
+    </Typography>
+    <Typography  variant='h5' sx={{  display: { xs: 'block', sm: 'none'}, textAlign: 'center'}}>
       Add a new recipe now!
     </Typography>
     <Button variant='contained' sx={{align: 'center', mt: '5px'}}>
@@ -122,67 +143,82 @@ const HomeComponent = () => {
     </Button>
     </Box>
     <Card style={styles.textCard} >
-      <Typography variant='h5' sx={{ color: 'secondary.main', display: { xs: 'none', sm: 'none', md: 'flex' }}}>
+      <Typography variant='h5' sx={{ color: 'greyQuote.main', display: { xs: 'none', sm: 'none', md: 'flex' }}}>
         When you make food you are connecting with the personal world of your home, the local world of the community of
         friends and family who will share your food, and the larger world of recipes invented in kitchens in different 
         countries across the globe. 
       </Typography>
-      <Typography variant='h6' sx={{ color: 'secondary.main', display: { sm: 'flex', md: 'none' }}}>
+      <Typography variant='h6' sx={{ color: 'greyQuote.main', display: { sm: 'flex', md: 'none' }}}>
         When you make food you are connecting with the personal world of your home, the local world of the community of
         friends and family who will share your food, and the larger world of recipes invented in kitchens in different 
         countries across the globe. 
       </Typography>
     </Card>
 
-    <Box style={styles.card}>
-      <Typography variant='h4'> 
-        Add Context to Your Recipes
+    <Box style={styles.card} >
+      <Typography variant='h5'> 
+        Your World Cookbook allows you to add context to your recipes.
       </Typography>
     </Box>
-
-    <Card style={styles.regionCard} >
-      <Typography variant='h6' sx={{color: 'secondary.main'}}>
-        Is this recipe from the place your family comes from? A place you love to visit or dream of traveling too?
-        Add the countries and regions your recipe comes from to help track where your favorite foods originate. 
+    <Grid container spacing={1}>
+      <Grid item xs={12} md={4}>
+        <Box style={styles.regionCard} >
+          <Typography variant='h6' sx={{color: 'secondary.main'}}>
+            Where in the world is this recipe from? Add the region or 
+            regions where it originated.
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <Box style={styles.creatorCard} >
+          <Typography variant='h6' sx={{color: 'creator.main'}}>
+            Who is the genius behind this recipe? Add the person who created it.
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <Box style={styles.pairingCard}>
+          <Typography variant='h6' sx={{color: 'pairing.main'}}>
+            What are the perfect pairings for this recipe? Add music, games, drinks or more to pair with this dish.
+          </Typography>
+        </Box>
+      </Grid>
+    </Grid>
+    <Card style={styles.aboutCard} >
+      <Typography variant='h5' sx={{color: 'white', backgroundColor: 'primary.main', fontStyle: 'italic'}}>
+        Rooted in Collaboration
       </Typography>
-    </Card>
-
-    <Card style={styles.creatorCard} >
-      <Typography variant='h6' sx={{color: 'creator.main'}}>
-        Was this recipe passed down from a beloved family member or invented by a famous chef you admire?
-       Add the names of the people who created your recipe, and record some information about them. 
-      </Typography>
-    </Card>
-    <Card style={styles.pairingCard} >
-      <Typography variant='h6' sx={{color: 'pairing.main'}}>
-        Drinks? Music? Decor? Related recipes? Add ideas for all the things that will make your recipe the centerpiece 
-        of the perfect meal experience. 
-      </Typography>
-    </Card>
-
-    <Card style={styles.regionCard} >
-      <Typography variant='h6' sx={{color: 'secondary.main'}}>
-        Rooted in collaboration. 
-        Read about how Your World Cookbook started with a group of friends separated by hundreds of miles during 
-        the pandemic.
+      <Divider color='white'></Divider>
+      <Typography variant='h6' sx={{color: 'white', backgroundColor: 'primary.main', marginTop:'5px'}}>
+        Your World Cookbook started with a group of friends separated by hundreds of miles during 
+        the pandemic who came together for virtual cooking experiences to try recipes from around the world.
         *Animated about button to learn more about the project*
       </Typography>
     </Card>
 
     <Card style={styles.textCard} >
-      <Typography variant='h5' sx={{ color: 'secondary.main', display: { xs: 'none', sm: 'none', md: 'flex' }}}>
+      <Typography variant='h5' sx={{ color: 'greyQuote.main', display: { xs: 'none', sm: 'none', md: 'flex' }}}>
         Whether it's a recipe you found on the internet or a treasured family meal passed down through 
         generations, Your World Cookbook is the the place to record the recipes that are a part of your own cooking world
         while also recording the people and places they come from. 
       </Typography>
-      <Typography variant='h6' sx={{ color: 'secondary.main', display: { sm: 'flex', md: 'none' }}}>
+      <Typography variant='h6' sx={{ color: 'greyQuote.main', display: { sm: 'flex', md: 'none' }}}>
         Whether it's a recipe you found on the internet or a treasured family meal passed down through 
         generations, Your World Cookbook is the the place to record the recipes that are a part of your own cooking world
         while also recording the people and places they come from. 
       </Typography>
     </Card>
-
-  
+    <Box style={styles.card}>
+      <Typography variant='h4' sx={{ display: { xs: 'none', sm: 'block'}, textAlign: 'center'}}>
+        Get started adding recipes now!
+      </Typography>
+      <Typography  variant='h5' sx={{  display: { xs: 'block', sm: 'none'}, textAlign: 'center'}}>
+        Get started adding recipes now!
+      </Typography>
+      <Button variant='contained' sx={{align: 'center', mt: '5px'}}>
+        Add New Recipe
+      </Button>
+    </Box>
     </>
     ):(
     <>

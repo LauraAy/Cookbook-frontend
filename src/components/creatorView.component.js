@@ -132,8 +132,8 @@ const CreatorViewComponent = params => {
     ):(
     <>
       <Typography variant="h6">Add a recipe creator for this recipe now!</Typography>
-      <Typography variant="subtitle1">Who is the genius behind this recipe? Add the name of 
-      the person who created it and some info about them.</Typography>
+      <Typography variant="subtitle1">   Was this recipe passed down from a beloved family member or invented by a famous chef you admire?
+       Add the names of the person or people who created your recipe, and record some information about them.</Typography>
       <Tooltip title="Add a creator to this recipe.">
         <Button 
           onClick={goAddCreator}

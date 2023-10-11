@@ -8,6 +8,16 @@ import RecipeDataService from "../services/recipe.service";
 import PairingDataService from "../services/pairing.service";
 import { useParams, useNavigate } from 'react-router-dom';
 
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    border: '5px solid #890010',
+  }
+}
+
 const filter = createFilterOptions();
 
 const PairingAddComponent = () => { 
@@ -262,33 +272,33 @@ const PairingAddComponent = () => {
   }
 
 	return(
+	<>
+		{ added ? (
 		<>
-			{ added ? (
+			<Box m={2}>
+				<Typography variant="h4">You've added {pairing.pairingName} to {currentRecipe.title}</Typography>
+			</Box>
+			<Box m={2}>
+				<Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
+			</Box>
+			<Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary"  onClick={addRegion}>Add a Region</Button>
+			<Button sx={{my: 2, ml: 2}} variant="outlined" color="creator" onClick={addCreator}>Add a Recipe Creator</Button>
+		</>
+		):(
+		<>
+			{ createNew ? (
 			<>
-				<Box m={2}>
-					<Typography variant="h4">You've added {pairing.pairingName} to {currentRecipe.title}</Typography>
-				</Box>
-				<Box m={2}>
-					<Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
-				</Box>
-				<Button sx={{my: 2, ml: 2}} variant="outlined" onClick={newPairing}>Add Another Creator</Button>
-				<Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addRegion}>Add a Region</Button>
-				<Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addCreator}>Add a Recipe Pairing</Button>
-			</>
-			):(
-			<>
-				{ createNew ? (
+				{submitted ? (
 				<>
-					{submitted ? (
-					<>
-						<Typography variant="h4">You've created {pairing.pairingName}</Typography>
-						<Typography variant="h6">Add this pairing to {currentRecipe.title}.</Typography>
-						<Button sx={{my: 1, ml: 2}} variant="contained" color="primary" onClick={savePairingRecipe}>
-							Add
-						</Button>
-					</>
-					):(
-					<>
+					<Typography variant="h4">You've created {pairing.pairingName}</Typography>
+					<Typography variant="h6">Add this pairing to {currentRecipe.title}.</Typography>
+					<Button sx={{my: 1, ml: 2}} variant="contained" color="info" onClick={savePairingRecipe}>
+						Add
+					</Button>
+				</>
+				):(
+				<>
+					<Box style={styles.borderBox}>
 						<Typography variant="h6" align="center" margin="dense">
 							Create a New Recipe Pairing
 						</Typography>
@@ -429,7 +439,7 @@ const PairingAddComponent = () => {
 								getOptionLabel={(option) => option.title}
 								renderInput={(option) => (
 									<TextField
-										{...option}
+									{...option}
 										label="Related Recipe 1"
 										InputProps={{
 											...option.InputProps,
@@ -490,66 +500,74 @@ const PairingAddComponent = () => {
 							<Box mt={3}>
 								<Button
 									variant="contained"
-									color="primary"
+									color="info"
 									onClick={handleSubmit(savePairing)}
 								>
 									Create Recipe Pairing
 								</Button>
 							</Box>
 						</Box>
-					</>
-					)}
-					</>
-					):(
-					<>
-						{ selected ? (
-						<>
-							<Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-								<Typography variant="h4">
-									Selected Creator:
+					</Box>
+				</>
+				)}
+			</>
+			):(
+			<>
+				{ selected ? (
+				<>
+					<Box style={styles.borderBox}>
+						<Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+							<Typography variant="h4">
+								Selected Creator:
+							</Typography>
+							<Box mt={2}>
+								<Typography variant="h5">
+									{pairing.pairingName}
 								</Typography>
-								<Box mt={2}>
-									<Typography variant="h5">
-										{pairing.pairingName}
-									</Typography>
-								</Box>
-								<Box mt={1}>
-									<Button
-										variant="contained"
-										color="primary"
-										onClick={savePairingRecipe}
-									>
-										Add Pairing to {currentRecipe.title}
-									</Button>
-								</Box>
 							</Box>
-							<Box mx={'10%'} my={6}>
-            <Typography variant="h6">Or select a different pairing from the dropdown.</Typography>
-            <Autocomplete
-              mt={1}
-              fullWidth
-              disablePortal
-              disableClearable
-              onChange={handlePairingChange}
-              id="pairing"
-              options={pairingOptions.map((option) => option)}
-              getOptionLabel={(option) => option.pairingName}
-              renderInput={(option) => (
-                <TextField
-                  {...option}
-                  label="Recipe Pairing"
-                  InputProps={{
-                  ...option.InputProps,
-                  type: 'search',
-                  }}
-                  {...register('pairing')}
-                />
-              )}
-            />
-          </Box>
-        </>
+							<Box mt={1}>
+								<Button
+									variant="contained"
+									color="info"
+									onClick={savePairingRecipe}
+								>
+									Add Pairing to {currentRecipe.title}
+								</Button>
+							</Box>
+						</Box>
+					</Box>
+					<Box style={styles.borderBox}>
+						<Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
+							<Typography variant="h6">
+								Or select a different pairing from the dropdown.
+							</Typography>
+							<Autocomplete
+								mt={1}
+								fullWidth
+								disablePortal
+								disableClearable
+								onChange={handlePairingChange}
+								id="pairing"
+								options={pairingOptions.map((option) => option)}
+								getOptionLabel={(option) => option.pairingName}
+								renderInput={(option) => (
+									<TextField
+										{...option}
+										label="Recipe Pairing"
+										InputProps={{
+											...option.InputProps,
+											type: 'search',
+										}}
+										{...register('pairing')}
+									/>
+								)}
+							/>
+						</Box>
+					</Box>
+				</>
         ):(
 				<>
+				 <Box style={styles.borderBox}>
           <Box mr={'10%'} ml={'10%'} mt={2}>
             <Typography variant="h6">Please select a recipe pairing from the dropdown.</Typography>
             <Box mt={1}>
@@ -575,12 +593,15 @@ const PairingAddComponent = () => {
               />
             </Box>
           </Box>
-          <Box mr={'10%'} ml={'10%'} mt={6}>
-            <Typography variant="h6">Or create a new Recipe Creator.</Typography>
+					</Box>
+					<Box style={styles.borderBox}>
+          {/* <Box mr={'10%'} ml={'10%'} mt={6}> */}
+            <Typography variant="h6">Or create a new Pairing.</Typography>
             <Box mt={1}>
-              <Button variant="contained" color="primary" onClick={goCreate}>New Pairing</Button>
+              <Button variant="contained" color="info" onClick={goCreate}>New Pairing</Button>
             </Box>
-          </Box>
+          {/* </Box> */}
+					</Box>
         </>
         )}
       </>

@@ -204,7 +204,7 @@ const RecipeViewPage = params => {
         aria-controls="panel1a-content"
         id="panel1a-header"
         sx={{
-          border: '5px solid darkRed',
+          border: '5px solid #890010',
           borderRadius: '5px',
           color: 'pairing.main',
           backgroundColor: ''

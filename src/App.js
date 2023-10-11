@@ -3,8 +3,8 @@ import { Routes, Route, Link } from "react-router-dom";
 // import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
 // Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
-import {createTheme, colors, ThemeProvider} from '@mui/material';
-import { red, purple, blue, green } from '@mui/material/colors';
+import {createTheme, colors, createColor, ThemeProvider} from '@mui/material';
+import { red, purple, blue, green, grey, pink, deepOrange } from '@mui/material/colors';
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
@@ -25,12 +25,14 @@ import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
 
 import Test from "./components/test.js"
+import { createLocalStorageManager } from "@chakra-ui/react";
 
 
   const theme = createTheme({
     typography: {
+      fontFamily: "Montserrat Variable",
       h1: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown",
         color: green[800]
       },
       h2: {
@@ -51,8 +53,12 @@ import Test from "./components/test.js"
       },
       h6: {
         fontFamily:"RachelBrown",
-        color: green[900]
+        color: grey[900]
       },
+      body1: {
+        fontSize: "1.1rem",
+        lineHeight: "1.5"
+      }
     },
     palette: {
       primary: {
@@ -61,11 +67,18 @@ import Test from "./components/test.js"
       secondary: {
         main: blue[900],
       },
+      info: {
+        main: '#890010'
+      },
       creator: {
         main: purple[900]
       },
       pairing: {
-        main: 'darkRed'
+        main: '#890010',
+        dark: '#890010'
+      },
+      greyQuote: {
+        main: grey[800]
       }
     },
   });

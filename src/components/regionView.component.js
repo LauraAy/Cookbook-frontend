@@ -60,11 +60,11 @@ const RegionViewComponent = params => {
     <>
       {region.map((region) => 
       <Box mt={2}>
-        <Typography variant="h6" mx={4}>{region.country}</Typography>
+        <Typography variant="h4" mx={4}>{region.country}</Typography>
         <Box mx={4} mb={4}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8}>
-              <Typography variant="body1"sx={{ m: 1 }}>
+              <Typography variant="body1" sx={{ m: 1 }}>
                 {region.regionName && (
                 <>
                   <strong>Region: </strong>
@@ -134,6 +134,7 @@ const RegionViewComponent = params => {
         <Button 
           onClick={goAddRegion}
           variant="outlined"
+          color="secondary"
           sx={{ m: 2 }}
         >
           Add Another Region
@@ -142,13 +143,16 @@ const RegionViewComponent = params => {
     </>
     ):(
     <>
-      <Typography variant="h6">Add a region for this recipe now!</Typography>
+      <Typography variant="h4">Add a region for this recipe now!</Typography>
       <Tooltip title="Add a region to this recipe.">
-      <Typography variant="subtitle1">Where in this world is this recipe from? Add the region or 
-      regions where this recipe originated.</Typography>
+      <Typography variant="subtitle1">
+      Is this recipe from the place your family comes from? A place you love to visit or dream of traveling too?
+        Add the countries and regions your recipe comes from to help track where your favorite foods originate. 
+       </Typography>
         <Button 
           onClick={goAddRegion}
           variant="contained"
+          color="secondary"
           sx={{ m: 2 }}
         >
           Add Region

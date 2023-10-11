@@ -18,8 +18,8 @@ const styles = {
     textAlign: 'left', 
     margin: '10px',
     padding: '20px',
-    color: blue[900],
-    border: '5px solid',
+    
+    border: '5px solid  #0d47a1',
   }
 }
 
@@ -153,14 +153,14 @@ useEffect(() => {
     { submitted ? (
     <>
       <Box m={2}>
-        <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
+        <Typography variant="h4" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
       </Box>
       <Box m={2}>
         <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
       </Box>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addAnotherRegion}>Add Another Region</Button>
-      <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary" onClick={addAnotherRegion}>Add Another Region</Button>
+      <Button sx={{my: 2, ml: 2}}variant="outlined" color="creator" onClick={addCreator}>Add a Recipe Creator</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="pairing" onClick={addPairing}>Add a Recipe Pairing</Button>
     </>
     ):(
     <>
@@ -205,7 +205,7 @@ useEffect(() => {
           <Box mt={3}>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
               onClick={saveRegionRecipe}
             >
               Add Region to {currentRecipe.title}
@@ -240,7 +240,7 @@ useEffect(() => {
       <>
         <Typography variant="h4" color="secondary.main">Add a new region</Typography>
         <Box style={styles.borderBox}>
-          <Typography variant="h6">Please select a country from the dropdown.</Typography>
+          <Typography variant="h6" color="greyQuote">Please select a country from the dropdown.</Typography>
           <Autocomplete
             fullWidth
             disablePortal

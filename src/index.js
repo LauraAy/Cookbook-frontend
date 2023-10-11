@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import './fonts/rachel_brown/RachelBrown.otf'
+import '@fontsource-variable/montserrat';
 
 import App from "./App";
 
