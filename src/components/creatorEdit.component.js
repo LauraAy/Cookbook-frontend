@@ -8,6 +8,16 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import CreatorDataService from "../services/creator.service";
 import CreatorRecipeDataService from "../services/creatorRecipe.service";
 
+const styles = {
+	borderBox: {
+		position: 'relative',
+		textAlign: 'left', 
+		margin: '10px',
+		padding: '20px',
+		border: '5px solid #4a148c',
+	}
+}
+
 const CreatorEdit = props => {
   const filter = createFilterOptions();
   const { recipeId, creatorId }= useParams();
@@ -80,10 +90,10 @@ const CreatorEdit = props => {
 
   return (
   <>
-    <Typography variant="h6" align="center" margin="dense">
+    <Typography variant="h4" color="region.main" align="center" margin="dense">
       Edit {creator.creatorName}
     </Typography>
-    <Box sx={{ ml: "10%", mr: "10%" }}>
+    <Box style={styles.borderBox}>
       <FormControl fullWidth>
         <TextField
           sx={{ mt: 2, mb: 2 }}
@@ -136,7 +146,7 @@ const CreatorEdit = props => {
         <Button
           onClick={handleSubmit(updateCreator)}
           variant="contained"
-          color="primary"
+          sx={{ backgroundColor: 'creator.main', borderColor: 'creator.main', ":hover": { backgroundColor: 'creator.light'} }}
         >
           Update
         </Button> 

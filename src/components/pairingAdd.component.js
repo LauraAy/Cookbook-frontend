@@ -8,7 +8,6 @@ import RecipeDataService from "../services/recipe.service";
 import PairingDataService from "../services/pairing.service";
 import { useParams, useNavigate } from 'react-router-dom';
 
-
 const styles = {
   borderBox: {
     position: 'relative',

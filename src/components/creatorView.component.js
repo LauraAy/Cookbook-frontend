@@ -91,10 +91,9 @@ const CreatorViewComponent = params => {
                   {creator.link && (
                   <>
                     <strong>Webpage: </strong>
-                  <a href={creator.link}>
-                    {creator.link}
+                    <a href={creator.link}>
+                      {creator.link}
                     </a>
-                    
                   </>
                   )}
                 </Typography>

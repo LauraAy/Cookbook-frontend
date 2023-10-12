@@ -10,6 +10,16 @@ import PairingRecipeDataService from "../services/pairingRecipe.service";
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js";
 
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    border: '5px solid #890010',
+  }
+}
+
 const PairingEdit = props => {
   const filter = createFilterOptions();
   const { recipeId, pairingId }= useParams();
@@ -244,10 +254,10 @@ const PairingEdit = props => {
 
   return (
   <>
-    <Typography variant="h6" align="center" margin="dense">
+    <Typography variant="h4" color="pairing.main" align="center" margin="dense">
       Edit {pairing.pairingName}
     </Typography>
-    <Box sx={{ ml: "10%", mr: "10%" }}>
+    <Box style={styles.borderBox}>
       <FormControl fullWidth>
         <TextField
           sx={{ mt: 2, mb: 2 }}
@@ -423,7 +433,7 @@ const PairingEdit = props => {
         ):(
         <>
           <Box mb={2}>
-            <Typography variant='h5'>
+            <Typography variant='h6'>
               Related Recipes
             </Typography>
           </Box>
@@ -550,7 +560,6 @@ const PairingEdit = props => {
         <>
           { pairing.recipeThree ? (
           <>
-            <Divider></Divider>
             <Box mb={2}>
               <Typography variant='h6'>
                 {recipeThree.title}
@@ -565,7 +574,6 @@ const PairingEdit = props => {
           </>
           ):(
           <>
-            <Divider></Divider>
             <Box mb={2}>
               <Button 
                 onClick={editRecipeThree}
@@ -582,7 +590,7 @@ const PairingEdit = props => {
           <Button
             onClick={handleSubmit(updatePairing)}
             variant="contained"
-            color="primary"
+            color="info"
           >
             Update
           </Button> 

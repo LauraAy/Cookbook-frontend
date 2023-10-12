@@ -130,10 +130,10 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
         <Typography variant="h4" gutterBottom>
           {currentUser.username}'s Recipes
         </Typography>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Search Recipes By Title
         </Typography>
-        <Box m={4} sx={{ display: 'flex' }}>
+        <Box mx={4} mb={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -151,10 +151,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
           <Typography variant="h5" gutterBottom>
             Browse Recipes
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Click to See Full Recipe
-          </Typography>
-          <Box m={2}>
+          <Box mx={2}>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>

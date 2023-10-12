@@ -5,13 +5,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { green } from '@mui/material/colors';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
 import IngredientTipTap from "./TiptapIngredientsEdit"
 import DirectionsTipTap from "./TiptapDirectionsEdit"
 
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    color: green[900],
+    border: '5px solid',
+  }
+}
 
 const RecipeEdit = props => {
   const filter = createFilterOptions();
@@ -156,10 +167,10 @@ const RecipeEdit = props => {
 
   return (
   <>
-        <Typography variant="h6" align="center" margin="dense">
+        <Typography variant="h4" align="center" margin="dense">
           Edit {currentRecipe.title}
         </Typography>
-        <Box sx={{ ml: "10%", mr: "10%" }}>
+        <Box style={styles.borderBox}>
           <FormControl fullWidth>
             <TextField
               sx={{ mt: 2, mb: 2 }}

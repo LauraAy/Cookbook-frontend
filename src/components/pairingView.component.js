@@ -111,6 +111,9 @@ const PairingViewComponent = params => {
     navigate("/pairings/edit/" + currentRecipe.id + "/" + pairing.id)
   }
 
+  // const recipeOneNav = () => {
+  //   console.log(recipeOne.id)
+  // };
   const recipeOneNav = () => {
 
     const recipeId = recipeOne.id
@@ -217,6 +220,7 @@ const PairingViewComponent = params => {
                 {pairing.recipeOne && (
                 <>
                   <strong>Related Recipe 1: </strong>
+                  &nbsp;
                   {recipeOne.title}
                   <Button
                     onClick={recipeOneNav}
