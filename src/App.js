@@ -10,6 +10,8 @@ import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
 import Register from "./pages/register.page.js";
 import Profile from "./pages/profile.page.js";
+import ProfileEdit from "./components/profileEdit.component.js"
+import About from "./pages/about.page.js";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
@@ -23,6 +25,7 @@ import CreatorAdd from "./pages/creatorAdd.page.js";
 import CreatorEdit from "./pages/creatorEdit.page.js";
 import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
+
 
 import Test from "./components/test.js"
 import { createLocalStorageManager } from "@chakra-ui/react";
@@ -97,10 +100,12 @@ const App = () => {
       
     <div className="container mt-3">
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/user" element={<BoardUser />} />
         <Route path="/mod" element={<BoardModerator />} />
         <Route path="/admin" element={<BoardAdmin />} />

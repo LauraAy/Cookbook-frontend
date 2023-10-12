@@ -19,6 +19,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
   const navigate = useNavigate()
  
   useEffect(() => {
+    console.log()
     retrieveUserRecipes(currentUser.id)
   }, []);
 

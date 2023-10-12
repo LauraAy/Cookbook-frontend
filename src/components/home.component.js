@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {Box, Button, Card, CardMedia, Container, Divider, Grid, ListItemSecondaryAction, Typography} from '@mui/material';
+import {Box, Button, Card, CardMedia, Divider, Grid, Typography} from '@mui/material';
 import AuthService from "../services/auth.service";
 import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
-import { red, pink, purple, blue, green } from '@mui/material/colors';
+import { purple, blue, green } from '@mui/material/colors';
 import { useParams, useNavigate } from 'react-router-dom';
 
 

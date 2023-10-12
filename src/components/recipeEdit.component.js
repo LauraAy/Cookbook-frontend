@@ -107,14 +107,6 @@ const RecipeEdit = props => {
     source: currentRecipe.source },
   });
 
-  const onSubmit = (data) => {
-    register("title", "description", "servingSize", "source");
-  
-    console.log(data);
-    console.log(ingredients);
-    console.log(directions);
-  };
-
   //update recipe
   const updateRecipe = (formData) => {
     var data = {

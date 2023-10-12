@@ -46,7 +46,6 @@ console.log(localStorage.getItem('ingredients'))
 
   //navigate to edit recipe
   const editRecipe = () => {
-    
     navigate("/recipes/edit/" + currentRecipe.id)
   }
 
