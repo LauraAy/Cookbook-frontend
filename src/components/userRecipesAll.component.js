@@ -87,7 +87,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
   <>
     {searchActive ? (
     <> 
-      <Box p="10" pt="3" spacing={2}>
+      <Box p="20px" pt="3" spacing={2}>
         <Typography variant="h4">{selectedRecipe.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
           Click to view full recipe.
@@ -126,13 +126,15 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
     </>
     ):(
     <>
-      <Box p="10" pt="3" spacing={2}></Box>
+      <Box p="20px" pt="3" spacing={2}>
         <Typography variant="h4" gutterBottom>
           {currentUser.username}'s Recipes
         </Typography>
-        <Typography variant="h6" gutterBottom>
-          Search Recipes By Title
-        </Typography>
+        <Box mx={4}  sx={{ display: 'flex' }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Search Recipes By Title
+          </Typography>
+        </Box>
         <Box mx={4} mb={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
@@ -201,6 +203,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>
         </Box>
+      </Box>
     </>
     )}
   </>

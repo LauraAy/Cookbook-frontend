@@ -314,7 +314,7 @@ const newRecipe = () => {
             rows={2}
             {...register('prepTime')}
           />
-           <TextField
+          <TextField
             sx={{ mb: 2 }}
             id="cookTime"
             defaultValue=""
@@ -327,9 +327,11 @@ const newRecipe = () => {
             {...register('cookTime')}
           />
           <Box mb={2}>
+            <Typography variant='body2'>Ingredients</Typography>
             <IngredientTipTap setIngredients={setIngredients}/>
           </Box>
           <Box mb={2}>
+            <Typography variant='body2'>Directions</Typography>
             <DirectionsTipTap setDirections={setDirections}/>
           </Box>
           <TextField
