@@ -8,7 +8,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 
 const HomeComponent = () => {
-
   let navigate = useNavigate();
 
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -161,7 +160,7 @@ const HomeComponent = () => {
       </Typography>
     </Box>
     <Grid container spacing={1}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} >
         <Box style={styles.regionCard} >
           <Typography variant='h6' sx={{color: 'secondary.main'}}>
             Where in the world is this recipe from? Add the region or 
@@ -169,14 +168,14 @@ const HomeComponent = () => {
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} >
         <Box style={styles.creatorCard} >
           <Typography variant='h6' sx={{color: 'creator.main'}}>
             Who is the genius behind this recipe? Add the person who created it.
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} >
         <Box style={styles.pairingCard}>
           <Typography variant='h6' sx={{color: 'pairing.main'}}>
             What are the perfect pairings for this recipe? Add music, games, drinks or more to pair with this dish.

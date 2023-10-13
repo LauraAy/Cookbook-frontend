@@ -9,7 +9,7 @@ import WorldIconTest from '../images/worldIconTest.jpg'
 const NavbarComponent = () => {
 	const [currentUser, setCurrentUser] = useState(undefined);
 
-  useEffect(() => {
+	useEffect(() => {
 		const user = AuthService.getCurrentUser();
 			if (user) {
 				setCurrentUser(user);
@@ -28,7 +28,8 @@ const NavbarComponent = () => {
 	const pages = [
 		{name: 'Your Recipes', link: '/user/recipes'},
 		{name: 'All Recipes', link: '/recipes'},
-		{name: 'Add Recipes', link: '/recipes/add'}
+		{name: 'Add Recipes', link: '/recipes/add'},
+		{name: 'About YWC', link: '/about'}
 	]
 
 	const loginPages = [
