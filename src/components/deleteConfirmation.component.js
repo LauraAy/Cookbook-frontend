@@ -21,7 +21,7 @@ const DeleteConfirmation = ({ openDialog, closeDialog, confirmDialog, type, mess
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={closeDialog}>Cancel</Button>
-					<Button onClick={confirmDialog} autoFocus>
+					<Button onClick={confirmDialog} color="error" autoFocus>
 						Confirm Delete
 					</Button>
 				</DialogActions>

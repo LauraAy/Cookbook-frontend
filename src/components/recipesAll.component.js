@@ -86,8 +86,8 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
   <>
     {searchActive ? (
     <>
-      <Box p="10" pt="3" spacing={2}>
-        <Typography variant="h5">{selectedRecipe.title}</Typography>
+      <Box p="20px" pt="3" spacing={2}>
+        <Typography variant="h4">{selectedRecipe.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
           Click to view full recipe.
         </Typography>
@@ -125,14 +125,16 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
     </>
     ):(
     <>
-      <Box p="10" pt="3" spacing={2}></Box>
+      <Box p="20px" pt="3" spacing={2}>
         <Typography variant="h4" gutterBottom>
           All Recipes
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          Search Recipes By Title
-        </Typography>
-        <Box m={4} sx={{ display: 'flex' }}>
+        <Box mx={4}  sx={{ display: 'flex' }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Search Recipes By Title
+          </Typography>
+        </Box>
+        <Box mx={4}  mb={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -150,9 +152,6 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
           <Typography variant="h5" gutterBottom>
             Browse Recipes
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Click to See Full Recipe
-          </Typography>
           <Box m={2}>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
@@ -168,8 +167,6 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
           <List p="10" pt="3" spacing={2}>
             {_DATA &&
               _DATA.currentData().map(recipe => {
-                
-               
                 return (
                 <>
                   <ListItemButton onClick={() => handleListItemClick(recipe)}>
@@ -205,9 +202,10 @@ const RecipesAll = ({clickRegion, clickCreator})=> {
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>
         </Box>
-      </>
-      )}
+      </Box>
     </>
+    )}
+  </>
   )
 }
 

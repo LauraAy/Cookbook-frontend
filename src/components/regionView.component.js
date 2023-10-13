@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RegionRecipeDataService from "../services/regionRecipe.service";
+import { Box, Button, Divider, Grid, Tooltip, Typography, } from '@mui/material';
+ import { Delete } from  '@mui/icons-material';
 
 const RegionViewComponent = params => {
   const { id } = useParams();
@@ -8,7 +10,8 @@ const RegionViewComponent = params => {
   const [currentRecipe, setCurrentRecipe] = useState ([]);
   const [ region, setRegion] = useState ([])
 
-const getRecipeRegions = id => {
+  //get regions for current recipe
+  const getRecipeRegions = id => {
     RegionRecipeDataService.getRecipeRegions(id)
     .then(response => {
       setCurrentRecipe(response.data);
@@ -26,106 +29,145 @@ const getRecipeRegions = id => {
     getRecipeRegions(id);
   }, [id]);
 
-const goAddRegion = () => {
-  navigate("/regions/add/" + id)
-}
+  //navigate to add region page
+  const goAddRegion = () => {
+    navigate("/regions/add/" + id)
+  }
 
-const refreshPage = () => {
-  navigate(0);
-}
+  //refresh
+  const refreshPage = () => {
+    navigate(0);
+  }
 
-const removeRegion = currentRegionId => {
-  const recipeId = currentRecipe.id
-  const regionId = currentRegionId
+  //delete region
+  const removeRegion = currentRegionId => {
+    const recipeId = currentRecipe.id
+    const regionId = currentRegionId
 
-  RegionRecipeDataService.removeRegion(recipeId, regionId)
-  .then(response => {
-    console.log(response.data)
-    refreshPage()
-  
-  })
-  .catch(e => {
-    console.log(e)
-  })
-}
+    RegionRecipeDataService.removeRegion(recipeId, regionId)
+    .then(response => {
+     console.log(response.data)
+      refreshPage()
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  } 
 
-return (
-<>
-  <div>
+  return (
+  <>
     {region.length ? (
-      <div >
-        {region.map((region, index) => (
-          <div key={index}>
-            <h2> {region.country} </h2>
-            {region.regionName && (
-              <div>
-                <label>
-                  <strong>Region Name:</strong>
-                </label>{" "}
-                {region.regionName}
-              </div>
-            )}
-            {region.subRegion && (
-              <div>
-                <label>
-                  <strong>Sub Region:</strong>
-                </label>{" "}
-                {region.subRegion}
-              </div>
-            )}
-            {region.intermediateRegion && (
-              <div>
-                <label>
-                  <strong>Intermediate Region:</strong>
-                </label>{" "}
-                {region.intermediateRegion}
-              </div>
-            )}
-             {region.countryCode && (
-              <div>
-                <label>
-                  <strong>Country Code:</strong>
-                </label>{" "}
-                {region.countryCode}
-              </div>
-            )}
-             {region.lat && (
-              <div>
-                <label>
-                  <strong>Latitude:</strong>
-                </label>{" "}
-                {region.lat}
-              </div>
-            )}
-             {region.lng && (
-              <div>
-                <label>
-                  <strong>Longitude:</strong>
-                </label>{" "}
-                {region.lng}
-              </div>
-            )}
-            <br></br>
-            <br></br>
-            <button onClick={() => {removeRegion(region.id)}}>Remove Region from This Recipe </button>
-            <br></br>
-            <br></br>
-          </div>
-        ))}
-        <h4>Add another region. </h4>
-        <button onClick={goAddRegion}>Add a Region</button>
-        <br></br>
-        <br></br>
-    </div>
-    ):(  
-      <div> 
-        <h2>Add a Region now!</h2>
-        <button onClick={goAddRegion}>Add a Region</button>
-      </div>
+    <>
+      {region.map((region) => 
+      <Box mt={2}>
+        <Typography 
+          variant="h4" 
+          mx={4} 
+          sx={{ color: "secondary.main" }}
+        >
+          {region.country}
+        </Typography>
+        <Box mx={4} mb={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={8}>
+              <Typography variant="body1" sx={{ m: 1 }}>
+                {region.regionName && (
+                <>
+                  <strong>Region: </strong>
+                  {region.regionName}
+                </>
+                )}
+              </Typography>
+              <Typography variant="body1"sx={{ m: 1 }}>
+                {region.subRegion && (
+                <>
+                  <strong>Sub Region: </strong>
+                  {region.subRegion}
+                </>
+                )}
+              </Typography>
+              <Typography variant="body1"sx={{ m: 1 }}>
+                {region.intermediateRegion && (
+                <>
+                  <strong>Intermediate Region: </strong>
+                  {region.intermediateRegion}
+                </>
+                )}
+              </Typography>
+              <Typography variant="body1"sx={{ m: 1 }}>
+                {region.lat && (
+                <>
+                  <strong>Latitude: </strong>
+                  {region.lat}
+                </>
+                )}
+              </Typography>
+              <Typography variant="body1"sx={{ m: 1 }}>
+                {region.lng && (
+                <>
+                  <strong>Longitude: </strong>
+                  {region.lng}
+                </>
+                )}
+              </Typography>
+              <Typography variant="body1"sx={{ m: 1 }}>
+                {region.countryCode && (
+                <>
+                  <strong>Country Code: </strong>
+                  {region.countryCode}
+                </>
+                )}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Tooltip title="Remove this region from recipe.">
+                <Button 
+                  onClick={() => {removeRegion(region.id)}}
+                  variant="outlined"
+                  color="error"
+                  startIcon={<Delete />}
+                >
+                  Remove
+                </Button>
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </Box>
+        <Divider></Divider>
+      </Box>
+      )}
+      <Tooltip title="Add another region to this recipe.">
+        <Button 
+          onClick={goAddRegion}
+          variant="outlined"
+          color="secondary"
+          sx={{ m: 2 }}
+        >
+          Add Another Region
+        </Button>
+      </Tooltip>
+    </>
+    ):(
+    <>
+      <Typography variant="h4" sx={{ color: "secondary.main"}}>Add a region for this recipe now!</Typography>
+      <Tooltip title="Add a region to this recipe.">
+        <Typography variant="subtitle1">
+          Is this recipe from the place your family comes from? A place you love to visit or dream of traveling too?
+          Add the countries and regions your recipe comes from to help track where your favorite foods originate. 
+       </Typography>
+        <Button 
+          onClick={goAddRegion}
+          variant="contained"
+          color="secondary"
+          sx={{ m: 2 }}
+        >
+          Add Region
+        </Button>
+      </Tooltip>
+    </>
     )}
-  </div>
-</>
-
-)}
+  </>
+  )
+}
 
 export default RegionViewComponent

@@ -109,12 +109,12 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
     <>
       {countrySearch ? (
       <>
-        <Box p="10" pt="3" spacing={2}>
+        <Box p="20px" pt="3" spacing={2}>
           {userRecipesCountry &&
             userRecipesCountry.map(regionRecipe => {
             return (
             <>
-              <Typography variant="h5">Recipes from {selectedRegion.country}</Typography>
+              <Typography variant="h4">Recipes from {selectedRegion.country}</Typography>
               <Typography variant="subtitle1">
                 Click on a title to see full recipe.
               </Typography>
@@ -165,8 +165,8 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
       </>
       ):(
       <>
-        <Box p="10" pt="3" spacing={2}>
-          <Typography variant="h5">Recipes from {currentRegionName}</Typography>
+        <Box p="20px" pt="3" spacing={2}>
+          <Typography variant="h4">Recipes from {currentRegionName}</Typography>
           <Typography variant="subtitle1">
             Click on a title to see full recipe.
           </Typography>
@@ -225,14 +225,16 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
     </>
     ):(
     <>
-      <Box p="10" pt="3" spacing={2}>
+      <Box p="20px" pt="3" spacing={2}>
         <Typography variant="h4" gutterBottom>
           {currentUser.username}'s Recipes by Country 
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          Search Recipes By Country Name
-        </Typography>
-        <Box m={4} sx={{ display: 'flex' }}>
+        <Box mx={4}  sx={{ display: 'flex' }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Search Recipes By Country Name
+          </Typography>
+        </Box>
+        <Box mx={4} mb={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -247,10 +249,12 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
           </Box>
         </Box>
         <Box>
-          <Typography variant="h5" gutterBottom>
-            Search Recipes By Region Name
-          </Typography>
-          <Box m={4} sx={{ display: 'flex' }}>
+          <Box mx={4}  sx={{ display: 'flex' }}>
+            <Typography variant="subtitle2" gutterBottom>
+              Search Recipes By Region Name
+            </Typography>
+          </Box>
+          <Box mx={4} mb={2} sx={{ display: 'flex' }}>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -269,9 +273,6 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
             <Typography variant="h5" gutterBottom>
               Browse Recipes
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Click to See Full Recipe
-            </Typography>
             <Box m={2}>
               <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickTitle()}>filter by title</Button>
               <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
@@ -289,7 +290,7 @@ const UserRegionRecipesAll = ({clickTitle, clickCreator})=> {
                 _DATA.currentData().map(regionRecipe => {
                   return (
                   <>
-                    <Typography variant="h6">{regionRecipe.country}</Typography>
+                    <Typography variant="h5">{regionRecipe.country}</Typography>
                     <Typography variant="subtitle1">
                       Click on a title to see full recipe.
                     </Typography>

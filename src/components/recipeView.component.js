@@ -1,107 +1,116 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
-import RegionRecipeService from "../services/regionRecipe.service";
+import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
+import parser from "html-react-parser";
+import WorldIconTest from '../images/worldIconTest.jpg'
 
 const RecipeViewComponent = props => {
-    const { id } = useParams();
-    const initialRecipeState = {
-        id: null,
-        title: "",
-        description: "",
-        recipeType: "",
-        servingSize: null,
-        ingredients: "",
-        directions: "",
-        source: "",
-        userId: undefined
-      };
+  let navigate = useNavigate();
+
+  const { id } = useParams();
+  const initialRecipeState = {
+    id: null,
+    title: "",
+    description: "",
+    recipeType: "",
+    servingSize: null,
+    ingredients: "",
+    directions: "",
+    source: "",
+    userId: undefined
+  };
     
-    const [currentRecipe, setCurrentRecipe] = useState ([]);
-  
-  
+  const [currentRecipe, setCurrentRecipe] = useState ([]);
+
+  //get current recipe
   const getRecipe = id => {
     RecipeDataService.get(id)
     .then(response => {
       setCurrentRecipe(response.data);
       console.log(response.data);
+      localStorage.removeItem('ingredients-content')
+      localStorage.removeItem('directions-content')
     })
     .catch(e => {
       console.log(e);
     });
   };
+
+console.log(localStorage.getItem('ingredients'))
   
   useEffect(() => {
     if(id)
     getRecipe(id);
   }, [id]);
 
-return (
-<>
-  <div>
-    <label>
-      <strong>Title:</strong>
-    </label>{" "}
-    {currentRecipe.title}
-  </div>
-  {currentRecipe.description && (
-  <div>
-    <label>
-      <strong>Description:</strong>
-    </label>{" "}
-    {currentRecipe.description}
-  </div>
-  )}
-  {currentRecipe.recipeType && (
-  <div>
-    <label>
-      <strong>Recipe Type:</strong>
-    </label>{" "}
-    {currentRecipe.recipeType}
-  </div>
-  )}
-   {currentRecipe.servingSize && (
-    <div>
-      <label>
-        <strong>ServingSize:</strong>
-      </label>{" "}
-      {currentRecipe.servingSize}
-    </div>
-   )}
-  {currentRecipe.description && (
-  <div>
-    <label>
-      <strong>Ingredients:</strong>
-    </label>{" "}
-    {currentRecipe.ingredients}
-  </div>
-  )}
-  {currentRecipe.directions && (
-  <div>
-    <label>
-      <strong>Directions:</strong>
-    </label>{" "}
-    {currentRecipe.directions}
-  </div>
-  )}
-  {currentRecipe.source && (
-  <div>
-    <label>
-      <strong>Source:</strong>
-    </label>{" "}
-    {currentRecipe.source}
-  </div>
-  )}
+  //navigate to edit recipe
+  const editRecipe = () => {
+    navigate("/recipes/edit/" + currentRecipe.id)
+  }
 
-  <Link
-    to={"/recipes/edit/" + currentRecipe.id}
-    className="badge badge-warning"
-  >
-    <button>
-    Edit
-    </button>
-  </Link>
-</>
+  return (
+  <>
+    <Box mx={4}>
+    <Box sx={{ display: 'inline-flex' }}>
+    
+        {/* <img 
+          src={WorldIconTest} 
+          alt="picture of a world"
+          style={{ maxHeight: '120px' }}
+          sx={{align:'right'}}
+        /> */}
+      
+      <Box>
+        <Typography variant="h4">{currentRecipe.title}</Typography>
+      </Box>
+      </Box>
+
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.recipeType && (
+        <>
+          <strong>RecipeType: </strong>
+          {currentRecipe.recipeType}
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.servingSize && (
+        <>
+          <strong>Serving Size: </strong>
+          {currentRecipe.servingSize}
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.ingredients && (
+        <>
+          <strong>Ingredients: </strong>
+          {parser(currentRecipe.ingredients)}
+        </>
+        )}
+      </Typography>
+      <Typography variant="body1"sx={{ m: 1 }}>
+        {currentRecipe.directions && (
+        <>
+          <strong>Directions: </strong>
+          {parser(currentRecipe.directions)}
+        </>
+        )}
+      </Typography>
+      <Divider></Divider>
+    </Box>
+
+    <Tooltip title="Edit this recipe.">
+      <Button
+        onClick={editRecipe}
+        sx={{my: 2, mx: 4}}
+        variant="outlined"
+      >
+        Edit Recipe
+      </Button>
+    </Tooltip>
+  </>
 )}
 
 export default RecipeViewComponent

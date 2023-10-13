@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { Paper, Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import RecipeDataService from "../services/recipe.service";
 import PairingDataService from "../services/pairing.service";
-import PairingRecipeDataService from "../services/pairingRecipe.service";
 import { useParams, useNavigate } from 'react-router-dom';
+
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    border: '5px solid #890010',
+  }
+}
+
+const filter = createFilterOptions();
 
 const PairingAddComponent = () => { 
 	const { id } = useParams();
 	let navigate = useNavigate();
 
-  const initialPairingState = {
+	const initialPairingState = {
 		id: null,
 		pairingName: "",
 		description: "",
 		drinks: "",
 		shows: "",
+		games: "",
 		books: "",
 		music: "",
 		decor: "",
@@ -33,9 +49,6 @@ const PairingAddComponent = () => {
 	const [selectedRecipeOneId, setSelectedRecipeOneId] = useState ()
 	const [selectedRecipeTwoId, setSelectedRecipeTwoId] = useState ()
 	const [selectedRecipeThreeId, setSelectedRecipeThreeId] = useState ()
-	const [selectedRecipeOne, setSelectedRecipeOne] = useState ([])
-	const [selectedRecipeTwo, setSelectedRecipeTwo] = useState ([])
-	const [selectedRecipeThree, setSelectedRecipeThree] = useState ([])
   const [selected, setSelected] = useState (false)
   const [submitted, setSubmitted] = useState(false);
   const [added, setAdded] = useState(false);
@@ -43,21 +56,21 @@ const PairingAddComponent = () => {
   
   //retrieve recipe and pairings
   useEffect(() => {
-		retrievePairings();
-		retrieveRecipe(id);
-		retrieveRecipes();
+	retrieveRecipe(id);
+	retrievePairings();	
+	retrieveRecipes();
   }, []);
 
 
   const retrieveRecipe = id => {
-	RecipeDataService.get(id)
-	.then(response => {
-		setCurrentRecipe(response.data);
-		console.log(response.data);
-	})
-	.catch(e => {  
-		console.log(e) 
-	});
+		RecipeDataService.get(id)
+		.then(response => {
+			setCurrentRecipe(response.data);
+			console.log(response.data);
+		})
+		.catch(e => {  
+			console.log(e) 
+		});
   };
 
   const retrievePairings = () => {
@@ -72,108 +85,84 @@ const PairingAddComponent = () => {
   };
 
 	const retrieveRecipes = () => {
-    RecipeDataService.getAll()
-    .then(response => {
-      setRecipes(response.data);
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-  };
-
-	//form input to create pairing
-  const handleInputChange = event => {
-	const { name, value } = event.target;
-	setPairing({ ...pairing, [name]: value });
-  };
-
-	 //retrieve first selectedRecipe from id based on dropdown selection
-	 const retrieveSelectedRecipeOne = id => {
-		RecipeDataService.get(id)
+		RecipeDataService.getAll()
 		.then(response => {
-			setSelectedRecipeOne(response.data);
-			console.log(response.data);
+			setRecipes(response.data);
 		})
-		.catch(e => {   
-			console.log(e)
-		});
-	};
-
-	//retrieve first recipeId from dropdown selection and run retrieveRecipe function
-	const handleSelectedRecipeOneChange = async (event) => {
-		setSelectedRecipeOneId(event.target.value);
-		// setSelected(true);
-		console.log(selectedRecipeOneId)
+		.catch(e => {
+			console.log(e);
+		})
 	}
 
-	useEffect(()=>{
-		retrieveSelectedRecipeOne(selectedRecipeOneId)
-		console.log(selectedRecipeOne)
-	}, [selectedRecipeOneId])
+	//filter pairings options by pairingName
+	function compare( a, b ) {
+    if ( a.pairingName < b.pairingName ){
+      return -1;
+    }
+    if ( a.pairingName > b.pairingName ){
+      return 1;
+    }
+    return 0;
+  }
+  
+  const pairingOptions = pairings.sort( compare );
 
 
-		 //retrieve second selectedRecipe from id based on dropdown selection
-		 const retrieveSelectedRecipeTwo = id => {
-			RecipeDataService.get(id)
-			.then(response => {
-				setSelectedRecipeTwo(response.data);
-				console.log(response.data);
-			})
-			.catch(e => {   
-				console.log(e)
-			});
-		};
+  //react-hook-form and yup functions
+  const validationSchema = Yup.object().shape({
+    pairingName: Yup.string()
+      .required('Pairing name is required.'),
+  });
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  
+  });
+  
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
-	const handleSelectedRecipeTwoChange = async (event) => {
-		setSelectedRecipeTwoId(event.target.value);
-		// setSelected(true);
-		console.log(selectedRecipeTwoId)
+
+	//retrieve selected recipe from form and save id
+	const handleRecipeOneChange = async (event, option) => {
+		setSelectedRecipeOneId(option.id);
+		console.log(option.id)
 	}
-
-	useEffect(()=>{
-		retrieveSelectedRecipeTwo(selectedRecipeTwoId)
-		console.log(selectedRecipeTwo)
-	}, [selectedRecipeTwoId])
-
-		 //retrieve third selectedRecipe from id based on dropdown selection
-		 const retrieveSelectedRecipeThree = id => {
-			RecipeDataService.get(id)
-			.then(response => {
-				setSelectedRecipeThree(response.data);
-				console.log(response.data);
-			})
-			.catch(e => {   
-				console.log(e)
-			});
-		};
-
-	const handleSelectedRecipeThreeChange = async (event) => {
-		setSelectedRecipeThreeId(event.target.value);
-		// setSelected(true);
-		console.log(selectedRecipeThreeId)
+	const handleRecipeTwoChange = async (event, option) => {
+		setSelectedRecipeTwoId(option.id);
+		console.log(option.id)
 	}
+	const handleRecipeThreeChange = async (event, option) => {
+		setSelectedRecipeThreeId(option.id);
+		console.log(option.id)
+	}
+	
 
-	useEffect(()=>{
-		retrieveSelectedRecipeThree(selectedRecipeThreeId)
-		console.log(selectedRecipeTwo)
-	}, [selectedRecipeTwoId])
+	//create new pairing set to true
+	const goCreate = () => {
+		setCreateNew(true)
+	}
 
   //save pairing from form
-  const savePairing = () => {
-		// console.log(selectedRecipe.id)
+  const savePairing = (formData) => {
 	var data = {
-		pairingName: pairing.pairingName,
-		description: pairing.description,
-		drinks: pairing.drinks,
-		shows: pairing.shows,
-		books: pairing.books,
-		music: pairing.music,
-		decor: pairing.decor,
-		more: pairing.more,
-		recipeOne: selectedRecipeOne.id,
-		recipeTwo: selectedRecipeTwo.id,
-		recipeThree: selectedRecipeThree.id
+		pairingName: formData.pairingName,
+		description: formData.description,
+		drinks: formData.drinks,
+		shows: formData.shows,
+		games: formData.games,
+		books: formData.books,
+		music: formData.music,
+		decor: formData.decor,
+		more: formData.more,
+		recipeOne: selectedRecipeOneId,
+		recipeTwo: selectedRecipeTwoId,
+		recipeThree: selectedRecipeThreeId
 	};
 
 	PairingDataService.create(data)
@@ -184,6 +173,7 @@ const PairingAddComponent = () => {
 			description: response.data.description,
 			drinks: response.data.drinks,
 			shows: response.data.shows,
+			games: response.data.games,
 			books: response.data.books,
 			music: response.data.music,
 			decor: response.data.decor,
@@ -191,6 +181,7 @@ const PairingAddComponent = () => {
 			recipeOne: response.data.recipeOne
 		});
 		setSubmitted(true);
+		setPairing(response.data)
 		console.log(response.data);
 	})
 	.catch(e => {
@@ -214,60 +205,45 @@ const PairingAddComponent = () => {
       });
   }
 
-  //retrieve currentPairing from id based on dropdown selection
-  const retrieveCurrentPairing = id => {
-	PairingDataService.get(id)
-	.then(response => {
-		setCurrentPairing(response.data);
-		console.log(response.data);
-	})
-	.catch(e => {   
-		console.log(e)
-	});
+  //retrieve pairing from id based on dropdown selection
+  const retrievePairing = id => {
+		PairingDataService.get(id)
+		.then(response => {
+			setPairing(response.data);
+			setSelected(true)
+			console.log(response.data);
+		})
+		.catch(e => {   
+			console.log(e)
+		});
   };
 
   //retrieve pairingId from dropdown selection and run retrievePairing function
-  const handlePairingChange = async (event) => {
-	setCurrentPairingId(event.target.value);
-	setSelected(true);
-	console.log(currentPairingId)
+  const handlePairingChange = async (event, option) => {
+		setCurrentPairingId(option.id);
+		console.log(option.id)
   }
+
   useEffect(()=>{
-	console.log(currentPairingId)
-	retrieveCurrentPairing(currentPairingId)
+		console.log(currentPairingId)
+		retrievePairing(currentPairingId)
   }, [currentPairingId])
 
   //attach pairing selected from dropdown to recipe
   const savePairingRecipeDropdown = () => {
-	const data = {
-		pairingId: currentPairing.id
-	}
+		var data = {
+			pairingId: currentPairingId
+		};
 
-	RecipeDataService.update(currentRecipe.id, data)
-	.then(response => {
-		console.log(response.data);
-		navigate("/recipes/" + currentRecipe.id)
-	})
-	.catch(e => {
-		console.log(e);
-	});
-  }
-
-	//  //retrieve currentRecipe from id based on dropdown selection
-	//  const retrieveSelectedRecipe = id => {
-	// 	RecipeDataService.get(id)
-	// 	.then(response => {
-	// 		setSelectedRecipe(response.data);
-	// 		console.log(response.data);
-	// 	})
-	// 	.catch(e => {   
-	// 		console.log(e)
-	// 	});
-	// };
-
-  //create new pairing set to true
-  const goCreate = () => {
-		setCreateNew(true)
+		RecipeDataService.update(currentRecipe.id, data)
+		.then(response => {
+			setAdded(true)
+			console.log(response.data);
+			// navigate("/recipes/" + currentRecipe.id)
+		})
+		.catch(e => {
+			console.log(e);
+		});
   }
   
   //Reset form for new pairing
@@ -285,14 +261,9 @@ const PairingAddComponent = () => {
 		navigate("/recipes/" + id)
   }
 
-  //switch to add a new pairing
-  const addAnotherPairing = () => {
-		newPairing()
-  }
-
   //navigate to add a new region
   const addRegion = () => {
-		navigate("/regions/add/:id")
+		navigate("/regions/add/" + id) 
   }
 
   //navigate to add a new creator
@@ -301,225 +272,335 @@ const PairingAddComponent = () => {
   }
 
 	return(
-		<div>
-			{ added ? (
-				<div>
-					<h4>You've added {pairing.creatorName} to {currentRecipe.title}</h4>
-					<br></br>
-					<br></br>
-					<button onClick={returnRecipe}>View Recipe Page</button>
-					<br></br>
-					<br></br>
-					<button onClick={addAnotherPairing}>Add Another Pairing</button>
-					<button onClick={addRegion}>Add a Region</button>
-					<button onClick={addCreator}>Add a Recipe Creator</button>
-				</div>
-			):(
-				<div>
-					{ createNew ? (
-						<div className="submit-form">
-							{submitted ? (
-								<div>
-									<h2>Success!</h2>
-									<div>
-										<h4>{pairing.pairingName}</h4>
-									</div>
-									<button onClick={savePairingRecipe}>Add this recipe pairing to {currentRecipe.title}.</button>
-								</div>
-							):(
-							<div>
-								<h1>Create a new pairing for {currentRecipe.title}</h1>
-								<div>
-								<div className="form-group">
-									<label htmlFor="pairingName">Recipe Pairing Name</label>
-									<input
-										type="text"
-										className="form-control"
-										id="pairingName"
-										required 
-										value={pairing.pairingName}
-										onChange={handleInputChange}
-										name="pairingName"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="description">Pairing Description</label>
-									<input
-										type="text"
-										className="form-control"
-										id="description"
-										required
-										value={pairing.description}
-										onChange={handleInputChange}
-										name="description"
-									/>
-								</div> 
-								<div className="form-group">
-									<label htmlFor="drinks">Drinks</label>
-									<input
-										type="text"
-										className="form-control"
-										id="drinks"
-										required
-										value={pairing.drinks}
-										onChange={handleInputChange}
-										name="drinks"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="shows">TV Shows or Movies</label>
-									<input
-										type="text"
-										className="form-control"
-										id="shows"
-										required
-										value={pairing.shows}
-										onChange={handleInputChange}
-										name="shows"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="books">Books</label>
-									<input
-										type="text"
-										className="form-control"
-										id="books"
-										required
-										value={pairing.books}
-										onChange={handleInputChange}
-										name="books"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="music">Music</label>
-									<input
-										type="text"
-										className="form-control"
-										id="music"
-										required
-										value={pairing.music}
-										onChange={handleInputChange}
-										name="music"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="decor">Decor</label>
-									<input
-										type="text"
-										className="form-control"
-										id="decor"
-										required
-										value={pairing.decor}
-										onChange={handleInputChange}
-										name="decor"
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="more">More</label>
-									<input
-										type="text"
-										className="form-control"
-										id="more"
-										required
-										value={pairing.more}
-										onChange={handleInputChange}
-										name="more"
-									/>
-								</div>
-							</div>
-							<br></br>
-							<br></br>
-							<p>Please select a Recipe from the dropdown.</p> 
-              <Form>
-                <select class="form-control" onChange={handleSelectedRecipeOneChange} >
-                  <option>Select a Recipe</option>
-                  {recipes.map((recipes, index) => 
-                    <option
-                      value= {recipes.id}
-                      key={index}
-                    >
-											{recipes.title}
-                    </option>
-                  )}
-                </select>
-              </Form>
-							<br></br>
-							<br></br>
-							<p>Please select a Recipe from the dropdown.</p> 
-							<Form>
-                <select class="form-control" onChange={handleSelectedRecipeTwoChange} >
-                  <option>Select a Recipe</option>
-                  {recipes.map((recipes, index) => 
-                    <option
-                      value= {recipes.id}
-                      key={index}
-                    >
-											{recipes.title}
-                    </option>
-                  )}
-                </select>
-              </Form>
-							<br></br>
-							<br></br>
-							<p>Please select a Recipe from the dropdown.</p> 
-							<Form>
-                <select class="form-control" onChange={handleSelectedRecipeThreeChange} >
-                  <option>Select a Recipe</option>
-                  {recipes.map((recipes, index) => 
-                    <option
-                      value= {recipes.id}
-                      key={index}
-                    >
-											{recipes.title}
-                    </option>
-                  )}
-                </select>
-              </Form>
-							<br></br>
-							<br></br>
-							<button onClick={savePairing} className="btn btn-success">
-								Submit
-							</button>
-						</div>
-						)}
-					</div>
-					):(
-						<div>
-							{ selected ? (
-								<div>
-									<h1>{currentPairing.pairingName}</h1>
-									<button onClick={savePairingRecipeDropdown}>Add this pairing to recipe</button>
-								</div>
-							):(
-								<div>
-									<h1>Attach a pairing to {currentRecipe.title}</h1>
-								<div>  
-									<p>Please select a pairing from the dropdown.</p> 
-									<Form>
-										<select class="form-control" onChange={handlePairingChange} >
-											<option>Select a pairing</option>
-											{pairings.map((pairing, index) => 
-												<option
-													value= {pairing.id}
-													key={index}
-												>
-													{pairing.pairingName}
-												</option>
-											)}
-										</select>
-									</Form>
-									<br></br>
-									<br></br>
-									<p>Or create a new recipe pairing</p>
-									<button onClick={goCreate}>Create New Recipe Pairing</button>
-								</div>
-								</div>
+	<>
+		{ added ? (
+		<>
+			<Box m={2}>
+				<Typography variant="h4">You've added {pairing.pairingName} to {currentRecipe.title}</Typography>
+			</Box>
+			<Box m={2}>
+				<Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
+			</Box>
+			<Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary"  onClick={addRegion}>Add a Region</Button>
+			<Button sx={{my: 2, ml: 2}} variant="outlined" color="creator" onClick={addCreator}>Add a Recipe Creator</Button>
+		</>
+		):(
+		<>
+			{ createNew ? (
+			<>
+				{submitted ? (
+				<>
+					<Typography variant="h4">You've created {pairing.pairingName}</Typography>
+					<Typography variant="h6">Add this pairing to {currentRecipe.title}.</Typography>
+					<Button sx={{my: 1, ml: 2}} variant="contained" color="info" onClick={savePairingRecipe}>
+						Add
+					</Button>
+				</>
+				):(
+				<>
+					<Typography 
+						variant="h4" 
+						align="center" 
+						margin="dense"
+						sx={{ color: "pairing.main" }}
+					>
+						Create a New Recipe Pairing
+					</Typography>
+					<Box style={styles.borderBox}>
+						<FormControl fullWidth>
+							<TextField
+								sx={{ mt: 2, mb: 2 }}
+								required
+								id="pairingName"
+								name="pairingName"
+								label="Pairing Name"
+								placeholder="Pairing Name"
+								defaultValue=""
+								fullWidth
+								margin="dense"
+								{...register('pairingName')}
+								error={errors.pairingName ? true : false}
+							/>
+							<Typography variant="inherit" color="textSecondary">
+								{errors.pairingName?.message}
+							</Typography>
+						</FormControl>
+						<TextField
+							sx={{ mb: 2 }}
+							id="description"
+							defaultValue=""
+							name="description"
+							label="Description"
+							placeholder="Description"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('description')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="drinks"
+							defaultValue=""
+							name="drinks"
+							label="Drinks"
+							placeholder="Drinks"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('drinks')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="shows"
+							defaultValue=""
+							name="shows"
+							label="Shows"
+							placeholder="Shows"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('shows')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="books"
+							defaultValue=""
+							name="books"
+							label="Books"
+							placeholder="Books"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('books')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="games"
+							defaultValue=""
+							name="games"
+							label="Games"
+							placeholder="Games"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('games')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="music"
+							defaultValue=""
+							name="music"
+							label="Music"
+							placeholder="Music"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('music')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="decor"
+							defaultValue=""
+							name="decor"
+							label="Decor"
+							placeholder="Decor"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('decor')}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							id="more"
+							defaultValue=""
+							name="more"
+							label="More"
+							placeholder="More"
+							fullWidth
+							margin="dense"
+							multiline
+							rows={2}
+							{...register('more')}
+						/>
+						<Typography variant= "h6">
+							Select a related recipe from the dropdown.
+						</Typography>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeOneChange}
+							id="recipeOne"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
+								<TextField
+								{...option}
+									label="Related Recipe 1"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+								/>
 							)}
-						</div>
-					)}
-				</div>
-			)}
-		</div>
+						/>
+						<Typography variant= "h6">
+							Select a second related recipe from the dropdown.
+						</Typography>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeTwoChange}
+							id="recipeTwo"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
+								<TextField
+									{...option}
+									label="Related Recipe 2"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+								/>
+							)}
+						/>
+						<Typography variant= "h6">
+							Select a third related recipe from the dropdown.
+						</Typography>
+						<Autocomplete
+							sx={{ mb: 2 }}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handleRecipeThreeChange}
+							id="recipeThree"
+							options={recipes.map((option, index) => option)}
+							getOptionLabel={(option) => option.title}
+							renderInput={(option) => (
+								<TextField
+									{...option}
+									label="Recipe Pairing"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+								/>
+							)}
+						/>
+						<Box mt={3}>
+							<Button
+								variant="contained"
+								color="info"
+								onClick={handleSubmit(savePairing)}
+							>
+								Create Recipe Pairing
+							</Button>
+						</Box>
+					</Box>
+				</>
+				)}
+			</>
+			):(
+			<>
+				{ selected ? (
+				<>
+					<Box style={styles.borderBox}>
+						<Typography variant="h5" sx={{color: "pairing.main"}}>
+							Selected Pairing:
+						</Typography>
+						<Box mt={2}>
+							<Typography variant="body1"  >
+								{pairing.pairingName}
+							</Typography>
+						</Box>
+						<Box mt={1}>
+							<Button
+								variant="contained"
+								color="info"
+								onClick={savePairingRecipe}
+							>
+								Add to {currentRecipe.title}
+							</Button>
+						</Box>
+					</Box>
+					<Box style={styles.borderBox}>
+						<Typography variant="h6">
+							Or select a different pairing from the dropdown.
+						</Typography>
+						<Autocomplete
+							mt={1}
+							fullWidth
+							disablePortal
+							disableClearable
+							onChange={handlePairingChange}
+							id="pairing"
+							options={pairingOptions.map((option) => option)}
+							getOptionLabel={(option) => option.pairingName}
+							renderInput={(option) => (
+								<TextField
+									{...option}
+									label="Recipe Pairing"
+									InputProps={{
+										...option.InputProps,
+										type: 'search',
+									}}
+									{...register('pairing')}
+								/>
+							)}
+						/>
+					</Box>
+				</>
+        ):(
+				<>
+					<Box style={styles.borderBox}>
+            <Typography variant="h6">Please select a recipe pairing from the dropdown.</Typography>
+            <Box mt={1}>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                disableClearable
+                onChange={handlePairingChange}
+                id="pairing"
+                options={pairingOptions.map((option) => option)}
+                getOptionLabel={(option) => option.pairingName}
+                renderInput={(option) => (
+                  <TextField
+                    {...option}
+                    label="Recipe Pairing"
+                    InputProps={{
+                      ...option.InputProps,
+                      type: 'search',
+                    }}
+                    {...register('pairing')}
+                  />
+                )}
+              />
+            </Box>
+					</Box>
+					<Box style={styles.borderBox}>
+            <Typography variant="h6">Or create a new Pairing.</Typography>
+            <Box mt={1}>
+              <Button variant="contained" color="info" onClick={goCreate}>New Pairing</Button>
+            </Box>
+					</Box>
+        </>
+        )}
+      </>
+      )}
+    </>
+    )}
+  </>
   )
 }
 

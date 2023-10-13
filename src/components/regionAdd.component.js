@@ -4,12 +4,24 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Paper, Box, Button, FormControl, Grid, Item, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, FormControl, Grid, Item, Stack, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { red, pink, purple, blue, green } from '@mui/material/colors';
 import RecipeDataService from "../services/recipe.service";
 import RegionDataService from "../services/region.service";
 import RegionRecipeDataService from "../services/regionRecipe.service";
 import { NavItem } from "react-bootstrap";
+
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    
+    border: '5px solid  #0d47a1',
+  }
+}
 
 const RegionAddComponent = () => { 
 const { id } = useParams();
@@ -39,11 +51,22 @@ const [currentRegion, setCurrentRegion] = useState ()
 const [regionRecipe, setRegionRecipe] = useState(initialRegionRecipeState);
 const [submitted, setSubmitted] = useState(false)
 
-
+//retrieve recipe and regions for dropdown
 useEffect(() => {
-    retrieveRegions();
     retrieveRecipe(id);
+    retrieveRegions();
   }, []);
+
+  const retrieveRecipe = id => {
+    RecipeDataService.get(id)
+      .then(response => {
+        setCurrentRecipe(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e)
+      });
+  };
 
   const retrieveRegions = () => {
     RegionDataService.getAll()
@@ -56,18 +79,13 @@ useEffect(() => {
     });
   };
 
-  const retrieveRecipe = id => {
-    RecipeDataService.get(id)
-      .then(response => {
-        setCurrentRecipe(response.data);
-        console.log(response.data);
-        console.log(currentRecipe.id);
-      })
-      .catch(e => {
-       
-      });
-  };
-
+  //react-hook-form functions
+  const {
+    register,
+    formState: { errors }
+  } = useForm();
+  
+  //retrieve region selected from dropdown
   const retrieveRegion = id => {
     RegionDataService.get(id)
       .then(response => {
@@ -75,11 +93,12 @@ useEffect(() => {
         console.log(response.data);
       })
       .catch(e => {
-       
+        console.log(e)
       });
   };
 
-const saveRegionRecipe = () => {
+  //save regionId to recipe
+  const saveRegionRecipe = () => {
     var data = {
       regionId: currentRegion.id,
       recipeId: currentRecipe.id
@@ -100,6 +119,7 @@ const saveRegionRecipe = () => {
 
   };
 
+  //retrieve regionId from dropdown selection and run retrieveRegion function
   const handleRegionChange = async (event, option) => {
     setRegionId(option.id);
     console.log(option.id)
@@ -108,21 +128,6 @@ const saveRegionRecipe = () => {
     console.log(regionId)
     retrieveRegion(regionId)
   }, [regionId])
-
-   //validation functions
-   const validationSchema = Yup.object().shape({
-    title: Yup.string()
-      .required('title is required')
-    });
-  
-    const {
-      register,
-      handleSubmit,
-      formState: { errors }
-    } = useForm({
-      defaultValues: { "servingSize": null, "recipeType": ""},
-      resolver: yupResolver(validationSchema)
-    });
 
   //nav functions
   const returnRecipe = () => {
@@ -136,106 +141,106 @@ const saveRegionRecipe = () => {
   }
 
   const addCreator = () => {
-    navigate("/creators/add/:id")
+    navigate("/creators/add/" + id)
   }
 
   const addPairing = () => {
-    navigate("/pairings/add/:id")
+    navigate("/pairings/add/" + id)
   }
 
-return (
-<div>
-  { submitted ? (
-    <Paper>
+  return (
+  <>
+    { submitted ? (
+    <>
       <Box m={2}>
-        <Typography variant="h6" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
+        <Typography variant="h4" >You've added {currentRegion.country} to {currentRecipe.title}!</Typography> 
       </Box>
       <Box m={2}>
         <Button variant="contained" onClick={returnRecipe}>View Recipe Page</Button>
       </Box>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addAnotherRegion}>Add Another Region</Button>
-      <Button sx={{my: 2, ml: 2}}variant="outlined" onClick={addCreator}>Add a Recipe Creator</Button>
-      <Button sx={{my: 2, ml: 2}} variant="outlined" onClick={addPairing}>Add a Recipe Pairing</Button>
-    </Paper>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="secondary" onClick={addAnotherRegion}>Add Another Region</Button>
+      <Button sx={{my: 2, ml: 2}}variant="outlined" color="creator" onClick={addCreator}>Add a Recipe Creator</Button>
+      <Button sx={{my: 2, ml: 2}} variant="outlined" color="pairing" onClick={addPairing}>Add a Recipe Pairing</Button>
+    </>
     ):(
-    <Paper>
+    <>
       {currentRegion? (
-        <div>
-          <Box mt={2} ml={'10%'} mr={'10%'} mb={2}>
-            <Typography variant="h4">
-              Selected Region
+      <>
+        <Box style={styles.borderBox}>
+          <Typography variant="h5" sx={{ color: "secondary.main"}}>
+            Selected Region
+          </Typography>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Country:&nbsp;
             </Typography>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Country:&nbsp;
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.country}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Region:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.regionName}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Latitude:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.lat}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
-                Longitude:&nbsp; 
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
-                {currentRegion.lng}
-              </Typography>
-            </div>
-            <Box mt={3}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={saveRegionRecipe}
-              >
-                Add Region to {currentRecipe.title}
-              </Button>
-            </Box>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.country}
+            </Typography>
           </Box>
-        
-          <Box mr={'10%'} ml={'10%'}>
-            <Typography variant="h6">Or select a different country from the dropdown.</Typography>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              disableClearable
-              onChange={handleRegionChange}
-              id="recipeType"
-              options={regions.map((option) => option)}
-              getOptionLabel={(option) => option.country}
-              renderInput={(option) => (
-                <TextField
-                  {...option}
-                  label="Country"
-                  InputProps={{
-                  ...option.InputProps,
-                  type: 'search',
-                  }}
-                  {...register('region')}
-                />
-              )}
-            />
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Region:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.regionName}
+            </Typography>
           </Box>
-        </div>
-        ): (
-        <div>
-            <Box mr={'10%'} ml={'10%'} mt={2}>
-          <Typography variant="h6">Please select a country from the dropdown.</Typography>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Latitude:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.lat}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }} display="inline">
+              Longitude:&nbsp; 
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'regular' }} display="inline">
+              {currentRegion.lng}
+            </Typography>
+          </Box>
+          <Box mt={3}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={saveRegionRecipe}
+            >
+              Add Region to {currentRecipe.title}
+            </Button>
+          </Box>
+        </Box>
+        <Box style={styles.borderBox}>
+          <Typography variant="h6">Or select a different country from the dropdown.</Typography>
+          <Autocomplete
+            fullWidth
+            disablePortal
+            disableClearable
+            onChange={handleRegionChange}
+            id="recipeType"
+            options={regions.map((option) => option)}
+            getOptionLabel={(option) => option.country}
+            renderInput={(option) => (
+              <TextField
+                {...option}
+                label="Country"
+                InputProps={{
+                ...option.InputProps,
+                type: 'search',
+                }}
+                {...register('region')}
+              />
+            )}
+          />
+        </Box>
+      </>
+      ): (
+      <>
+        <Typography variant="h4" color="secondary.main">Add a new region</Typography>
+        <Box style={styles.borderBox}>
+          <Typography variant="h6" color="greyQuote">Please select a country from the dropdown.</Typography>
           <Autocomplete
             fullWidth
             disablePortal
@@ -256,12 +261,13 @@ return (
               />
             )}
           /> 
-          </Box>
-        </div>
+        </Box>
+      </>
       )} 
-    </Paper>
-  )}
-</div>
-)}
+    </>
+    )}
+  </>
+  )
+}
 
 export default RegionAddComponent;

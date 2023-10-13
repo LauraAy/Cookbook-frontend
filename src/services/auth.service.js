@@ -1,4 +1,5 @@
 import axios from "axios";
+import http from "../http-common";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
@@ -33,11 +34,21 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
+const getOne = (id) => {
+  return http.get(`/users/${id}`)
+}
+
+const update = (id, data) => {
+  return http.put(`/users/${id}`, data);
+};
+
 const AuthService = {
   register,
   login,
   logout,
   getCurrentUser,
+  update,
+  getOne
 };
 
 export default AuthService;

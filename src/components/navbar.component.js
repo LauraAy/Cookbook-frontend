@@ -4,11 +4,12 @@ import { Routes, Route, Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container,
 Avatar, Button, Tooltip, MenuItem }from '@mui/material';
 import { MenuBook, BakeryDining }from '@mui/icons-material';
+import WorldIconTest from '../images/worldIconTest.jpg'
 
 const NavbarComponent = () => {
 	const [currentUser, setCurrentUser] = useState(undefined);
 
-  useEffect(() => {
+	useEffect(() => {
 		const user = AuthService.getCurrentUser();
 			if (user) {
 				setCurrentUser(user);
@@ -27,11 +28,12 @@ const NavbarComponent = () => {
 	const pages = [
 		{name: 'Your Recipes', link: '/user/recipes'},
 		{name: 'All Recipes', link: '/recipes'},
-		{name: 'Add Recipes', link: '/recipes/add'}
+		{name: 'Add Recipes', link: '/recipes/add'},
+		{name: 'About YWC', link: '/about'}
 	]
 
 	const loginPages = [
-		{name: 'Register', link: '/register'},
+		{name: 'Sign Up', link: '/register'},
 		{name: 'Sign In', link: '/login'}
 	]
 
@@ -54,22 +56,29 @@ const NavbarComponent = () => {
     setAnchorElUser(null);
   };
 
-  return (
+	return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+			<Container maxWidth="xl">
         <Toolbar disableGutters>
 					{ currentUser ? (
 					<>
-						<BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-							<Typography
-								variant="h6"
-								component="a"
-								href="/"
-								sx={{
-								mr: 2,
+						{/* <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+						<Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
+							<img 
+								src={WorldIconTest} 
+								alt="picture of a world"
+								style={{ maxHeight: '100px', margin: '5px'}}
+							/>
+						</Box>
+						<Typography
+							variant="h4"
+							component="a"
+							href="/"
+							sx={{
+								mr: 1,
 								display: { xs: 'none', md: 'flex' },
-								fontFamily: 'monospace',
 								fontWeight: 700,
+								fontFamily: 'RachelBrown',
 								letterSpacing: '.3rem',
 								color: 'inherit',
 								textDecoration: 'none',
@@ -78,16 +87,19 @@ const NavbarComponent = () => {
 							Your World Cookbook
 						</Typography>
 						<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+						
 							<IconButton
-								size="large"
+						
+								size="inherit"
 								aria-label="account of current user"
 								aria-controls="menu-appbar"
 								aria-haspopup="true"
 								onClick={handleOpenNavMenu}
 								color="inherit"
 							>
-								<MenuBook />
+								<MenuBook sx={{ fontSize: "60px" }}/>
 							</IconButton>
+						
 							<Menu
 								id="menu-appbar"
 								anchorEl={anchorElNav}
@@ -104,7 +116,7 @@ const NavbarComponent = () => {
 								onClose={handleCloseNavMenu}
 								sx={{
 									display: { xs: 'block', md: 'none' },
-									}}
+								}}
 							>
 								{pages.map((page) => (
 									<MenuItem key={page.name} onClick={handleCloseNavMenu}>
@@ -117,7 +129,6 @@ const NavbarComponent = () => {
 								))}
 							</Menu>
 						</Box>
-						<BakeryDining sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, ml: 2 }} />
 						<Typography
 							variant="h5"
 							component="a"
@@ -126,7 +137,7 @@ const NavbarComponent = () => {
 								mr: 2,
 								display: { xs: 'flex', md: 'none' },
 								flexGrow: 1,
-								fontFamily: 'monospace',
+								fontFamily: 'RachelBrown',
 								fontWeight: 700,
 								letterSpacing: '.3rem',
 								color: 'inherit',
@@ -179,7 +190,7 @@ const NavbarComponent = () => {
 									</Link>
                 </MenuItem>
 								<MenuItem onClick={handleCloseUserMenu}>
-									<a href={`/logout`} className="navbar-brand" onClick={logOut}>
+									<a href={`/`} className="navbar-brand" onClick={logOut}>
 										<Typography textAlign="center">Sign Out</Typography>
 									</a>
                 </MenuItem>
@@ -188,16 +199,16 @@ const NavbarComponent = () => {
 					</>
 					):(
 					<>
-						<BakeryDining sx={{ mr: 1 }} />
+						{/* <BakeryDining sx={{ mr: 1 }} /> */}
 						<Typography
-							variant="h6"
+							variant="h4"
 							component="a" 
 							href="/"
 							sx={{
 							mr: 2,
 							flexGrow: 1,
 							display: 'flex',
-							fontFamily: 'monospace',
+							fontFamily: 'RachelBrown',
 							fontWeight: 700,		
 							letterSpacing: '.3rem',
 							color: 'inherit',

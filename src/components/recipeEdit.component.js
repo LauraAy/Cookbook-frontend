@@ -1,14 +1,35 @@
+import '../styles.scss'
+
 import React, { useState, Fragment, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Box, Button, FormControl,  Paper, TextField, Typography } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import { green } from '@mui/material/colors';
 import RecipeDataService from "../services/recipe.service";
 import DeleteConfirmation from "../components/deleteConfirmation.component.js"
+import IngredientTipTap from "./TiptapIngredientsEdit"
+import DirectionsTipTap from "./TiptapDirectionsEdit"
+
+const styles = {
+  borderBox: {
+    position: 'relative',
+    textAlign: 'left', 
+    margin: '10px',
+    padding: '20px',
+    color: green[900],
+    border: '5px solid',
+  }
+}
 
 const RecipeEdit = props => {
+  const filter = createFilterOptions();
+
   const { id }= useParams();
   let navigate = useNavigate();
+
   const initialRecipeState = {
     id: null,
     title: "",
@@ -26,8 +47,8 @@ const RecipeEdit = props => {
   const [value, setValue] = React.useState(null);
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [deleteText, setDeleteText] = useState(null);
-
-  const filter = createFilterOptions();
+  const [ingredients, setIngredients] = useState("");
+  const [directions, setDirections] = useState("");
 
   //get recipe
   const getRecipe = id => {
@@ -46,7 +67,6 @@ const RecipeEdit = props => {
     getRecipe(id);
   }, [id]);
 
-  //get all recipes
   const retrieveRecipes = () => {
     RecipeDataService.getAll()
     .then(response => {
@@ -69,6 +89,48 @@ const RecipeEdit = props => {
     .map((option) => (option))
   const typeOptions = cleanRecipes.sort()
 
+  //react-hook-form and yup functions
+  const validationSchema = Yup.object().shape({
+    title: Yup.string()
+      .required('Title is required.'),
+    servingSize: Yup.number().notRequired().nullable().transform((_, val) => val ? Number(val) : null)
+      .typeError('This field must be a number, like 3 or 42.')
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+    values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
+    source: currentRecipe.source },
+  });
+
+  //update recipe
+  const updateRecipe = (formData) => {
+    var data = {
+      title: formData.title,
+      description: formData.description,
+      recipeType: formData.recipeType,
+      servingSize: formData.servingSize,
+      ingredients: ingredients,
+      directions: directions,
+      source: formData.source
+    };
+
+    RecipeDataService.update(currentRecipe.id, data)
+      .then(response => {
+        console.log(response.data);
+        navigate("/recipes/" + currentRecipe.id)
+        // localStorage.removeItem('ingredients-content')
+        // localStorage.removeItem('directions-content')
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   //Dialog functions
   const handleClickOpen = () => {
     setDeleteMessage('Are you sure you want to delete the recipe?');
@@ -81,37 +143,6 @@ const RecipeEdit = props => {
     setOpen(false);
   };
 
-  //react-hook-form functions
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    values: { title: currentRecipe.title, description: currentRecipe.description, recipeType: currentRecipe.recipeType, servingSize: currentRecipe.servingSize, 
-      ingredients: currentRecipe.ingredients, directions: currentRecipe.directions, source: currentRecipe.source },
-  });
- 
-  //update recipe
-  const updateRecipe = (formData) => {
-    var data = {
-      title: formData.title,
-      description: formData.description,
-      recipeType: formData.recipeType,
-      servingSize: formData.servingSize,
-      ingredients: formData.ingredients,
-      directions: formData.directions,
-      source: formData.source
-    };
-
-    RecipeDataService.update(currentRecipe.id, data)
-      .then(response => {
-        console.log(response.data);
-        navigate("/recipes/" + currentRecipe.id)
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
 
   //Delete Recipe
   const submitDelete = () => {
@@ -124,15 +155,14 @@ const RecipeEdit = props => {
         console.log(e);
       });
   };
+  
 
   return (
-  <div>
-    <Fragment>
-      <Paper>
-        <Typography variant="h6" align="center" margin="dense">
+  <>
+        <Typography variant="h4" align="center" margin="dense">
           Edit {currentRecipe.title}
         </Typography>
-        <Box sx={{ ml: "10%", mr: "10%" }}>
+        <Box style={styles.borderBox}>
           <FormControl fullWidth>
             <TextField
               sx={{ mt: 2, mb: 2 }}
@@ -224,6 +254,7 @@ const RecipeEdit = props => {
                 />
               )}
             />
+            
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="servingSize"
@@ -236,37 +267,17 @@ const RecipeEdit = props => {
               fullWidth
               margin="dense"
               {...register('servingSize')}
+              error={errors.servingSize ? true : false}
             />
-            <TextField
-              sx={{ mt: 2, mb: 2 }}
-              id="outlined-multiline-static"
-              defaultValue=""
-              name="ingredients"
-              label="Ingredients"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              margin="dense"
-              multiline
-              rows={4}
-              {...register('ingredients')}
-            />
-            <TextField
-              sx={{ mt: 2, mb: 2 }}
-              id="outlined-multiline-static"
-              defaultValue=""
-              name="directions"
-              label="Directions"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              margin="dense"
-              multiline
-              rows={4}
-              {...register('directions')}
-            />
+            <Typography variant="inherit" color="textSecondary">
+              {errors.servingSize?.message}
+            </Typography>
+            <Box mb={2}>
+              <IngredientTipTap setIngredients={setIngredients}/>
+            </Box>
+            <Box mb={2}>
+              <DirectionsTipTap setDirections={setDirections}/>
+            </Box>
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="source"
@@ -308,9 +319,7 @@ const RecipeEdit = props => {
             <DeleteConfirmation openDialog={open} closeDialog={handleClose} confirmDialog={submitDelete} message={deleteMessage} text={deleteText}  />
           </Box>   
         </Box>
-      </Paper>
-    </Fragment>
-  </div>
+  </>
   );
 };
 

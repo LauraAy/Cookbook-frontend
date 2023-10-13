@@ -3,14 +3,15 @@ import { Routes, Route, Link } from "react-router-dom";
 // import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
 // Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./App.css"
-// import AuthService from "./services/auth.service";
+import {createTheme, colors, createColor, ThemeProvider} from '@mui/material';
+import { red, purple, blue, green, grey, pink, orange } from '@mui/material/colors';
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
 import Register from "./pages/register.page.js";
 import Profile from "./pages/profile.page.js";
+import ProfileEdit from "./components/profileEdit.component.js"
+import About from "./pages/about.page.js";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
@@ -25,21 +26,86 @@ import CreatorEdit from "./pages/creatorEdit.page.js";
 import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
 
+
 import Test from "./components/test.js"
+import { createLocalStorageManager } from "@chakra-ui/react";
+
+
+  const theme = createTheme({
+    typography: {
+      fontFamily: "Montserrat Variable",
+      h1: {
+        fontFamily: "RachelBrown",
+        color: green[800]
+      },
+      h2: {
+        fontFamily:"RachelBrown",
+        color: green[900]
+      },
+      h3: {
+        fontFamily:"RachelBrown",
+        color: green[900]
+      },
+      h4: {
+        fontFamily:"RachelBrown",
+        color: green[900]
+      },
+      h5: {
+        fontFamily:"RachelBrown",
+        color: green[900]
+      },
+      h6: {
+        fontFamily:"RachelBrown",
+        color: grey[900]
+      },
+      body1: {
+        fontSize: "1.1rem",
+        lineHeight: "1.5"
+      }
+    },
+    palette: {
+      primary: {
+        main: green[900],
+      },
+      secondary: {
+        main: blue[900],
+      },
+      info: {
+        main: '#890010'
+      },
+      error: {
+        main: red[400]
+      },
+      creator: {
+        light: purple[700],
+        main: purple[900]
+      },
+      pairing: {
+        main: '#890010',
+        dark: '#890010'
+      },
+      greyQuote: {
+        main: grey[800]
+      }
+    },
+  });
+
 
 const App = () => {
- 
 
   return (
+  <ThemeProvider theme={theme}>
     <>
     <NavbarComponent />
       
     <div className="container mt-3">
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/user" element={<BoardUser />} />
         <Route path="/mod" element={<BoardModerator />} />
         <Route path="/admin" element={<BoardAdmin />} />
@@ -59,11 +125,13 @@ const App = () => {
         <Route path="/pairings/edit/:recipeId/:pairingId" element={<PairingEdit/>} />
 
         <Route path="/test" element={<Test/>} />
+        <Route path ="/test/:id" element={<Test/>} />
         
         </Routes>
    
       </div>
     </>
+    </ThemeProvider>
     );
   }
 

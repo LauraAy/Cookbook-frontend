@@ -19,14 +19,26 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
   const navigate = useNavigate()
  
   useEffect(() => {
+    console.log()
     retrieveUserRecipes(currentUser.id)
   }, []);
 
   const retrieveUserRecipes = (id) => {
     UserRecipeDataService.findUserRecipes(id)
     .then(response => {
-      setUserRecipes(response.data);
-      console.log(response.data);
+      const sortRecipe = response.data
+      
+      sortRecipe.sort((a, b) => {
+        if (a.title.toLowerCase ()< b.title.toLowerCase()) {
+          return -1;
+        }
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
+      setUserRecipes(sortRecipe)
     })
     .catch(e => {
       console.log(e);
@@ -76,8 +88,8 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
   <>
     {searchActive ? (
     <> 
-      <Box p="10" pt="3" spacing={2}>
-        <Typography variant="h5">{selectedRecipe.title}</Typography>
+      <Box p="20px" pt="3" spacing={2}>
+        <Typography variant="h4">{selectedRecipe.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
           Click to view full recipe.
         </Typography>
@@ -115,14 +127,16 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
     </>
     ):(
     <>
-      <Box p="10" pt="3" spacing={2}></Box>
+      <Box p="20px" pt="3" spacing={2}>
         <Typography variant="h4" gutterBottom>
           {currentUser.username}'s Recipes
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          Search Recipes By Title
-        </Typography>
-        <Box m={4} sx={{ display: 'flex' }}>
+        <Box mx={4}  sx={{ display: 'flex' }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Search Recipes By Title
+          </Typography>
+        </Box>
+        <Box mx={4} mb={2} sx={{ display: 'flex' }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -140,10 +154,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
           <Typography variant="h5" gutterBottom>
             Browse Recipes
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Click to See Full Recipe
-          </Typography>
-          <Box m={2}>
+          <Box mx={2}>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickRegion()}>filter by region</Button>
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>
@@ -193,6 +204,7 @@ const UserRecipesAll = ({clickRegion, clickCreator})=> {
             <Button sx={{my:2, ml:2}} variant="outlined" onClick={() => clickCreator()}>filter by creator</Button>
           </Box>
         </Box>
+      </Box>
     </>
     )}
   </>
