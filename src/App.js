@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 // import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
 // Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
@@ -25,6 +25,7 @@ import CreatorAdd from "./pages/creatorAdd.page.js";
 import CreatorEdit from "./pages/creatorEdit.page.js";
 import PairingAdd from "./pages/pairingAdd.page.js";
 import PairingEdit from "./pages/pairingEdit.page.js"
+import ScrollToTop from "./components/scrollToTop.component";
 
 
 import Test from "./components/test.js"
@@ -95,7 +96,9 @@ const App = () => {
 
   return (
   <ThemeProvider theme={theme}>
-    <>
+  <>
+    <ScrollToTop />
+    
     <NavbarComponent />
       
     <div className="container mt-3">
@@ -127,12 +130,11 @@ const App = () => {
         <Route path="/test" element={<Test/>} />
         <Route path ="/test/:id" element={<Test/>} />
         
-        </Routes>
-   
-      </div>
-    </>
-    </ThemeProvider>
-    );
-  }
+      </Routes>
+    </div>
+  </>
+  </ThemeProvider>
+  );
+}
 
 export default App;
