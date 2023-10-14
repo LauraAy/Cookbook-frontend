@@ -204,8 +204,9 @@ const HomeComponent = () => {
         <motion.div
           className="box"
           ref={ref}
-          variants={appearBox}
-          initial="hidden"
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
           animate={control}
         >
           <Box style={styles.regionCard} >
@@ -220,8 +221,9 @@ const HomeComponent = () => {
         <motion.div
           className="box"
           ref={ref}
-          variants={appearBox}
-          initial="hidden"
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
           animate={control}
         >
           <Box style={styles.creatorCard} >
@@ -235,8 +237,9 @@ const HomeComponent = () => {
         <motion.div
           className="box"
           ref={ref}
-          variants={appearBox}
-          initial="hidden"
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
           animate={control}
         >
           <Box style={styles.pairingCard}>
@@ -258,7 +261,7 @@ const HomeComponent = () => {
       </Typography>
       <motion.div
         className="hoverBox"
-        whileHover={{ scale: [null, 1.5, 1.4] }}
+        whileHover={{ scale: [null, 1.4, 1.3] }}
         transition={{ duration: 0.3 }}
       >
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
