@@ -5,6 +5,7 @@ import AuthService from "../services/auth.service";
 import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
 import globe from "../images/globe.png"
+import creator from "../images/creator.png"
 import { purple, blue, green } from '@mui/material/colors';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, useAnimation } from "framer-motion";
@@ -238,7 +239,14 @@ const HomeComponent = () => {
           animate={control}
         >
           <Box style={styles.creatorCard} >
-            <Typography variant='h6' sx={{color: 'creator.main'}}>
+            <Box sx={{ float: 'left', marginRight: "20px"}}>
+              <img
+                src={creator} 
+                alt="A chef's hat and a wooden spoon."
+                style={{ maxHeight: '100px'}}
+              />
+            </Box>
+            <Typography variant='h6' sx={{color: 'creator.main', paddingTop: {xs: 'none', sm: '20px', md: '30px'}}}>
               Who is the genius behind this recipe? Add the person who created it.
             </Typography>
           </Box>

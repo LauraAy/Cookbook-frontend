@@ -98,7 +98,6 @@ const App = () => {
   <ThemeProvider theme={theme}>
   <>
     <ScrollToTop />
-    
     <NavbarComponent />
       
     <div className="container mt-3">
