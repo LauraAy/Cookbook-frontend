@@ -6,6 +6,7 @@ import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
 import globe from "../images/globe.png"
 import creator from "../images/creator.png"
+import pairing from "../images/pairing.png"
 import { purple, blue, green } from '@mui/material/colors';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, useAnimation } from "framer-motion";
@@ -262,6 +263,13 @@ const HomeComponent = () => {
           animate={control}
         >
           <Box style={styles.pairingCard}>
+            <Box sx={{ float: 'left', marginRight: "20px"}}>
+              <img
+                src={pairing} 
+                alt="Two wine glasses with music notes behind them."
+                style={{ maxHeight: '100px'}}
+              />
+            </Box>
             <Typography variant='h6' sx={{color: 'pairing.main'}}>
               What are the perfect pairings for this recipe? Add music, games, drinks or more to pair with this dish.
             </Typography>
