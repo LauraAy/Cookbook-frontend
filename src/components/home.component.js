@@ -4,6 +4,7 @@ import {DoubleArrow} from '@mui/icons-material';
 import AuthService from "../services/auth.service";
 import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
+import globe from "../images/globe.png"
 import { purple, blue, green } from '@mui/material/colors';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, useAnimation } from "framer-motion";
@@ -68,6 +69,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: blue[900],
       border: '5px solid',
+      minHeight: '100px',
     },
     creatorCard: {
       position: 'relative',
@@ -77,7 +79,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: purple[900],
       border: '5px solid #4527a0',
-      // borderColor: purple[900]
+      minHeight: '100px',
     },
     pairingCard: {
       position: 'relative',
@@ -87,6 +89,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: 'darkRed',
       border: '5px solid darkRed',
+      minHeight: '100px',
     },
     aboutCard: {
       position: 'relative',
@@ -210,10 +213,18 @@ const HomeComponent = () => {
           animate={control}
         >
           <Box style={styles.regionCard} >
-            <Typography variant='h6' sx={{color: 'secondary.main'}}>
-              Where in the world is this recipe from? Add the region or 
-              regions where it originated.
-            </Typography>
+            <Box sx={{ float: 'left'}}>
+                <img
+                  src={globe} 
+                  alt="A globe showing the countries of the world."
+                  style={{ maxHeight: '100px'}}
+                />
+              </Box>
+                <Typography variant='h6' sx={{color: 'secondary.main', paddingTop: {xs: 'none', sm: '20px', md: '30px'}}}>
+                  Where in the world is this recipe from? Add the region or 
+                  regions where it originated.
+                </Typography>
+            
           </Box>
         </motion.div>
       </Grid>

@@ -4,7 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container,
 Avatar, Button, Tooltip, MenuItem }from '@mui/material';
 import { MenuBook, BakeryDining }from '@mui/icons-material';
-import WorldIconTest from '../images/worldIconTest.jpg'
+import LogoDarkBG from '../images/ywcLogoDarkBG.png'
 
 const NavbarComponent = () => {
 	const [currentUser, setCurrentUser] = useState(undefined);
@@ -15,8 +15,6 @@ const NavbarComponent = () => {
 				setCurrentUser(user);
 				console.log(user)
 				console.log(user.username)
-		    // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-		    // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
 			}
 		}, []);
 
@@ -65,9 +63,9 @@ const NavbarComponent = () => {
 						{/* <BakeryDining sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
 						<Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
 							<img 
-								src={WorldIconTest} 
-								alt="picture of a world"
-								style={{ maxHeight: '100px', margin: '5px'}}
+								src={LogoDarkBG} 
+								alt="Logo with noodles inside a bowl that looks like a globe and the words Your World Cookbook."
+								style={{ maxHeight: '120px', margin: '5px'}}
 							/>
 						</Box>
 						<Typography
