@@ -164,7 +164,7 @@ const PairingViewComponent = params => {
           <img
             src={pairingImg} 
             alt="A chef's hat and a wooden spoon."
-            style={{ maxHeight: '100px', align: 'center'}}
+            style={{ maxHeight: '150px', align: 'center'}}
           />
         </Box>
       </Grid>

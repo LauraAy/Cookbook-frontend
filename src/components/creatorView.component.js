@@ -74,7 +74,7 @@ const CreatorViewComponent = params => {
         <img
           src={creatorImg} 
           alt="A chef's hat and a wooden spoon."
-          style={{ maxHeight: '100px'}}
+          style={{ maxHeight: '150px'}}
         />
         </Box>
       </Grid>
