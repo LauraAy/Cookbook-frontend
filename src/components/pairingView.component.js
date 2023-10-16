@@ -4,6 +4,7 @@ import PairingRecipeDataService from "../services/pairingRecipe.service";
 import RecipeDataService from "../services/recipe.service";
 import { Box, Button, Divider, Grid, Tooltip, Typography, } from '@mui/material';
 import { Delete } from  '@mui/icons-material';
+import pairingImg from '../images/pairing.png'
 
 const PairingViewComponent = params => {
   const { id } = useParams();
@@ -157,132 +158,161 @@ const PairingViewComponent = params => {
   <>
     {pairing ? (
     <>
-      <Box mt={2}>
-        <Typography 
-          variant="h4" 
-          mx={4}
-          sx={{color: "pairing.main"}}
-        >
-          {pairing.pairingName}
-        </Typography>
-        <Box mx={4} mb={4}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={8}>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.description && (
-                <>
-                  <strong>Description: </strong>
-                  {pairing.description}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.drinks && (
-                <>
-                  <strong>Drinks: </strong>
-                  {pairing.drinks}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.shows && (
-                <>
-                  <strong>Shows: </strong>
-                  {pairing.shows}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.books && (
-                <>
-                  <strong>Books: </strong>
-                  {pairing.books}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.music && (
-                <>
-                  <strong>Music: </strong>
-                  {pairing.music}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.decor && (
-                <>
-                  <strong>Crafts and decor: </strong>
-                  {pairing.decor}
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.recipeOne && (
-                <>
-                  <strong>Related Recipe 1: </strong>
-                  &nbsp;
-                  {recipeOne.title}
-                  <Button
-                    onClick={recipeOneNav}
-                  >
-                    View Recipe
-                  </Button>
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.recipeTwo && (
-                <>
-                  <strong>Related Recipe 2: </strong>
-                  {recipeTwo.title}
-                  <Button
-                    onClick={recipeTwoNav}
-                  >
-                    View Recipe
-                  </Button>
-                </>
-                )}
-              </Typography>
-              <Typography variant="body1"sx={{ m: 1 }}>
-                {pairing.recipeThree && (
-                <>
-                  <strong>Related Recipe 3: </strong>
-                  {recipeThree.title}
-                  <Button
-                    onClick={recipeThreeNav}
-                  >
-                    View Recipe
-                  </Button>
-                </>
-                )}
-              </Typography>
-              <Tooltip title="Edit this pairing.">
-                <Button
-                  onClick={editPairing}
-                  variant="outlined"
-                  color="info"
-                  sx={{ my: 2 }}
-                >
-                  Edit Pairing
-                </Button>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Tooltip title="Remove this pairing from recipe.">
-                <Button 
-                  onClick={() => {removePairing(pairing.id)}}
-                  variant="outlined"
-                  color="error"
-                  startIcon={<Delete />}
-                >
-                  Remove
-                </Button>
-              </Tooltip>
-            </Grid>
-          </Grid>
+    <Grid container>
+      <Grid item xs={12}>
+        <Box  mx={4} sx={{ display: {xs: 'block', sm: 'none', md: 'none'}}}>
+          <img
+            src={pairingImg} 
+            alt="A chef's hat and a wooden spoon."
+            style={{ maxHeight: '100px', align: 'center'}}
+          />
         </Box>
-        <Divider></Divider>
-      </Box>
+      </Grid>
+      <Grid item xs={12} sm={8} md={8}>
+        <Box mt={2}>
+          <Typography 
+            variant="h4" 
+            mx={4}
+            sx={{color: "pairing.main"}}
+          >
+            {pairing.pairingName}
+          </Typography>
+          <Box mx={4} mb={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={8}>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.description && (
+                  <>
+                    <strong>Description: </strong>
+                    {pairing.description}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.drinks && (
+                  <>
+                    <strong>Drinks: </strong>
+                    {pairing.drinks}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.shows && (
+                  <>
+                    <strong>Shows: </strong>
+                    {pairing.shows}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.books && (
+                  <>
+                    <strong>Books: </strong>
+                    {pairing.books}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.music && (
+                  <>
+                    <strong>Music: </strong>
+                    {pairing.music}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.decor && (
+                  <>
+                    <strong>Crafts and decor: </strong>
+                    {pairing.decor}
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.recipeOne && (
+                  <>
+                    <strong>Related Recipe 1: </strong>
+                    &nbsp;
+                    {recipeOne.title}
+                    <Button
+                      onClick={recipeOneNav}
+                    >
+                      View Recipe
+                    </Button>
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.recipeTwo && (
+                  <>
+                    <strong>Related Recipe 2: </strong>
+                    {recipeTwo.title}
+                    <Button
+                      onClick={recipeTwoNav}
+                    >
+                      View Recipe
+                    </Button>
+                  </>
+                  )}
+                </Typography>
+                <Typography variant="body1"sx={{ m: 1 }}>
+                  {pairing.recipeThree && (
+                  <>
+                    <strong>Related Recipe 3: </strong>
+                    {recipeThree.title}
+                    <Button
+                      onClick={recipeThreeNav}
+                    >
+                      View Recipe
+                    </Button>
+                  </>
+                  )}
+                </Typography>
+                <Tooltip title="Edit this pairing.">
+                  <Button
+                    onClick={editPairing}
+                    variant="outlined"
+                    color="info"
+                    sx={{ my: 2 }}
+                  >
+                    Edit Pairing
+                  </Button>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Tooltip title="Remove this pairing from recipe.">
+                  <Button 
+                    onClick={() => {removePairing(pairing.id)}}
+                    variant="outlined"
+                    color="error"
+                    startIcon={<Delete />}
+                  >
+                    Remove
+                  </Button>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider></Divider>
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={4} md={4}>
+        <Box sx={{ display: {xs: 'none', sm: 'none', md: 'block'}}}>
+          <img 
+            src={pairingImg} 
+            alt="chef's hat with wooden spoon"
+            style={{maxHeight: '300px'}}
+          />
+        </Box>
+        <Box sx={{ display: {xs: 'none', sm: 'block', md: 'none'}}}>
+          <img 
+            src={pairingImg} 
+            alt="chef's hat with wooden spoon"
+            style={{maxHeight: '200px'}}
+          />
+        </Box>
+      </Grid>
+    </Grid>
     </>
     ):(
     <>

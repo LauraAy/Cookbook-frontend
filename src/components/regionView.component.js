@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import RegionRecipeDataService from "../services/regionRecipe.service";
 import { Box, Button, Divider, Grid, Tooltip, Typography, } from '@mui/material';
  import { Delete } from  '@mui/icons-material';
+ import globe from "../images/globe.png";
 
 const RegionViewComponent = params => {
   const { id } = useParams();
@@ -58,6 +59,17 @@ const RegionViewComponent = params => {
   <>
     {region.length ? (
     <>
+    <Grid container>
+      <Grid item xs={12}>
+        <Box sx={{ display: {xs: 'block', sm: 'none', md: 'none'}}}>
+          <img 
+            src={globe} 
+            alt="globe showing countries of the world"
+            style={{maxHeight: '150px'}}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={8} md={8}>
       {region.map((region) => 
       <Box mt={2}>
         <Typography 
@@ -136,6 +148,23 @@ const RegionViewComponent = params => {
         <Divider></Divider>
       </Box>
       )}
+      </Grid>
+      <Grid item xs={12} sm={4} md={4}>
+      <Box sx={{ display: {xs: 'none', sm: 'none', md: 'block'}}}>
+        <img 
+            src={globe} 
+            alt="globe showing countries of the world"
+            style={{maxHeight: '300px'}}
+          />
+      </Box>
+      <Box sx={{ display: {xs: 'none', sm: 'block', md: 'none'}}}>
+        <img 
+            src={globe} 
+            alt="globe showing countries of the world"
+            style={{maxHeight: '200px'}}
+          />
+      </Box>
+      </Grid>
       <Tooltip title="Add another region to this recipe.">
         <Button 
           onClick={goAddRegion}
@@ -146,6 +175,7 @@ const RegionViewComponent = params => {
           Add Another Region
         </Button>
       </Tooltip>
+    </Grid>
     </>
     ):(
     <>

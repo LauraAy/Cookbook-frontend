@@ -3,7 +3,10 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import RecipeDataService from "../services/recipe.service";
 import { Box, Button, Divider, Tooltip, Typography, } from '@mui/material';
 import parser from "html-react-parser";
-import WorldIconTest from '../images/worldIconTest.jpg'
+import recipe from "../images/recipe2.png";
+import creator from "../images/creator.png";
+import pairing from "../images/pairing.png";
+
 
 const RecipeViewComponent = props => {
   let navigate = useNavigate();
@@ -52,18 +55,29 @@ console.log(localStorage.getItem('ingredients'))
   return (
   <>
     <Box mx={4}>
-    <Box sx={{ display: 'inline-flex' }}>
-    
-        {/* <img 
-          src={WorldIconTest} 
-          alt="picture of a world"
-          style={{ maxHeight: '120px' }}
-          sx={{align:'right'}}
-        /> */}
-      
       <Box>
         <Typography variant="h4">{currentRecipe.title}</Typography>
       </Box>
+      <Box sx={{ display: {xs: 'none', sm: 'none', md: 'block'}, float: {xs: 'none', sm: 'right'}}}>
+        <img 
+            src={recipe} 
+            alt="recipe card with vegetables"
+            style={{maxHeight: '300px'}}
+          />
+      </Box>
+      <Box sx={{ display: {xs: 'none', sm: 'block', md: 'none'}, float: {xs: 'none', sm: 'right'}}}>
+        <img 
+            src={recipe} 
+            alt="recipe card with vegetables"
+            style={{maxHeight: '200px'}}
+          />
+      </Box>
+      <Box sx={{ display: {xs: 'block', sm: 'none', md: 'none'}, float: {xs: 'none', sm: 'right'}}}>
+        <img 
+            src={recipe} 
+            alt="recipe card with vegetables"
+            style={{maxHeight: '150px'}}
+          />
       </Box>
 
       <Typography variant="body1"sx={{ m: 1 }}>
