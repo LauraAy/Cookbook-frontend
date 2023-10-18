@@ -75,7 +75,7 @@ const NavbarComponent = () => {
 							sx={{
 								mr: 1,
 								display: { xs: 'none', md: 'flex' },
-								fontWeight: 700,
+								fontWeight: 500,
 								fontFamily: 'RachelBrown',
 								letterSpacing: '.3rem',
 								color: 'inherit',
@@ -120,7 +120,7 @@ const NavbarComponent = () => {
 									<MenuItem key={page.name} onClick={handleCloseNavMenu}>
 										<Typography textAlign="center">
 											<Link to ={`${page.link}`} className="navbar-brand">
-												{page.name}
+												{page.name} 
 											</Link>
 										</Typography>
 									</MenuItem>
@@ -136,7 +136,7 @@ const NavbarComponent = () => {
 								display: { xs: 'flex', md: 'none' },
 								flexGrow: 1,
 								fontFamily: 'RachelBrown',
-								fontWeight: 700,
+								fontWeight: 500,
 								letterSpacing: '.3rem',
 								color: 'inherit',
 								textDecoration: 'none'
@@ -152,7 +152,9 @@ const NavbarComponent = () => {
 									sx={{ my: 2, color: 'white', display: 'block' }}
 								>
 									<Link style={{textDecoration: "none", color: "white"}} to={`${page.link}`} className="nav-link">
+										<Typography variant="body1">
 										{page.name}
+										</Typography>
 									</Link>
 								</Button>
 							))}

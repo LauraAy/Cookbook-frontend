@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-// import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuIcon, Container,
-// Avatar, Button, Tooltip, MenuItem, AdbIcon }from '@mui/material';
 import NavbarComponent from "./components/navbar.component";
 import {createTheme, colors, createColor, ThemeProvider} from '@mui/material';
 import { red, purple, blue, green, grey, pink, orange } from '@mui/material/colors';
+import '@fontsource-variable/montserrat';
+
+import "./App.css";
+
 
 import Home from "./pages/home.page.js";
 import Login from "./pages/login.page.js";
@@ -29,40 +31,39 @@ import ScrollToTop from "./components/scrollToTop.component";
 
 
 import Test from "./components/test.js"
-import { createLocalStorageManager } from "@chakra-ui/react";
-
 
   const theme = createTheme({
     typography: {
-      fontFamily: "Montserrat Variable",
+      fontFamily: "Montserrat, Roboto, Sans-serif",
       h1: {
-        fontFamily: "RachelBrown",
+        fontFamily: "RachelBrown, Georgia, Times, Times New Roman, serif",
         color: green[800]
       },
       h2: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown, Georgia, Times, Times New Roman, serif",
+
         color: green[900]
       },
       h3: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown, Georgia, Times, Times New Roman, serif",
         color: green[900]
       },
       h4: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown Georgia, Times, Times New Roman, serifRachelBrown,",
         color: green[900]
       },
       h5: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown, Georgia, Times, Times New Roman, serif",
         color: green[900]
       },
       h6: {
-        fontFamily:"RachelBrown",
+        fontFamily: "RachelBrown, Georgia, Times, Times New Roman, serif",
         color: grey[900]
       },
       body1: {
         fontSize: "1.1rem",
         lineHeight: "1.5"
-      }
+      }, 
     },
     palette: {
       primary: {
