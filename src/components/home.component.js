@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {Box, Button, Card, CardMedia, Divider, Grid, Typography} from '@mui/material';
+import {Box, Button, Card, CardMedia, Container, Divider, Grid, Typography} from '@mui/material';
+import {DoubleArrow} from '@mui/icons-material';
 import AuthService from "../services/auth.service";
 import cuttingBoard from "../images/cuttingBoard.png";
 import japaneseTea from "../images/japaneseTea2.png"
+import globe from "../images/globe.png"
+import creator from "../images/creator.png"
+import pairing from "../images/pairing.png"
 import { purple, blue, green } from '@mui/material/colors';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { StayPrimaryLandscape } from "@mui/icons-material";
 
 
 const HomeComponent = () => {
@@ -64,6 +71,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: blue[900],
       border: '5px solid',
+      minHeight: '100px',
     },
     creatorCard: {
       position: 'relative',
@@ -73,7 +81,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: purple[900],
       border: '5px solid #4527a0',
-      // borderColor: purple[900]
+      minHeight: '100px',
     },
     pairingCard: {
       position: 'relative',
@@ -83,6 +91,7 @@ const HomeComponent = () => {
       fontWeight: 'bold',
       color: 'darkRed',
       border: '5px solid darkRed',
+      minHeight: '100px',
     },
     aboutCard: {
       position: 'relative',
@@ -95,6 +104,16 @@ const HomeComponent = () => {
       color: '#ffffff',
       backgroundColor: green[900]
     },
+    aboutBox: {
+      position: 'relative',
+      align: 'right',
+      marginTop: '20px',
+      margin: '10px',
+      padding: '20px',
+      color: '#ffffff',
+      border:  '2px solid #ffffff',
+      borderRadius: '5%'
+    },
     overlay: {
       position: 'absolute',
       top: '50%',
@@ -106,12 +125,38 @@ const HomeComponent = () => {
     }
   }
 
+  //animation functions
+  const appearBox = {
+    visible: { opacity: 1, scale: 1, transition: { duration: 2 } },
+    hidden: { opacity: 0, scale: 0 }
+  };
+
+  const control = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      control.start("visible");
+    } else {
+      control.start("hidden");
+    }
+  }, [control, inView]);
+  
+
   const register = () => {
     navigate('/register')
   }
 
   const login = () => {
     navigate('/login')
+  }
+
+  const about = () => {
+    navigate('/about/')
+  }
+
+  const addRecipe = () => {
+    navigate('/recipes/add')
   }
 
   return (
@@ -137,7 +182,7 @@ const HomeComponent = () => {
     <Typography  variant='h5' sx={{  display: { xs: 'block', sm: 'none'}, textAlign: 'center'}}>
       Add a new recipe now!
     </Typography>
-    <Button variant='contained' sx={{align: 'center', mt: '5px'}}>
+    <Button variant='contained' onClick={addRecipe} sx={{align: 'center', mt: '5px'}}>
       Add New Recipe
     </Button>
     </Box>
@@ -161,26 +206,75 @@ const HomeComponent = () => {
     </Box>
     <Grid container spacing={1}>
       <Grid item xs={12} >
-        <Box style={styles.regionCard} >
-          <Typography variant='h6' sx={{color: 'secondary.main'}}>
-            Where in the world is this recipe from? Add the region or 
-            regions where it originated.
-          </Typography>
-        </Box>
+        <motion.div
+          className="box"
+          ref={ref}
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={control}
+        >
+          <Box style={styles.regionCard} >
+            <Box sx={{ float: 'left'}}>
+                <img
+                  src={globe} 
+                  alt="A globe showing the countries of the world."
+                  style={{ maxHeight: '100px'}}
+                />
+              </Box>
+                <Typography variant='h6' sx={{color: 'secondary.main', paddingTop: {xs: 'none', sm: '20px', md: '30px'}}}>
+                  Where in the world is this recipe from? Add the region or 
+                  regions where it originated.
+                </Typography>
+            
+          </Box>
+        </motion.div>
       </Grid>
       <Grid item xs={12} >
-        <Box style={styles.creatorCard} >
-          <Typography variant='h6' sx={{color: 'creator.main'}}>
-            Who is the genius behind this recipe? Add the person who created it.
-          </Typography>
-        </Box>
+        <motion.div
+          className="box"
+          ref={ref}
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={control}
+        >
+          <Box style={styles.creatorCard} >
+            <Box sx={{ float: 'left', marginRight: "20px"}}>
+              <img
+                src={creator} 
+                alt="A chef's hat and a wooden spoon."
+                style={{ maxHeight: '100px'}}
+              />
+            </Box>
+            <Typography variant='h6' sx={{color: 'creator.main', paddingTop: {xs: 'none', sm: '20px', md: '30px'}}}>
+              Who is the genius behind this recipe? Add the person who created it.
+            </Typography>
+          </Box>
+        </motion.div>
       </Grid>
       <Grid item xs={12} >
-        <Box style={styles.pairingCard}>
-          <Typography variant='h6' sx={{color: 'pairing.main'}}>
-            What are the perfect pairings for this recipe? Add music, games, drinks or more to pair with this dish.
-          </Typography>
-        </Box>
+        <motion.div
+          className="box"
+          ref={ref}
+          // variants={appearBox}
+          whileInView= {{opacity: 1, scale: 1, transition: { duration: 2 }}}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={control}
+        >
+          <Box style={styles.pairingCard}>
+            <Box sx={{ float: 'left', marginRight: "20px"}}>
+              <img
+                src={pairing} 
+                alt="Two wine glasses with music notes behind them."
+                style={{ maxHeight: '100px'}}
+              />
+            </Box>
+            <Typography variant='h6' sx={{color: 'pairing.main'}}>
+              What are the perfect pairings for this recipe? Add music, games, drinks or more to pair with this dish.
+            </Typography>
+          </Box>
+        </motion.div>
       </Grid>
     </Grid>
     <Card style={styles.aboutCard} >
@@ -191,8 +285,25 @@ const HomeComponent = () => {
       <Typography variant='h6' sx={{color: 'white', backgroundColor: 'primary.main', marginTop:'5px'}}>
         Your World Cookbook started with a group of friends separated by hundreds of miles during 
         the pandemic who came together for virtual cooking experiences to try recipes from around the world.
-        *Animated about button to learn more about the project*
       </Typography>
+      <motion.div
+        className="hoverBox"
+        whileHover={{ scale: [null, 1.4, 1.3] }}
+        transition={{ duration: 0.3 }}
+      >
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box 
+          style={styles.aboutBox}
+          sx={{ display: 'inline-flex' }}
+          onClick={about}
+        >
+          <Typography>
+            About
+          </Typography>
+          <DoubleArrow />
+        </Box>
+      </Box>
+      </motion.div>
     </Card>
 
     <Card style={styles.textCard} >
@@ -214,7 +325,7 @@ const HomeComponent = () => {
       <Typography  variant='h5' sx={{  display: { xs: 'block', sm: 'none'}, textAlign: 'center'}}>
         Get started adding recipes now!
       </Typography>
-      <Button variant='contained' sx={{align: 'center', mt: '5px'}}>
+      <Button variant='contained' onClick={addRecipe} sx={{align: 'center', mt: '5px'}}>
         Add New Recipe
       </Button>
     </Box>
