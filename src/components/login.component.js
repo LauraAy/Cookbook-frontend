@@ -43,7 +43,7 @@ const LoginComponent = () => {
   const [message, setMessage] = useState("");
 
   const handleLogin = (data) => {
-    const username=data.username
+    const username = data.username
     const password = data.password
    
     AuthService.login(username, password).then(
